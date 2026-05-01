@@ -1,0 +1,105 @@
+$rs-button-sizes: (
+	'xs': var(--rs-button-size-xs),
+	'sm': var(--rs-button-size-sm),
+	'md': var(--rs-button-size-md),
+	'lg': var(--rs-button-size-lg),
+	'xl': var(--rs-button-size-xl),
+	'xxl': var(--rs-button-size-xxl)
+);
+
+$rs-button-font-sizes: (
+	'xs': var(--rs-button-font-size-xs),
+	'sm': var(--rs-button-font-size-sm),
+	'md': var(--rs-button-font-size-md),
+	'lg': var(--rs-button-font-size-lg),
+	'xl': var(--rs-button-font-size-xl),
+	'xxl': var(--rs-button-font-size-xxl)
+);
+
+$rs-button-paddings: (
+	'xs': var(--rs-button-padding-xs),
+	'sm': var(--rs-button-padding-sm),
+	'md': var(--rs-button-padding-md),
+	'lg': var(--rs-button-padding-lg),
+	'xl': var(--rs-button-padding-xl),
+	'xxl': var(--rs-button-padding-xxl)
+);
+
+$rs-button-gaps: (
+	'xs': var(--rs-button-gap-xs),
+	'sm': var(--rs-button-gap-sm),
+	'md': var(--rs-button-gap-md),
+	'lg': var(--rs-button-gap-lg),
+	'xl': var(--rs-button-gap-xl),
+	'xxl': var(--rs-button-gap-xxl)
+);
+
+.rs-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	color: var(--rs-button-color);
+	border: var(--rs-button-border);
+	border-radius: var(--rs-button-border-radius);
+	transition: var(--rs-button-transition);
+	box-sizing: border-box;
+	cursor: pointer;
+
+	&--filled {
+		background: var(--rs-button-background);
+
+		&:hover {
+			background: var(--rs-button-background-hover);
+		}
+	}
+
+	&--text {
+		background: transparent;
+	}
+
+	&--rectangle {
+		max-width: 100%;
+		width: max-content;
+	}
+
+	&--circle {
+		border-radius: 100%;
+	}
+
+	@each $size-name, $size in $rs-button-sizes {
+		&.rs-button--#{$size-name} {
+			&.rs-button--rectangle {
+				height: $size;
+			}
+
+			&.rs-button--circle,
+			&.rs-button--square {
+				width: $size;
+				height: $size;
+			}
+		}
+	}
+
+	@each $size-name, $font-size in $rs-button-font-sizes {
+		&.rs-button--#{$size-name} {
+			&.rs-button--rectangle {
+				font-size: $font-size;
+			}
+		}
+	}
+
+	@each $size-name, $padding in $rs-button-paddings {
+		&.rs-button--#{$size-name} {
+			&.rs-button--rectangle {
+				padding: $padding;
+			}
+		}
+	}
+
+	@each $size-name, $gap in $rs-button-gaps {
+		&.rs-button--#{$size-name} {
+			gap: $gap;
+		}
+	}
+}

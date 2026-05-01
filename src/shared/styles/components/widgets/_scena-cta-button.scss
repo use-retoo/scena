@@ -1,0 +1,34 @@
+.rs-cta-button {
+	box-shadow: var(--rs-cta-button-shadow);
+	transition: var(--rs-cta-button-transition);
+	z-index: var(--rs-cta-button-z-index);
+
+	&--inside {
+		position: absolute;
+		bottom: 8%;
+		right: 50%;
+		translate: 50% 0;
+	}
+
+	&--outside {
+		width: 100%;
+		margin: 8px auto auto auto;
+
+		.rs-button {
+			width: 100%;
+		}
+	}
+
+	.rs-button {
+		color: var(--rs-cta-button-color);
+		background: var(--rs-cta-button-background);
+
+		&:hover {
+			background: var(--rs-cta-button-background-hover);
+		}
+
+		&:active {
+			background: var(--rs-cta-button-background-pressed);
+		}
+	}
+}

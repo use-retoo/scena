@@ -1,0 +1,147 @@
+@use 'sass:map';
+
+$variables: (
+	'rs-container': (
+		'offset-x': 24px,
+		'offset-y': 24px,
+		'z-index': 10
+	),
+
+	'rs-video-container': (
+		'size-xs': 156px,
+		'size-sm': 192px,
+		'size-md': 352px,
+		'size-lg': 448px,
+		'size-xl': 544px,
+		'size-xxl': 640px,
+		'background': white,
+		'border': none,
+		'border-radius': 8px,
+		'shadow': 0 0 20px rgba(0, 0, 0, 0.2),
+		'transition': all 0.3s ease-in-out,
+		'overflow': hidden
+	),
+
+	'rs-video': (
+		'border-radius': 8px
+	),
+
+	'rs-video-loader': (
+		'size-xs': 24px,
+		'size-sm': 32px,
+		'size-md': 48px,
+		'size-lg': 64px,
+		'size-xl': 80px,
+		'size-xxl': 96px,
+		'fill': white,
+		'animation': 0.75s infinite linear
+	),
+
+	'rs-video-progress': (
+		'track-color': rgba(255, 255, 255, 0.2),
+		'buffer-color': rgba(255, 255, 255, 0.4),
+		'progress-color': rgba(255, 255, 255, 1),
+		'border-radius': 0
+	),
+
+	'rs-video-controls': (
+		'drop-shadow': drop-shadow(0 0 10px rgba(0, 0, 0, 0.5)),
+		'transition': all 0.3s ease,
+		'scale': 1.1,
+		'z-index': 20
+	),
+
+	'rs-video-volume': (
+		'drop-shadow': drop-shadow(0 0 10px rgba(0, 0, 0, 0.5)),
+		'transition': all 0.3s ease,
+		'scale': 1.1,
+		'z-index': 20
+	),
+
+	'rs-button': (
+		'size-xs': 32px,
+		'size-sm': 36px,
+		'size-md': 44px,
+		'size-lg': 50px,
+		'size-xl': 56px,
+		'size-xxl': 58px,
+		'font-size-xs': 10px,
+		'font-size-sm': 12px,
+		'font-size-md': 13px,
+		'font-size-lg': 14px,
+		'font-size-xl': 16px,
+		'font-size-xxl': 18px,
+		'padding-xs': 0px 8px,
+		'padding-sm': 0px 12px,
+		'padding-md': 0px 18px,
+		'padding-lg': 0px 24px,
+		'padding-xl': 0px 32px,
+		'padding-xxl': 0px 36px,
+		'gap-xs': 4px,
+		'gap-sm': 6px,
+		'gap-md': 8px,
+		'gap-lg': 10px,
+		'gap-xl': 12px,
+		'gap-xxl': 14px,
+		'color': rgba(255, 255, 255, 1),
+		'background': rgba(0, 0, 0, 1),
+		'background-hover': rgba(25, 25, 25, 1),
+		'border': none,
+		'border-radius': 4px,
+		'transition': all 0.3s ease
+	),
+
+	'rs-close-button': (
+		'size-xs': 18px,
+		'size-sm': 22px,
+		'size-md': 24px,
+		'size-lg': 28px,
+		'size-xl': 32px,
+		'size-xxl': 34px,
+		'icon-size-xs': 14px,
+		'icon-size-sm': 16px,
+		'icon-size-md': 18px,
+		'icon-size-lg': 20px,
+		'icon-size-xl': 22px,
+		'icon-size-xxl': 24px,
+		'color': rgba(255, 255, 255, 1),
+		'background': rgba(0, 0, 0, 1),
+		'background-hover': color-mix(in srgb, rgba(0, 0, 0, 1) 80%, transparent),
+		'background-pressed': color-mix(in srgb, rgba(0, 0, 0, 1) 60%, transparent),
+		'border-radius': 100%,
+		'transition': all 0.3s ease,
+		'z-index': 20
+	),
+
+	'rs-cta-button': (
+		'color': rgba(255, 255, 255, 1),
+		'background': rgba(0, 0, 0, 1),
+		'background-hover': color-mix(in srgb, rgba(0, 0, 0, 1) 80%, transparent),
+		'background-pressed': color-mix(in srgb, rgba(0, 0, 0, 1) 60%, transparent),
+		'shadow': 0 0 20px rgba(0, 0, 0, 0.2),
+		'transition': all 0.3s ease,
+		'z-index': 20
+	),
+
+	'rs-icon': (
+		'size-xs': 22px,
+		'size-sm': 24px,
+		'size-md': 28px,
+		'size-lg': 32px,
+		'size-xl': 36px,
+		'size-xxl': 40px,
+		'color': rgba(255, 255, 255, 1)
+	)
+);
+
+@mixin generate-variables {
+	@each $component-name, $component-props in $variables {
+		@each $property, $value in $component-props {
+			--#{$component-name}-#{$property}: #{$value};
+		}
+	}
+}
+
+.rs {
+	@include generate-variables();
+}

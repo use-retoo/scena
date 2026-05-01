@@ -1,0 +1,14 @@
+commit-msg:
+  commands:
+    commitlint:
+      run: npx commitlint --edit {1}
+
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      run: npm run lint
+    check:
+      run: npm run check
+    test:
+      run: npm run test

@@ -1,0 +1,20 @@
+.rs-progress--line {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	touch-action: none;
+
+	.rs-progress__track {
+		transition: height 0.3s linear;
+	}
+
+	.rs-progress__buffer {
+		transition: width 0.1s linear;
+		overflow: hidden;
+	}
+
+	.rs-progress__progress {
+		transition: width 0.1s linear;
+		overflow: hidden;
+	}
+}

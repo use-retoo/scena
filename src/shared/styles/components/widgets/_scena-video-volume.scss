@@ -1,0 +1,26 @@
+.rs-video-volume {
+	position: absolute;
+	filter: var(--rs-video-volume-drop-shadow);
+	transition: var(--rs-video-volume-transition);
+	z-index: var(--rs-video-volume-z-index);
+
+	&--square,
+	&--landscape,
+	&--portrait {
+		top: 5%;
+		right: 5%;
+	}
+
+	&--circle {
+		top: 10%;
+		right: 50%;
+		translate: 50% 0;
+	}
+
+	&__mute,
+	&__unmute {
+		&:hover {
+			transform: var(--rs-video-volume-transform);
+		}
+	}
+}

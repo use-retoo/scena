@@ -1,0 +1,63 @@
+name: Bug report
+description: Something is broken in @retoo/scena
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a report. A minimal reproduction is the single most useful thing you can include — without it most bugs cannot be triaged.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: A clear description of the bug and what you expected instead.
+    validations:
+      required: true
+
+  - type: input
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Link to a StackBlitz, CodeSandbox, or a public repo. Inline snippets are fine for trivial cases.
+      placeholder: https://stackblitz.com/edit/...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to ...
+        2. Click on ...
+        3. See error
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: '@retoo/scena version'
+      placeholder: 1.0.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      value: |
+        - OS:
+        - Browser + version:
+        - Node:
+        - Bundler / framework (Vite, Next, Nuxt, plain CDN, …):
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console output
+      description: Any errors or warnings printed in the browser console or build output.
+      render: shell

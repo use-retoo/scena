@@ -1,0 +1,16 @@
+.rs-video-controls {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	translate: -50% -50%;
+	filter: var(--rs-video-controls-drop-shadow);
+	transition: var(--rs-video-controls-transition);
+	z-index: var(--rs-video-controls-z-index);
+
+	&__play,
+	&__pause {
+		&:hover {
+			transform: var(--rs-video-controls-transform);
+		}
+	}
+}

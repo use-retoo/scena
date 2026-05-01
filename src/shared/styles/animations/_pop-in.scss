@@ -1,0 +1,19 @@
+.rs-pop-in {
+	animation: pop-in 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+	transform-origin: center center;
+}
+
+@keyframes pop-in {
+	0% {
+		opacity: 0;
+		scale: 0.5;
+	}
+	40% {
+		opacity: 1;
+		scale: 1.1;
+	}
+	100% {
+		opacity: 1;
+		scale: 1;
+	}
+}

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or usage help
+    url: https://github.com/use-retoo/scena/discussions
+    about: Use Discussions for questions, ideas, and "how do I…" — not the issue tracker.
+  - name: Documentation
+    url: https://use-retoo.github.io/scena
+    about: Check the docs first; many questions are answered there.
+  - name: Commercial / licensing
+    url: mailto:support@retoo.ru
+    about: For licensing, security, or anything that should not be public.
