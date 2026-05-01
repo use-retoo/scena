@@ -1,6 +1,6 @@
 # Scena Documentation
 
-> Embeddable video widget for any website.
+> Embed a floating video widget on any website in minutes.
 
 ## Documentation Sets
 
