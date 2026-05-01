@@ -1,6 +1,6 @@
 # Scena Documentation
 
-> Embed a floating video widget on any website in minutes.
+> Embed video on your own website — no redirects, fully under your control.
 
 ## Documentation Sets
 
