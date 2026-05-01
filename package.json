@@ -1,6 +1,6 @@
 {
 	"name": "@retoo/scena",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "Embeddable video widget for any website. Framework-agnostic, SSR-safe.",
 	"keywords": [
 		"cta",
