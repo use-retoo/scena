@@ -1,0 +1,27 @@
+$rs-loader-sizes: (
+	'xs': var(--rs-video-loader-size-xs),
+	'sm': var(--rs-video-loader-size-sm),
+	'md': var(--rs-video-loader-size-md),
+	'lg': var(--rs-video-loader-size-lg),
+	'xl': var(--rs-video-loader-size-xl),
+	'xxl': var(--rs-video-loader-size-xxl)
+);
+
+.rs-loader {
+	fill: var(--rs-video-loader-fill);
+	animation: spinner var(--rs-video-loader-animation);
+	transform-origin: center;
+
+	@each $size-name, $size in $rs-loader-sizes {
+		&.rs-loader--#{$size-name} {
+			width: $size;
+			height: $size;
+		}
+	}
+}
+
+@keyframes spinner {
+	100% {
+		transform: rotate(360deg);
+	}
+}

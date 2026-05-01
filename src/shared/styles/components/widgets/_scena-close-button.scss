@@ -1,0 +1,62 @@
+$rs-close-button-sizes: (
+	'xs': var(--rs-close-button-size-xs),
+	'sm': var(--rs-close-button-size-sm),
+	'md': var(--rs-close-button-size-md),
+	'lg': var(--rs-close-button-size-lg),
+	'xl': var(--rs-close-button-size-xl),
+	'xxl': var(--rs-close-button-size-xxl)
+);
+
+.rs-close-button {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--rs-close-button-border-radius);
+	transition: var(--rs-close-button-transition);
+	z-index: var(--rs-close-button-z-index);
+
+	&--square,
+	&--landscape,
+	&--portrait {
+		top: 0;
+		right: 0;
+		translate: 50% -50%;
+	}
+
+	&--circle {
+		top: 0;
+		right: 0;
+	}
+
+	@each $size-name, $size in $rs-close-button-sizes {
+		&.rs-close-button--#{$size-name} {
+			width: $size;
+			height: $size;
+		}
+	}
+
+	.rs-button {
+		padding: 2px;
+		background: var(--rs-close-button-background);
+
+		&:hover {
+			background: var(--rs-close-button-background-hover);
+		}
+
+		&:active {
+			background: var(--rs-close-button-background-pressed);
+		}
+
+		.rs-icon {
+			color: var(--rs-close-button-color);
+
+			--rs-icon-size-xs: var(--rs-close-button-icon-size-xs);
+			--rs-icon-size-sm: var(--rs-close-button-icon-size-sm);
+			--rs-icon-size-md: var(--rs-close-button-icon-size-md);
+			--rs-icon-size-lg: var(--rs-close-button-icon-size-lg);
+			--rs-icon-size-xl: var(--rs-close-button-icon-size-xl);
+			--rs-icon-size-xxl: var(--rs-close-button-icon-size-xxl);
+		}
+	}
+}

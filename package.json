@@ -1,0 +1,113 @@
+{
+	"name": "@retoo/scena",
+	"version": "0.0.0",
+	"description": "Embeddable video widget for any website. Framework-agnostic, SSR-safe.",
+	"keywords": [
+		"cta",
+		"cta-video",
+		"embeddable",
+		"floating-video",
+		"interactive-video",
+		"player",
+		"reel",
+		"shoppable-video",
+		"short-form-video",
+		"social-video",
+		"video",
+		"video-player",
+		"video-reel",
+		"video-widget",
+		"widget"
+	],
+	"author": "Retoo <support@retoo.ru>",
+	"license": "PolyForm-Shield-1.0.0",
+	"homepage": "https://use-retoo.github.io/scena",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/use-retoo/scena"
+	},
+	"bugs": {
+		"url": "https://github.com/use-retoo/scena/issues"
+	},
+	"type": "module",
+	"files": [
+		"dist"
+	],
+	"main": "./dist/scena.cjs.js",
+	"module": "./dist/scena.es.js",
+	"types": "./dist/index.d.ts",
+	"sideEffects": [
+		"./dist/scena.es.js",
+		"./dist/scena.cjs.js",
+		"./dist/scena.min.umd.js",
+		"**/*.css"
+	],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/scena.es.js",
+			"require": "./dist/scena.cjs.js"
+		},
+		"./styles": "./dist/scena.css",
+		"./styles/min": "./dist/scena.min.css"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"dev": "vite --config vite.dev.config.ts",
+		"build": "npm run build:lib && npm run build:types && npm run build:styles",
+		"build:lib": "vite build",
+		"build:types": "rollup --config types.config.js",
+		"build:styles": "rollup --config styles.config.js",
+		"check": "npm run check:svelte && npm run check:node",
+		"check:svelte": "svelte-check --tsconfig ./tsconfig.app.json",
+		"check:node": "tsc -p tsconfig.node.json",
+		"lint": "npm run lint:code && npm run lint:format",
+		"lint:code": "eslint .",
+		"lint:format": "prettier --check .",
+		"format": "prettier --write .",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"validate": "npm run check && npm run lint",
+		"release": "release-it",
+		"release:dry": "release-it --dry-run"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^20.5.0",
+		"@commitlint/config-conventional": "^20.5.0",
+		"@eslint/compat": "^1.4.0",
+		"@eslint/js": "^9.39.1",
+		"@release-it/conventional-changelog": "^10.0.6",
+		"@rollup/plugin-node-resolve": "^16.0.3",
+		"@rollup/plugin-terser": "^1.0.0",
+		"@sveltejs/vite-plugin-svelte": "^6.2.1",
+		"@tsconfig/svelte": "^5.0.6",
+		"@types/node": "^20",
+		"autoprefixer": "^10.4.23",
+		"eslint": "^9.39.1",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-import-resolver-typescript": "^4.4.4",
+		"eslint-plugin-import": "^2.32.0",
+		"eslint-plugin-svelte": "^3.13.1",
+		"globals": "^16.5.0",
+		"jsdom": "^28.1.0",
+		"lefthook": "^2.1.6",
+		"postcss": "^8.5.6",
+		"prettier": "^3.7.4",
+		"prettier-plugin-svelte": "^3.4.0",
+		"release-it": "^19.1.0",
+		"rollup-plugin-dts": "^6.3.0",
+		"rollup-plugin-scss": "^4.0.1",
+		"sass": "^1.97.1",
+		"svelte": "^5.53.5",
+		"svelte-check": "^4.3.4",
+		"typescript": "~5.9.3",
+		"typescript-eslint": "^8.48.1",
+		"vite": "^7.3.2",
+		"vitest": "^4.1.0"
+	},
+	"overrides": {
+		"undici": "^7.0.0"
+	}
+}

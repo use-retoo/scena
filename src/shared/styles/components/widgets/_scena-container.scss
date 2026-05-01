@@ -1,0 +1,79 @@
+.rs-container {
+	display: flex;
+	flex-direction: column;
+
+	&--static {
+		position: static;
+		width: fit-content;
+	}
+
+	&--relative {
+		position: relative;
+		width: fit-content;
+	}
+
+	&--absolute {
+		position: absolute;
+		z-index: var(--rs-container-z-index);
+	}
+
+	&--fixed {
+		position: fixed;
+		z-index: var(--rs-container-z-index);
+	}
+
+	&--top-start {
+		top: var(--rs-container-offset-y);
+		left: var(--rs-container-offset-x);
+	}
+
+	&--top-center {
+		top: var(--rs-container-offset-y);
+		left: 50%;
+		translate: -50% 0;
+	}
+
+	&--top-end {
+		top: var(--rs-container-offset-y);
+		right: var(--rs-container-offset-x);
+	}
+
+	&--middle-start {
+		top: 50%;
+		left: var(--rs-container-offset-x);
+		translate: 0 -50%;
+	}
+
+	&--middle-center {
+		top: 50%;
+		left: 50%;
+		translate: -50% -50%;
+	}
+
+	&--middle-end {
+		top: 50%;
+		right: var(--rs-container-offset-x);
+		translate: 0 -50%;
+	}
+
+	&--bottom-start {
+		bottom: var(--rs-container-offset-y);
+		left: var(--rs-container-offset-x);
+	}
+
+	&--bottom-center {
+		bottom: var(--rs-container-offset-y);
+		left: 50%;
+		translate: -50% 0;
+	}
+
+	&--bottom-end {
+		bottom: var(--rs-container-offset-y);
+		right: var(--rs-container-offset-x);
+	}
+
+	&--hidden {
+		visibility: hidden;
+		pointer-events: none;
+	}
+}

@@ -1,0 +1,16 @@
+.rs {
+	width: fit-content;
+	height: fit-content;
+
+	.rs-video-controls,
+	.rs-video-volume {
+		opacity: 0;
+	}
+
+	&:hover {
+		.rs-video-controls,
+		.rs-video-volume {
+			opacity: 1;
+		}
+	}
+}

@@ -1,0 +1,19 @@
+$rs-icon: (
+	'xs': var(--rs-icon-size-xs),
+	'sm': var(--rs-icon-size-sm),
+	'md': var(--rs-icon-size-md),
+	'lg': var(--rs-icon-size-lg),
+	'xl': var(--rs-icon-size-xl),
+	'xxl': var(--rs-icon-size-xxl)
+);
+
+.rs-icon {
+	color: var(--rs-icon-color);
+
+	@each $size-name, $size in $rs-icon {
+		&.rs-icon--#{$size-name} {
+			width: $size;
+			height: $size;
+		}
+	}
+}

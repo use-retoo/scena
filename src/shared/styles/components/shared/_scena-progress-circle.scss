@@ -1,0 +1,28 @@
+.rs-progress--circle {
+	user-select: none;
+	touch-action: none;
+
+	.rs-progress__progress {
+		pointer-events: none;
+	}
+
+	.rs-progress__buffer {
+		pointer-events: none;
+	}
+
+	.rs-progress__hit-area {
+		cursor: pointer;
+	}
+
+	circle {
+		transition:
+			cx 0.3s ease-in-out,
+			cy 0.3s ease-in-out,
+			r 0.3s ease-in-out,
+			stroke-dasharray 0.3s ease-in-out,
+			stroke-linecap 0.3s ease-in-out,
+			stroke-width 0.3s ease-in-out,
+			stroke 0.3s ease-in-out,
+			transform 0.3s ease-in-out;
+	}
+}

@@ -1,0 +1,61 @@
+@use 'sass:list';
+@use 'sass:math';
+@use 'sass:map';
+
+$rs-container-sizes: (
+	'xs': var(--rs-video-container-size-xs),
+	'sm': var(--rs-video-container-size-sm),
+	'md': var(--rs-video-container-size-md),
+	'lg': var(--rs-video-container-size-lg),
+	'xl': var(--rs-video-container-size-xl),
+	'xxl': var(--rs-video-container-size-xxl)
+);
+
+$rs-container-ratio: (
+	'circle': (
+		1,
+		1
+	),
+	'square': (
+		1,
+		1
+	),
+	'landscape': (
+		16,
+		9
+	),
+	'portrait': (
+		9,
+		16
+	)
+);
+
+.rs-video-container {
+	background: var(--rs-video-container-background);
+	border: var(--rs-video-container-border);
+	border-radius: var(--rs-video-container-border-radius);
+	box-shadow: var(--rs-video-container-shadow);
+	overflow: var(--rs-video-container-overflow);
+	transition: var(--rs-video-container-transition);
+
+	@each $size-name, $height in $rs-container-sizes {
+		@each $variant-name, $ratio in $rs-container-ratio {
+			&.rs-video-container--#{$size-name} {
+				&.rs-video-container--#{$variant-name} {
+					height: $height;
+					$width-ratio: list.nth($ratio, 1);
+					$height-ratio: list.nth($ratio, 2);
+					aspect-ratio: math.div($width-ratio, $height-ratio);
+				}
+			}
+		}
+	}
+
+	&--preview {
+		cursor: pointer;
+	}
+
+	&--circle {
+		border-radius: 100%;
+	}
+}

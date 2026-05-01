@@ -1,0 +1,43 @@
+.rs-progress {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: auto;
+	z-index: 10;
+
+	&:focus {
+		outline: none;
+	}
+
+	.rs-progress__track {
+		position: relative;
+		width: 100%;
+		background: var(--rs-video-progress-track-color);
+		overflow: hidden;
+		cursor: pointer;
+	}
+
+	.rs-progress__buffer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		background: var(--rs-video-progress-buffer-color);
+		border-radius: var(--rs-video-progress-border-radius);
+		cursor: pointer;
+		z-index: 11;
+	}
+
+	.rs-progress__progress {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		background: var(--rs-video-progress-progress-color);
+		border-radius: var(--rs-video-progress-border-radius);
+		cursor: pointer;
+		z-index: 12;
+	}
+}
