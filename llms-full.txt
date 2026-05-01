@@ -1,0 +1,5128 @@
+# Introduction
+
+## What is Scena?
+
+Scena is an embeddable video widget designed to bring short-form video reels directly onto your website. The widget mounts as a floating overlay on top of your page — similar to what you see on social media platforms, but fully under your control.
+
+Scena works on any type of site — landing pages, e-commerce stores, SaaS dashboards — without redirecting visitors elsewhere. The widget ships with configurable video playback, multiple visual shapes, a preview mode, and built-in interactive elements like a CTA button and a close control.
+
+Built with [Svelte 5](https://svelte.dev){rel="&#x22;nofollow&#x22;"}, Scena compiles down to vanilla JavaScript with no framework runtime. The output integrates into React, Vue, Angular, or plain HTML without dependency conflicts. Distribution formats include ES Module, UMD, and CommonJS.
+
+::callout{color="info"}
+Scena is a fully open-source, non-commercial project. It's built and maintained by a small team in their free time with the goal of helping developers build better projects. If you encounter bugs or rough edges — we'd appreciate your patience and a [GitHub issue](https://github.com/use-retoo/scena){rel=""nofollow""} over frustration.
+::
+
+## See it in action
+
+The only required field is `video.src` — everything else has sensible defaults. Placement and shape determine how the widget integrates into your page.
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton:
+      text: Get in touch
+    closeButton: {}
+  ---
+  :::
+::
+
+```ts
+const instance = await scena.mount({
+  video: { src: '/video.mp4', autoplay: false },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+  container: {
+    position: ComponentPosition.ABSOLUTE,
+    placement: ComponentPlacement.MIDDLE_CENTER,
+  },
+  ctaButton: { text: 'Get in touch' },
+});
+```
+
+::callout
+---
+icon: i-lucide-settings-2
+to: https://use-retoo.github.io/scena/examples/basic-setup
+---
+See the **Basic Setup** example to explore the full config in practice — an interactive panel lets you tweak every parameter live and observe how the widget responds without writing a single line of code.
+::
+
+## Features
+
+::field-group
+  :::field
+  ---
+  name: Video playback
+  type: autoplay, loop, mute, poster, seek, volume
+  ---
+  Full control over the video element — configure on mount or change at runtime through the controller API.
+  :::
+
+  :::field{name="Shapes & sizes" type="circle, square, portrait, landscape"}
+  Multiple aspect ratios with predefined size presets. Combine any shape with any size.
+  :::
+
+  :::field{name="CTA button" type="configurable"}
+  Built-in call-to-action overlay with customizable text, styling, and a dedicated click event.
+  :::
+
+  :::field{name="Preview mode" type="configurable"}
+  Compact preview state that expands to the full widget on interaction.
+  :::
+
+  :::field{name="Event system" type="subscribe / unsubscribe"}
+  Typed events for playback changes, user interactions, and lifecycle hooks — connect analytics, navigation.
+  :::
+
+  :::field{name="Runtime updates" type="mergeConfig / setConfig"}
+  Patch or replace the entire config without unmounting.
+  :::
+::
+
+## Bundle size
+
+The production bundle weighs under **30 KB gzipped** (JS + CSS combined). Zero runtime dependencies — nothing is loaded beyond the video source you provide.
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/distribution/bundle-size
+---
+Full breakdown by format in the **Bundle Size** reference.
+::
+
+
+# Installation
+
+## Package manager
+
+Install the package using your preferred package manager:
+
+::tabs{variant="link"}
+  :::tabs-item{icon="i-simple-icons-npm" label="npm"}
+  ```bash [Terminal]
+  npm install @retoo/scena
+  ```
+  :::
+
+  :::tabs-item{icon="i-simple-icons-pnpm" label="pnpm"}
+  ```bash [Terminal]
+  pnpm add @retoo/scena
+  ```
+  :::
+
+  :::tabs-item{icon="i-simple-icons-yarn" label="yarn"}
+  ```bash [Terminal]
+  yarn add @retoo/scena
+  ```
+  :::
+
+  :::tabs-item{icon="i-simple-icons-bun" label="bun"}
+  ```bash [Terminal]
+  bun add @retoo/scena
+  ```
+  :::
+::
+
+The stylesheet must be imported separately — without it the widget mounts into the DOM but renders without any visual styling:
+
+```ts
+import '@retoo/scena/styles';
+```
+
+::callout{color="warning" icon="i-lucide-alert-triangle"}
+Missing the CSS import is the most common setup issue. If the widget mounts but appears invisible or unstyled, check this import first.
+::
+
+## CDN
+
+For environments without a bundler (static HTML, WordPress, Webflow), load Scena via a `<script>` tag. See the [Formats](https://use-retoo.github.io/scena/distribution/formats#umd) page for full CDN setup instructions.
+
+## Verify installation
+
+Confirm that the package is resolved correctly by checking the exported metadata:
+
+```ts
+import { useScena } from '@retoo/scena';
+
+const { NAME, VERSION } = useScena();
+
+console.log(NAME, VERSION);
+```
+
+## Requirements
+
+::field-group
+  :::field{name="Browser" type="string"}
+  Any modern browser supporting ES2020+ (Chrome 80+, Firefox 80+, Safari 14+, Edge 80+).
+  :::
+
+  :::field{name="Node.js" type="string"}
+  16.0 or later (for SSR / CommonJS usage).
+  :::
+
+  :::field{name="Bundler" type="string"}
+  Any bundler with ES Module support — Vite, Webpack 5+, Rollup, esbuild.
+  :::
+::
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/getting-started/quick-start
+---
+Package installed? Let's mount your first widget in the **Quick Start** guide.
+::
+
+
+# Quick Start
+
+## Basic setup
+
+::steps
+### Import Scena
+
+Import the factory function and the required stylesheet:
+
+```ts
+import { useScena } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+```
+
+### Create a factory
+
+`useScena()` returns a factory object that manages widget instances. One factory can create multiple independent widgets:
+
+```ts
+const scena = useScena();
+```
+
+### Mount the widget
+
+Pass a config object to `mount()`. The only required field is `video.src` — all other options use defaults:
+
+```ts
+const instance = await scena.mount({
+  video: { src: '/video.mp4' }
+});
+```
+
+`mount()` is async — it resolves after the widget is rendered and attached to the DOM. By default, the widget appears in the bottom-right corner of the viewport.
+::
+
+## Full example
+
+A complete setup with a custom shape, poster image, and CTA button:
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      poster: /examples/example-cat.jpg
+      autoplay: false
+      loop: true
+      muted: true
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton:
+      text: Get in touch
+      customClasses:
+        button: bg-red
+  ---
+  :::
+::
+
+```ts [main.ts]
+import {
+  useScena,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+} from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: {
+    src: '/video.mp4',
+    poster: '/poster.jpg',
+    autoplay: false,
+    loop: true,
+    muted: true,
+  },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+  container: { position: ComponentPosition.RELATIVE },
+  ctaButton: { text: 'Get in touch' },
+});
+```
+
+## Controlling playback
+
+The `instance.api.controller` interface provides full control over the video element. All methods are available immediately after mount:
+
+```ts
+// Play and pause
+await instance.api.controller.play();
+instance.api.controller.pause();
+
+// Seek to a specific time in seconds
+instance.api.controller.seek(15);
+
+// Volume control (0.0 to 1.0)
+instance.api.controller.setVolume(0.5);
+instance.api.controller.mute();
+instance.api.controller.unmute();
+```
+
+You can also read the current playback state at any time:
+
+```ts
+instance.api.controller.currentTime; 
+instance.api.controller.duration;
+instance.api.controller.progress;
+instance.api.controller.isMuted;
+instance.api.controller.state;
+```
+
+## Listening to events
+
+Subscribe to typed events through `instance.api.events` to connect the widget with your application logic:
+
+```ts [events.ts]
+import { ScenaEvent } from '@retoo/scena';
+
+// User clicked the CTA button
+instance.api.events.on(ScenaEvent.ON_CTA_CLICK, () => {
+  window.location.href = '/contact';
+});
+
+// Video finished playing
+instance.api.events.on(ScenaEvent.ON_VIDEO_ENDED, () => {
+  showNextStep();
+});
+
+// Track playback progress
+instance.api.events.on(ScenaEvent.ON_VIDEO_TIME_UPDATE, ({ state }) => {
+  analytics.track('video_progress', { time: state.currentTime });
+});
+```
+
+To remove a specific handler, pass the same function reference to `off()`:
+
+```ts
+const handler = () => console.log('played');
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_PLAY, handler);
+
+// Later
+instance.api.events.off(ScenaEvent.ON_VIDEO_PLAY, handler);
+```
+
+## Runtime
+
+Modify any config property after mount without recreating the widget. `mergeConfig()` performs a deep merge — only the fields you pass are updated:
+
+```ts [runtime.ts]
+import { ComponentSize, ComponentShape } from '@retoo/scena';
+
+// Change size and shape
+instance.config.mergeConfig({
+  size: ComponentSize.LG,
+  shape: ComponentShape.PORTRAIT,
+});
+
+// Update CTA button text
+instance.config.mergeConfig({ ctaButton: { text: 'Buy now' } });
+
+// Disable a component entirely
+instance.config.mergeConfig({ ctaButton: false });
+```
+
+To replace the entire config at once, use `setConfig()`:
+
+```ts
+import { ComponentSize, ComponentShape } from '@retoo/scena';
+
+instance.config.setConfig({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.SM,
+  shape: ComponentShape.SQUARE,
+});
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/configuration/overview
+---
+For full config reference — video, size, shape, position, UI elements — see the **Configuration** section.
+::
+
+
+# Overview
+
+Every aspect of the widget — from the video source to the appearance of each UI element — is controlled through a single configuration object, `ScenaConfig`, passed to `scena.mount()`. The only required field is `video.src`; everything else has a sensible default or can be disabled entirely.
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton:
+      text: Get in touch
+  ---
+  :::
+::
+
+```ts
+import {
+  useScena,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+  ComponentPlacement,
+} from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+  container: {
+    position: ComponentPosition.ABSOLUTE,
+    placement: ComponentPlacement.MIDDLE_CENTER,
+  },
+  ctaButton: { text: 'Get in touch' },
+});
+```
+
+## Config structure
+
+`ScenaConfig` is a flat object that combines component overrides and feature configs:
+
+| Key              | Description                                                             |
+| ---------------- | ----------------------------------------------------------------------- |
+| `video`          | Video source, poster, autoplay, loop, muted, volume. &#x2A;*Required.** |
+| `size`           | Widget size — `xs`, `sm`, `md`, `lg`, `xl`, `xxl`                       |
+| `shape`          | Widget shape — `circle`, `square`, `portrait`, `landscape`              |
+| `container`      | Positioning — `position`, `placement`, custom classes/styles            |
+| `videoContainer` | Video container customization                                           |
+| `videoLoader`    | Loading indicator. Pass `false` to disable.                             |
+| `videoProgress`  | Progress bar. Pass `false` to disable.                                  |
+| `videoControls`  | Play/pause controls overlay. Pass `false` to disable.                   |
+| `videoVolume`    | Volume control. Pass `false` to disable.                                |
+| `closeButton`    | Close button. Pass `false` to disable.                                  |
+| `ctaButton`      | Call-to-action button. Pass `false` to disable.                         |
+| `visibility`     | Initial visibility state and animation                                  |
+| `preview`        | Preview mode overrides                                                  |
+
+## Disabling components
+
+Pass `false` to any component key to remove it from the widget entirely:
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+    videoControls: false
+    videoProgress: false
+    videoVolume: false
+  ---
+  :::
+::
+
+```ts
+import { useScena } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  ctaButton: false,
+  closeButton: false,
+  videoControls: false,
+  videoProgress: false,
+  videoVolume: false,
+});
+```
+
+This is different from hiding — a disabled component is never rendered in the DOM.
+
+## Runtime updates
+
+After mount, modify any config property through the instance:
+
+```ts
+import { useScena, ComponentSize } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: { src: '/video.mp4' },
+});
+
+// Deep merge — only the specified fields are updated
+instance.config.mergeConfig({
+  size: ComponentSize.LG,
+  ctaButton: { text: 'Buy now' },
+});
+
+// Full replacement
+instance.config.setConfig({
+  video: { src: '/new-video.mp4' },
+  size: ComponentSize.SM,
+});
+```
+
+Both methods trigger a reactive update — the widget re-renders immediately without remounting.
+
+## Customization
+
+Most components accept `customClasses` and `customStyles` for visual overrides without modifying the source. Classes are merged with the defaults; styles are applied as inline CSS.
+
+```ts
+import { useScena } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  ctaButton: {
+    text: 'Contact us',
+    customClasses: { 
+      button: 'bg-red-500 text-white'
+    },
+    customStyles: { 
+      root: {
+        marginTop: '8px'
+      } 
+    },
+  },
+});
+```
+
+
+# Size
+
+Widget dimensions are controlled by the `size` property, which selects from a predefined scale ranging from `xs` to `xxl`. All internal elements — video container, buttons, progress bar — scale proportionally, so you never need to adjust individual components manually.
+
+## Available sizes
+
+| Value | Description                     |
+| ----- | ------------------------------- |
+| `xs`  | Extra small — minimal footprint |
+| `sm`  | Small                           |
+| `md`  | Medium (default)                |
+| `lg`  | Large                           |
+| `xl`  | Extra large                     |
+| `xxl` | Maximum size                    |
+
+## Extra small
+
+::scena-container{style="height: 240px"}
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: xs
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentSize } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.XS,
+});
+```
+
+## Small
+
+::scena-container{style="height: 280px"}
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: sm
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentSize } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.SM,
+});
+```
+
+## Medium
+
+::scena-container{style="height: 480px"}
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentSize } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+});
+```
+
+## Large
+
+::scena-container{style="height: 560px"}
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: lg
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentSize } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.LG,
+});
+```
+
+## Extra large
+
+::scena-container{style="height: 600px"}
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: xl
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentSize } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.XL,
+});
+```
+
+## Extra extra large
+
+::scena-container{style="height: 700px"}
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: xxl
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentSize } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.XXL,
+});
+```
+
+## Runtime
+
+```ts
+import { useScena, ComponentSize } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: { src: '/video.mp4' },
+});
+
+instance.config.mergeConfig({
+  size: ComponentSize.LG,
+});
+```
+
+The widget re-renders at the new size immediately. All child elements adapt automatically.
+
+## Overrides
+
+Global size applies to all components at once, but each component can override it individually. This is useful when one element needs to stand out or stay compact regardless of the overall scale:
+
+```ts
+{
+  videoContainer: { size: ComponentSize };
+  videoLoader:    { size: ComponentSize };
+  videoProgress:  { size: ComponentSize };
+  videoControls:  { size: ComponentSize };
+  videoVolume:    { size: ComponentSize };
+  closeButton:    { size: ComponentSize };
+  ctaButton:      { size: ComponentSize };
+}
+```
+
+
+# Shape
+
+Shape controls the aspect ratio and border radius of the video container. Four presets cover the most common layouts — from a fully circular thumbnail to portrait and landscape video formats — without requiring any manual CSS.
+
+## Available shapes
+
+| Value       | Aspect ratio     | Border radius            |
+| ----------- | ---------------- | ------------------------ |
+| `circle`    | 1:1              | Fully rounded            |
+| `square`    | 1:1              | Slightly rounded corners |
+| `portrait`  | 3:4 (vertical)   | Rounded corners          |
+| `landscape` | 4:3 (horizontal) | Rounded corners          |
+
+## Circle
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentShape } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  shape: ComponentShape.CIRCLE,
+});
+```
+
+## Square
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: square
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentShape } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  shape: ComponentShape.SQUARE,
+});
+```
+
+## Portrait
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: portrait
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentShape } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  shape: ComponentShape.PORTRAIT,
+});
+```
+
+## Landscape
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: landscape
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentShape } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  shape: ComponentShape.LANDSCAPE,
+});
+```
+
+## Runtime
+
+```ts
+import { useScena, ComponentShape } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: { src: '/video.mp4' },
+});
+
+instance.config.mergeConfig({
+  shape: ComponentShape.PORTRAIT,
+});
+```
+
+## Shape and video content
+
+The video fills the shape container using `object-fit: cover`. If the video's native aspect ratio differs from the shape, the edges are cropped to fit. Choose a shape that matches your video content — `portrait` for vertical video, `landscape` for horizontal, `circle` or `square` for cropped previews.
+
+
+# Positioning
+
+Position determines how the widget container is placed in the document — whether it floats over the viewport, sits inside a specific parent element, or flows with the rest of the content. It maps directly to the CSS `position` property and defaults to `fixed`.
+
+## Available values
+
+| Value      | Behavior                                                        |
+| ---------- | --------------------------------------------------------------- |
+| `fixed`    | Stays in place relative to the viewport during scroll (default) |
+| `absolute` | Positioned relative to the nearest positioned ancestor          |
+| `relative` | Flows in the document, offsets from its normal position         |
+| `static`   | Normal document flow, no positioning                            |
+
+## Absolute
+
+Positioned relative to the nearest positioned ancestor — useful for placing the widget inside a specific container:
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: sm
+    shape: circle
+    container:
+      position: absolute
+      placement: bottom-end
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentPosition } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  container: { position: ComponentPosition.ABSOLUTE },
+});
+```
+
+## Relative
+
+Renders the widget inside the document flow — useful for embedding in content sections, cards, or demo areas:
+
+::scena-container{.flex.flex-col.p-4}
+  :::div{.size-28.mb-4.rounded-md.bg-muted}
+  :::
+
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: sm
+    container:
+      position: relative
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena, ComponentPosition } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  container: { position: ComponentPosition.RELATIVE },
+});
+```
+
+## Mount target
+
+By default, Scena mounts to `document.body`. Pass a DOM element as the second argument to `mount()` to render inside a specific container:
+
+```ts
+import { useScena, ComponentPosition } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+const target = document.getElementById('widget-area');
+
+await scena.mount(
+  {
+    video: { src: '/video.mp4' },
+    container: { position: ComponentPosition.RELATIVE },
+  },
+  target
+);
+```
+
+## Customization
+
+For precise positioning beyond the defaults, use `customStyles`:
+
+```ts
+import { useScena, ComponentPosition } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  container: {
+    position: ComponentPosition.FIXED,
+    customStyles: {
+      root: {
+        bottom: '24px',
+        right: '24px',
+      },
+    },
+  },
+});
+```
+
+
+# Placement
+
+Placement anchors the widget within its positioning context using a 3×3 grid — each position is a combination of a vertical row and a horizontal column. It works with both fixed and absolute positioning and defaults to `bottom-end`.
+
+## Available values
+
+| Value           | Position               |
+| --------------- | ---------------------- |
+| `top-start`     | Top left               |
+| `top-center`    | Top center             |
+| `top-end`       | Top right              |
+| `middle-start`  | Middle left            |
+| `middle-center` | Center                 |
+| `middle-end`    | Middle right           |
+| `bottom-start`  | Bottom left            |
+| `bottom-center` | Bottom center          |
+| `bottom-end`    | Bottom right (default) |
+
+## Example
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: xs
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import {
+  useScena,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+  ComponentPlacement,
+} from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.XS,
+  shape: ComponentShape.CIRCLE,
+  container: {
+    position: ComponentPosition.ABSOLUTE,
+    placement: ComponentPlacement.MIDDLE_CENTER,
+  },
+});
+```
+
+## Runtime
+
+```ts
+import { useScena, ComponentPlacement } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: { src: '/video.mp4' },
+});
+
+instance.config.mergeConfig({
+  container: { placement: ComponentPlacement.TOP_END },
+});
+```
+
+
+# Video
+
+Video configuration controls the underlying `<video>` element — its source, poster image, autoplay behavior, looping, volume, and more. Only `src` is required; all other fields have sensible defaults that work out of the box.
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      poster: /examples/example-cat.jpg
+      autoplay: false
+      loop: true
+      muted: true
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+import { useScena } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: {
+    src: '/video.mp4',
+    poster: '/poster.jpg',
+    autoplay: false,
+    loop: true,
+    muted: true,
+  },
+});
+```
+
+## Properties
+
+| Property      | Type      | Default    | Description                                   |
+| ------------- | --------- | ---------- | --------------------------------------------- |
+| `src`         | `string`  | —          | Video file URL. &#x2A;*Required.**            |
+| `poster`      | `string`  | —          | Image shown before playback starts            |
+| `type`        | `string`  | —          | MIME type hint (e.g. `video/mp4`)             |
+| `autoplay`    | `boolean` | `true`     | Start playing automatically on mount          |
+| `loop`        | `boolean` | `true`     | Restart playback when the video ends          |
+| `muted`       | `boolean` | `true`     | Start with audio muted                        |
+| `volume`      | `number`  | `1`        | Initial volume level (0.0 to 1.0)             |
+| `startTime`   | `number`  | `0`        | Start playback from this time in seconds      |
+| `preload`     | `string`  | `metadata` | Preload strategy — `none`, `auto`, `metadata` |
+| `crossorigin` | `string`  | —          | CORS setting — `anonymous`, `use-credentials` |
+| `playsinline` | `boolean` | `true`     | Play inline on mobile instead of fullscreen   |
+| `controls`    | `boolean` | `false`    | Show native browser video controls            |
+
+## Autoplay
+
+Most mobile browsers block autoplay with sound. Set both `autoplay: true` and `muted: true` to ensure autoplay works across all devices — this is the default configuration.
+
+Unmuting after a user interaction is allowed by all browsers:
+
+```ts
+import { ScenaEvent } from '@retoo/scena';
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_CONTAINER_CLICK, () => {
+  instance.api.controller.unmute();
+});
+```
+
+## Poster image
+
+The `poster` is displayed before playback starts and while the video is loading. With `autoplay: false`, the poster stays visible until the user initiates playback.
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      poster: /examples/example-cat.jpg
+      autoplay: false
+    size: md
+    shape: square
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  posterOnly: true
+  ---
+  :::
+::
+
+```ts
+import { useScena } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: {
+    src: '/video.mp4',
+    poster: '/poster.jpg',
+    autoplay: false,
+  },
+});
+```
+
+## Preload strategy
+
+Controls how much video data the browser downloads before playback:
+
+| Value      | Behavior                                             |
+| ---------- | ---------------------------------------------------- |
+| `none`     | No data preloaded — minimal bandwidth                |
+| `metadata` | Duration, dimensions, and first frame only (default) |
+| `auto`     | Browser decides how much to buffer                   |
+
+## Runtime
+
+Swap the source or change playback settings without remounting:
+
+```ts
+import { useScena } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: { src: '/video.mp4' },
+});
+
+instance.config.mergeConfig({
+  video: { src: '/new-video.mp4', poster: '/new-poster.jpg' },
+});
+```
+
+## Customization
+
+```ts
+import { useScena } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: {
+    src: '/video.mp4',
+    customClasses: { root: 'rounded-none' },
+    customStyles: {
+      root: { objectFit: 'contain' },
+    },
+  },
+});
+```
+
+
+# Styles
+
+Visual appearance is fully customizable through CSS custom properties defined on the `.rs` root element. Override any variable in your own stylesheet to change colors, sizes, spacing, and animations — no need to touch the widget source or add extra build steps.
+
+## Container
+
+| Variable                  | Default |
+| ------------------------- | ------- |
+| `--rs-container-offset-x` | `24px`  |
+| `--rs-container-offset-y` | `24px`  |
+| `--rs-container-z-index`  | `10`    |
+
+## Video container
+
+| Variable                             | Default                       |
+| ------------------------------------ | ----------------------------- |
+| `--rs-video-container-size-xs`       | `156px`                       |
+| `--rs-video-container-size-sm`       | `192px`                       |
+| `--rs-video-container-size-md`       | `352px`                       |
+| `--rs-video-container-size-lg`       | `448px`                       |
+| `--rs-video-container-size-xl`       | `544px`                       |
+| `--rs-video-container-size-xxl`      | `640px`                       |
+| `--rs-video-container-background`    | `white`                       |
+| `--rs-video-container-border`        | `none`                        |
+| `--rs-video-container-border-radius` | `8px`                         |
+| `--rs-video-container-shadow`        | `0 0 20px rgba(0, 0, 0, 0.2)` |
+| `--rs-video-container-transition`    | `all 0.3s ease-in-out`        |
+| `--rs-video-container-overflow`      | `hidden`                      |
+
+## Video
+
+| Variable                   | Default |
+| -------------------------- | ------- |
+| `--rs-video-border-radius` | `8px`   |
+
+## Video loader
+
+| Variable                      | Default                 |
+| ----------------------------- | ----------------------- |
+| `--rs-video-loader-size-xs`   | `24px`                  |
+| `--rs-video-loader-size-sm`   | `32px`                  |
+| `--rs-video-loader-size-md`   | `48px`                  |
+| `--rs-video-loader-size-lg`   | `64px`                  |
+| `--rs-video-loader-size-xl`   | `80px`                  |
+| `--rs-video-loader-size-xxl`  | `96px`                  |
+| `--rs-video-loader-fill`      | `white`                 |
+| `--rs-video-loader-animation` | `0.75s infinite linear` |
+
+## Video progress
+
+| Variable                             | Default                    |
+| ------------------------------------ | -------------------------- |
+| `--rs-video-progress-track-color`    | `rgba(255, 255, 255, 0.2)` |
+| `--rs-video-progress-buffer-color`   | `rgba(255, 255, 255, 0.4)` |
+| `--rs-video-progress-progress-color` | `rgb(255, 255, 255)`       |
+| `--rs-video-progress-border-radius`  | `0`                        |
+
+## Video controls
+
+| Variable                          | Default                                    |
+| --------------------------------- | ------------------------------------------ |
+| `--rs-video-controls-drop-shadow` | `drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))` |
+| `--rs-video-controls-transition`  | `all 0.3s ease`                            |
+| `--rs-video-controls-transform`   | `scale(1.1)`                               |
+| `--rs-video-controls-z-index`     | `20`                                       |
+
+## Video volume
+
+| Variable                        | Default                                    |
+| ------------------------------- | ------------------------------------------ |
+| `--rs-video-volume-drop-shadow` | `drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))` |
+| `--rs-video-volume-transition`  | `all 0.3s ease`                            |
+| `--rs-video-volume-transform`   | `scale(1.1)`                               |
+| `--rs-video-volume-z-index`     | `20`                                       |
+
+## CTA button
+
+| Variable                             | Default                                             |
+| ------------------------------------ | --------------------------------------------------- |
+| `--rs-cta-button-color`              | `rgb(255, 255, 255)`                                |
+| `--rs-cta-button-background`         | `rgb(0, 0, 0)`                                      |
+| `--rs-cta-button-background-hover`   | `color-mix(in srgb, rgb(0, 0, 0) 80%, transparent)` |
+| `--rs-cta-button-background-pressed` | `color-mix(in srgb, rgb(0, 0, 0) 60%, transparent)` |
+| `--rs-cta-button-shadow`             | `0 0 20px rgba(0, 0, 0, 0.2)`                       |
+| `--rs-cta-button-transition`         | `all 0.3s ease`                                     |
+| `--rs-cta-button-z-index`            | `20`                                                |
+
+## Close button
+
+| Variable                               | Default                                             |
+| -------------------------------------- | --------------------------------------------------- |
+| `--rs-close-button-color`              | `rgb(255, 255, 255)`                                |
+| `--rs-close-button-background`         | `rgb(0, 0, 0)`                                      |
+| `--rs-close-button-background-hover`   | `color-mix(in srgb, rgb(0, 0, 0) 80%, transparent)` |
+| `--rs-close-button-background-pressed` | `color-mix(in srgb, rgb(0, 0, 0) 60%, transparent)` |
+| `--rs-close-button-border-radius`      | `100%`                                              |
+| `--rs-close-button-transition`         | `all 0.3s ease`                                     |
+| `--rs-close-button-z-index`            | `20`                                                |
+| `--rs-close-button-icon-size-xs`       | `14px`                                              |
+| `--rs-close-button-icon-size-sm`       | `16px`                                              |
+| `--rs-close-button-icon-size-md`       | `18px`                                              |
+| `--rs-close-button-icon-size-lg`       | `20px`                                              |
+| `--rs-close-button-icon-size-xl`       | `22px`                                              |
+| `--rs-close-button-icon-size-xxl`      | `24px`                                              |
+
+## Button (shared)
+
+Shared variables for button sizing across all button types.
+
+| Variable                       | Default              |
+| ------------------------------ | -------------------- |
+| `--rs-button-size-xs`          | `32px`               |
+| `--rs-button-size-sm`          | `36px`               |
+| `--rs-button-size-md`          | `44px`               |
+| `--rs-button-size-lg`          | `50px`               |
+| `--rs-button-size-xl`          | `56px`               |
+| `--rs-button-size-xxl`         | `58px`               |
+| `--rs-button-font-size-xs`     | `10px`               |
+| `--rs-button-font-size-sm`     | `12px`               |
+| `--rs-button-font-size-md`     | `13px`               |
+| `--rs-button-font-size-lg`     | `14px`               |
+| `--rs-button-font-size-xl`     | `16px`               |
+| `--rs-button-font-size-xxl`    | `18px`               |
+| `--rs-button-padding-xs`       | `0px 8px`            |
+| `--rs-button-padding-sm`       | `0px 12px`           |
+| `--rs-button-padding-md`       | `0px 18px`           |
+| `--rs-button-padding-lg`       | `0px 24px`           |
+| `--rs-button-padding-xl`       | `0px 32px`           |
+| `--rs-button-padding-xxl`      | `0px 36px`           |
+| `--rs-button-gap-xs`           | `4px`                |
+| `--rs-button-gap-sm`           | `6px`                |
+| `--rs-button-gap-md`           | `8px`                |
+| `--rs-button-gap-lg`           | `10px`               |
+| `--rs-button-gap-xl`           | `12px`               |
+| `--rs-button-gap-xxl`          | `14px`               |
+| `--rs-button-color`            | `rgb(255, 255, 255)` |
+| `--rs-button-background`       | `rgb(0, 0, 0)`       |
+| `--rs-button-background-hover` | `rgb(25, 25, 25)`    |
+| `--rs-button-border`           | `none`               |
+| `--rs-button-border-radius`    | `4px`                |
+| `--rs-button-transition`       | `all 0.3s ease`      |
+
+## Icons
+
+| Variable             | Default              |
+| -------------------- | -------------------- |
+| `--rs-icon-size-xs`  | `22px`               |
+| `--rs-icon-size-sm`  | `24px`               |
+| `--rs-icon-size-md`  | `28px`               |
+| `--rs-icon-size-lg`  | `32px`               |
+| `--rs-icon-size-xl`  | `36px`               |
+| `--rs-icon-size-xxl` | `40px`               |
+| `--rs-icon-color`    | `rgb(255, 255, 255)` |
+
+## Full reference
+
+All CSS custom properties with their default values:
+
+```css
+.rs {
+  /* Container */
+  --rs-container-offset-x: 24px;
+  --rs-container-offset-y: 24px;
+  --rs-container-z-index: 10;
+
+  /* Video container */
+  --rs-video-container-size-xs: 156px;
+  --rs-video-container-size-sm: 192px;
+  --rs-video-container-size-md: 352px;
+  --rs-video-container-size-lg: 448px;
+  --rs-video-container-size-xl: 544px;
+  --rs-video-container-size-xxl: 640px;
+  --rs-video-container-background: white;
+  --rs-video-container-border: none;
+  --rs-video-container-border-radius: 8px;
+  --rs-video-container-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  --rs-video-container-transition: all 0.3s ease-in-out;
+  --rs-video-container-overflow: hidden;
+
+  /* Video */
+  --rs-video-border-radius: 8px;
+
+  /* Video loader */
+  --rs-video-loader-size-xs: 24px;
+  --rs-video-loader-size-sm: 32px;
+  --rs-video-loader-size-md: 48px;
+  --rs-video-loader-size-lg: 64px;
+  --rs-video-loader-size-xl: 80px;
+  --rs-video-loader-size-xxl: 96px;
+  --rs-video-loader-fill: white;
+  --rs-video-loader-animation: 0.75s infinite linear;
+
+  /* Video progress */
+  --rs-video-progress-track-color: rgba(255, 255, 255, 0.2);
+  --rs-video-progress-buffer-color: rgba(255, 255, 255, 0.4);
+  --rs-video-progress-progress-color: rgb(255, 255, 255);
+  --rs-video-progress-border-radius: 0;
+
+  /* Video controls */
+  --rs-video-controls-drop-shadow: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+  --rs-video-controls-transition: all 0.3s ease;
+  --rs-video-controls-transform: scale(1.1);
+  --rs-video-controls-z-index: 20;
+
+  /* Video volume */
+  --rs-video-volume-drop-shadow: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+  --rs-video-volume-transition: all 0.3s ease;
+  --rs-video-volume-transform: scale(1.1);
+  --rs-video-volume-z-index: 20;
+
+  /* Button (shared) */
+  --rs-button-size-xs: 32px;
+  --rs-button-size-sm: 36px;
+  --rs-button-size-md: 44px;
+  --rs-button-size-lg: 50px;
+  --rs-button-size-xl: 56px;
+  --rs-button-size-xxl: 58px;
+  --rs-button-font-size-xs: 10px;
+  --rs-button-font-size-sm: 12px;
+  --rs-button-font-size-md: 13px;
+  --rs-button-font-size-lg: 14px;
+  --rs-button-font-size-xl: 16px;
+  --rs-button-font-size-xxl: 18px;
+  --rs-button-padding-xs: 0px 8px;
+  --rs-button-padding-sm: 0px 12px;
+  --rs-button-padding-md: 0px 18px;
+  --rs-button-padding-lg: 0px 24px;
+  --rs-button-padding-xl: 0px 32px;
+  --rs-button-padding-xxl: 0px 36px;
+  --rs-button-gap-xs: 4px;
+  --rs-button-gap-sm: 6px;
+  --rs-button-gap-md: 8px;
+  --rs-button-gap-lg: 10px;
+  --rs-button-gap-xl: 12px;
+  --rs-button-gap-xxl: 14px;
+  --rs-button-color: rgb(255, 255, 255);
+  --rs-button-background: rgb(0, 0, 0);
+  --rs-button-background-hover: rgb(25, 25, 25);
+  --rs-button-border: none;
+  --rs-button-border-radius: 4px;
+  --rs-button-transition: all 0.3s ease;
+
+  /* Close button */
+  --rs-close-button-size-xs: 18px;
+  --rs-close-button-size-sm: 22px;
+  --rs-close-button-size-md: 24px;
+  --rs-close-button-size-lg: 28px;
+  --rs-close-button-size-xl: 32px;
+  --rs-close-button-size-xxl: 34px;
+  --rs-close-button-color: rgb(255, 255, 255);
+  --rs-close-button-background: rgb(0, 0, 0);
+  --rs-close-button-background-hover: color-mix(in srgb, rgb(0, 0, 0) 80%, transparent);
+  --rs-close-button-background-pressed: color-mix(in srgb, rgb(0, 0, 0) 60%, transparent);
+  --rs-close-button-border-radius: 100%;
+  --rs-close-button-transition: all 0.3s ease;
+  --rs-close-button-z-index: 20;
+  --rs-close-button-icon-size-xs: 14px;
+  --rs-close-button-icon-size-sm: 16px;
+  --rs-close-button-icon-size-md: 18px;
+  --rs-close-button-icon-size-lg: 20px;
+  --rs-close-button-icon-size-xl: 22px;
+  --rs-close-button-icon-size-xxl: 24px;
+
+  /* CTA button */
+  --rs-cta-button-color: rgb(255, 255, 255);
+  --rs-cta-button-background: rgb(0, 0, 0);
+  --rs-cta-button-background-hover: color-mix(in srgb, rgb(0, 0, 0) 80%, transparent);
+  --rs-cta-button-background-pressed: color-mix(in srgb, rgb(0, 0, 0) 60%, transparent);
+  --rs-cta-button-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  --rs-cta-button-transition: all 0.3s ease;
+  --rs-cta-button-z-index: 20;
+
+  /* Icons */
+  --rs-icon-size-xs: 22px;
+  --rs-icon-size-sm: 24px;
+  --rs-icon-size-md: 28px;
+  --rs-icon-size-lg: 32px;
+  --rs-icon-size-xl: 36px;
+  --rs-icon-size-xxl: 40px;
+  --rs-icon-color: rgb(255, 255, 255);
+}
+```
+
+
+# Container
+
+Container is the root wrapper that positions the widget on the page. It controls both the CSS position strategy — fixed, absolute, relative — and the anchor point within the viewport or parent element, so you can place the widget exactly where it fits your layout.
+
+## Config
+
+| Property        | Type                                   | Description                                    |
+| --------------- | -------------------------------------- | ---------------------------------------------- |
+| `position`      | `ComponentPosition`                    | CSS position value                             |
+| `placement`     | `ComponentPlacement`                   | Position within the viewport or parent element |
+| `customClasses` | `Partial<ScenaContainerCustomClasses>` | Custom CSS classes for the container           |
+| `customStyles`  | `Partial<ScenaContainerCustomStyles>`  | Custom inline styles for the container         |
+
+## Example
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: bottom-end
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  container: {
+    position: ComponentPosition.ABSOLUTE,
+    placement: ComponentPlacement.BOTTOM_END,
+  },
+});
+```
+
+## Customization
+
+The container accepts `root` as the target key for class and style overrides:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  container: {
+    customClasses: {
+      root: 'my-widget-container',
+    },
+    customStyles: {
+      root: {
+        padding: '16px',
+      },
+    },
+  },
+});
+```
+
+## Interface
+
+```ts
+interface ScenaContainerProps {
+  position: ComponentPosition;
+  placement: ComponentPlacement;
+  customClasses: Partial<ScenaContainerCustomClasses>;
+  customStyles: Partial<ScenaContainerCustomStyles>;
+}
+```
+
+
+# Close Button
+
+Close button renders a cross icon in the corner of the widget. Clicking it unmounts the widget completely — the component is removed from the DOM and all event listeners are cleaned up. You can override this behavior with a custom `onClick` handler, or pass `false` to remove the button entirely.
+
+## Config
+
+| Property        | Type                                        | Description          |
+| --------------- | ------------------------------------------- | -------------------- |
+| `aria`          | `Partial<ComponentAriaProps>`               | ARIA attributes      |
+| `onClick`       | `(event: Event) => void`                    | Custom click handler |
+| `customClasses` | `Partial<ScenaCloseButtonComponentClasses>` | Custom CSS classes   |
+| `customStyles`  | `Partial<ScenaCloseButtonComponentStyles>`  | Custom inline styles |
+
+## Example
+
+::scena-container
+  :::scena-component
+  ---
+  close-event: true
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+  ---
+  :::
+::
+
+::callout{color="neutral" icon="i-lucide-terminal"}
+Click the close button and open the browser console to see the `[scena] close:click` log.
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  closeButton: {
+    onClick: (event) => {
+      console.log('close:click');
+    },
+  },
+});
+```
+
+## Disabling
+
+Pass `false` to remove the close button from the DOM:
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  closeButton: false,
+});
+```
+
+## Customization
+
+Both `customClasses` and `customStyles` accept `root`, `button`, and `cross` as target keys.
+
+`customClasses` accepts a string, array, or object:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  closeButton: {
+    customClasses: {
+      root: 'my-close-wrapper',
+      button: 'bg-red-500',
+      cross: 'text-white',
+    },
+  },
+});
+```
+
+`customStyles` accepts a CSS string or a `CSSStyleDeclaration`-compatible object:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  closeButton: {
+    customStyles: {
+      root: {
+        top: '8px', 
+        right: '8px',
+      },
+      button: {
+        background: 'rgb(239, 68, 68)' 
+      },
+      cross: {
+        color: 'white'
+      },
+    },
+  },
+});
+```
+
+## Interface
+
+```ts
+interface ScenaCloseButtonProps {
+  size: ComponentSize;
+  aria: Partial<ComponentAriaProps>;
+  onClick: (event: Event) => void;
+  customClasses: Partial<ScenaCloseButtonComponentClasses>;
+  customStyles: Partial<ScenaCloseButtonComponentStyles>;
+}
+```
+
+
+# CTA Button
+
+CTA button displays a text label either inside the widget overlay or outside below the container. It has no default action — behavior is defined entirely through `onClick`. Placement can switch between `inside` and `outside` automatically based on widget size using the adaptive option. Pass `false` to disable.
+
+## Config
+
+| Property        | Type                                      | Description                                |
+| --------------- | ----------------------------------------- | ------------------------------------------ |
+| `text`          | `string`                                  | Button label text                          |
+| `placement`     | `ScenaCtaButtonPlacement`                 | `inside` or `outside` the widget container |
+| `adaptive`      | `ScenaCtaButtonAdaptive | false`          | Responsive placement rules                 |
+| `aria`          | `Partial<ComponentAriaProps>`             | ARIA attributes                            |
+| `onClick`       | `(event: Event) => void`                  | Click handler                              |
+| `customClasses` | `Partial<ScenaCtaButtonComponentClasses>` | Custom CSS classes                         |
+| `customStyles`  | `Partial<ScenaCtaButtonComponentStyles>`  | Custom inline styles                       |
+
+## Example
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton:
+      text: Get in touch
+    closeButton: false
+  cta-event: true
+  ---
+  :::
+::
+
+::callout{color="neutral" icon="i-lucide-terminal"}
+Click the CTA button and open the browser console to see the `[scena] cta:click` log.
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  ctaButton: {
+    text: 'Get in touch',
+    onClick: (event) => {
+      console.log('cta:click')
+    },
+  },
+});
+```
+
+## Placement
+
+The button can be placed inside the widget overlay or outside below the container:
+
+```ts
+// Inside the widget
+await scena.mount({
+  video: { src: '/video.mp4' },
+  ctaButton: {
+    text: 'Contact us',
+    placement: ScenaCtaButtonPlacement.INSIDE,
+  },
+});
+
+// Outside, below the widget
+await scena.mount({
+  video: { src: '/video.mp4' },
+  ctaButton: {
+    text: 'Contact us',
+    placement: ScenaCtaButtonPlacement.OUTSIDE,
+  },
+});
+```
+
+## Adaptive placement
+
+The `adaptive` option changes placement based on the widget size. This is useful when the button doesn't fit inside smaller sizes:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  ctaButton: {
+    text: 'Contact us',
+    placement: ScenaCtaButtonPlacement.INSIDE,
+    adaptive: {
+      sizes: [ComponentSize.XS, ComponentSize.SM],
+      placement: ScenaCtaButtonPlacement.OUTSIDE,
+    },
+  },
+});
+```
+
+When the widget is `xs` or `sm`, the button moves outside. At `md` and above, it stays inside.
+
+## Disabling
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  ctaButton: false,
+});
+```
+
+## Customization
+
+Both `customClasses` and `customStyles` accept `root` and `button` as target keys.
+
+`customClasses` accepts a string, array, or object:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  ctaButton: {
+    text: 'Buy now',
+    customClasses: {
+      root: 'my-cta-wrapper',
+      button: 'bg-indigo-600 text-white',
+    },
+  },
+});
+```
+
+`customStyles` accepts a CSS string or a `CSSStyleDeclaration`-compatible object:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  ctaButton: {
+    text: 'Buy now',
+    customStyles: {
+      root: {
+        marginTop: '8px'
+      },
+      button: {
+        background: '#013EFB',
+        borderRadius: '100%'
+      },
+    },
+  },
+});
+```
+
+## Interface
+
+```ts
+interface ScenaCtaButtonProps {
+  text: string;
+  size: ComponentSize;
+  placement: ScenaCtaButtonPlacement;
+  adaptive: ScenaCtaButtonAdaptive | false;
+  aria: Partial<ComponentAriaProps>;
+  onClick: (event: Event) => void;
+  customClasses: Partial<ScenaCtaButtonComponentClasses>;
+  customStyles: Partial<ScenaCtaButtonComponentStyles>;
+}
+```
+
+
+# Video Controls
+
+Video controls render a play/pause overlay on top of the video container. The overlay appears when the user hovers over the widget and fades out automatically — clicking it toggles playback.
+
+## Config
+
+| Property        | Type                                          | Description          |
+| --------------- | --------------------------------------------- | -------------------- |
+| `aria`          | `Partial<ScenaVideoControlsComponentAria>`    | ARIA attributes      |
+| `customClasses` | `Partial<ScenaVideoControlsComponentClasses>` | Custom CSS classes   |
+| `customStyles`  | `Partial<ScenaVideoControlsComponentStyles>`  | Custom inline styles |
+
+## Example
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoControls: {
+    aria: {
+      play: { 'aria-label': 'Play video' },
+      pause: { 'aria-label': 'Pause video' },
+    },
+  },
+});
+```
+
+## Disabling
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    videoControls: false
+    ctaButton: false
+    closeButton: false
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoControls: false,
+});
+```
+
+## Customization
+
+The controls accept `root`, `play`, and `pause` as target keys:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoControls: {
+    customClasses: {
+      root: 'my-controls',
+      play: { icon: 'text-white' },
+    },
+  },
+});
+```
+
+## Interface
+
+```ts
+interface ScenaVideoControlsProps {
+  size: ComponentSize;
+  aria: Partial<ScenaVideoControlsComponentAria>;
+  customClasses: Partial<ScenaVideoControlsComponentClasses>;
+  customStyles: Partial<ScenaVideoControlsComponentStyles>;
+}
+```
+
+
+# Video Loader
+
+Video loader displays a spinner while the video is buffering or loading. It appears automatically when the video enters a waiting state and disappears once playback resumes — no manual control needed. Pass `false` to remove it if you prefer no loading indicator.
+
+## Config
+
+| Property        | Type                                        | Description          |
+| --------------- | ------------------------------------------- | -------------------- |
+| `customClasses` | `Partial<ScenaVideoLoaderComponentClasses>` | Custom CSS classes   |
+| `customStyles`  | `Partial<ScenaVideoLoaderComponentStyles>`  | Custom inline styles |
+
+## Example
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoLoader: {
+    customClasses: {
+      root: 'my-loader-wrapper',
+    },
+  },
+});
+```
+
+## Disabling
+
+Pass `false` to remove the loader. The video will still buffer, but no visual indicator is shown:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoLoader: false,
+});
+```
+
+## Customization
+
+The loader accepts `root` and `loader` as target keys:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoLoader: {
+    customStyles: {
+      loader: { borderColor: 'rgba(255, 255, 255, 0.3)' },
+    },
+  },
+});
+```
+
+## Interface
+
+```ts
+interface ScenaVideoLoaderProps {
+  size: ComponentSize;
+  customClasses: Partial<ScenaVideoLoaderComponentClasses>;
+  customStyles: Partial<ScenaVideoLoaderComponentStyles>;
+}
+```
+
+
+# Video Progress
+
+Video progress bar shows the current playback position and adapts its shape to match the widget — a horizontal line for square, portrait, and landscape shapes, and a circular track for the circle shape. Users can drag it to seek to any point in the video.
+
+## Config
+
+| Property          | Type                                            | Description                       |
+| ----------------- | ----------------------------------------------- | --------------------------------- |
+| `hasBuffer`       | `boolean`                                       | Show the buffered range indicator |
+| `aria`            | `Partial<ComponentAriaProps>`                   | ARIA attributes                   |
+| `customThickness` | `Partial<ScenaVideoProgressComponentThickness>` | Override track thickness          |
+| `customClasses`   | `Partial<ScenaVideoProgressComponentClasses>`   | Custom CSS classes                |
+| `customStyles`    | `Partial<ScenaVideoProgressComponentStyles>`    | Custom inline styles              |
+
+## Example
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoProgress: {
+    hasBuffer: true,
+  },
+});
+```
+
+## Variants
+
+The progress bar automatically adapts to the widget shape:
+
+| Variant  | Shape                             | Description                      |
+| -------- | --------------------------------- | -------------------------------- |
+| `line`   | `square`, `portrait`, `landscape` | Horizontal bar at the bottom     |
+| `circle` | `circle`                          | Circular track around the widget |
+
+## Disabling
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    videoProgress: false
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoProgress: false,
+});
+```
+
+## Customization
+
+The progress bar accepts `root`, `track`, `progress`, and `buffered` as target keys:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoProgress: {
+    customClasses: {
+      progress: 'bg-blue-500',
+      buffered: 'bg-white/20',
+    },
+  },
+});
+```
+
+## Interface
+
+```ts
+interface ScenaVideoProgressProps {
+  size: ComponentSize;
+  hasBuffer: boolean;
+  aria: Partial<ComponentAriaProps>;
+  customThickness: Partial<ScenaVideoProgressComponentThickness>;
+  customClasses: Partial<ScenaVideoProgressComponentClasses>;
+  customStyles: Partial<ScenaVideoProgressComponentStyles>;
+}
+```
+
+
+# Video Volume
+
+Volume control renders a mute/unmute toggle on the widget. It reflects the current mute state and lets users toggle audio without any additional configuration. Pass `false` to remove it if your use case doesn't require audio controls.
+
+## Config
+
+| Property        | Type                                        | Description          |
+| --------------- | ------------------------------------------- | -------------------- |
+| `aria`          | `Partial<ScenaVideoVolumeComponentAria>`    | ARIA attributes      |
+| `customClasses` | `Partial<ScenaVideoVolumeComponentClasses>` | Custom CSS classes   |
+| `customStyles`  | `Partial<ScenaVideoVolumeComponentStyles>`  | Custom inline styles |
+
+## Example
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoVolume: {
+    aria: {
+      mute: { 'aria-label': 'Mute' },
+      unmute: { 'aria-label': 'Unmute' },
+    },
+  },
+});
+```
+
+## Disabling
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    videoVolume: false
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoVolume: false,
+});
+```
+
+## Customization
+
+The volume component accepts `root`, `mute`, and `unmute` as target keys:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoVolume: {
+    customClasses: {
+      root: 'my-volume-control',
+      mute: { icon: 'text-white' },
+    },
+  },
+});
+```
+
+## Interface
+
+```ts
+interface ScenaVideoVolumeProps {
+  size: ComponentSize;
+  aria: Partial<ScenaVideoVolumeComponentAria>;
+  customClasses: Partial<ScenaVideoVolumeComponentClasses>;
+  customStyles: Partial<ScenaVideoVolumeComponentStyles>;
+}
+```
+
+
+# Preview
+
+Preview mode applies temporary config overrides on top of the base config. When the user clicks the video container, preview mode stops and the widget returns to its original configuration.
+
+This is useful for showing a compact or simplified version of the widget that expands on interaction — for example, a small circle that grows into a full portrait player with buttons and controls.
+
+## Config
+
+The `preview` key accepts the same shape as `ScenaOverrides` — size, shape, and any component property can be overridden — plus two behavioral options. The base config defines how the widget looks after preview ends, and the preview config defines how it looks before the user interacts:
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    preview:
+      size: sm
+      shape: circle
+      closeButton: false
+      ctaButton: false
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+  preview: {
+    size: ComponentSize.SM,
+    shape: ComponentShape.CIRCLE,
+    closeButton: false,
+    ctaButton: false,
+  },
+});
+```
+
+When preview is active, the widget renders at `sm` / `circle` with no buttons. Clicking the video container stops preview and the widget transitions to `md` with all components visible.
+
+### Behavior options
+
+Two boolean flags control what happens when preview stops:
+
+| Option             | Type      | Default | Description                                                     |
+| ------------------ | --------- | ------- | --------------------------------------------------------------- |
+| `keepTimeOnExpand` | `boolean` | `false` | Preserve the current video position when expanding from preview |
+| `keepMuteOnExpand` | `boolean` | `false` | Preserve the mute state when expanding from preview             |
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+  preview: {
+    size: ComponentSize.SM,
+    closeButton: false,
+    ctaButton: false,
+    keepTimeOnExpand: true,
+    keepMuteOnExpand: true,
+  },
+});
+```
+
+## How it works
+
+1. If `preview` is present in the config, preview mode activates automatically on mount.
+2. Preview overrides are layered on top of the base config — the original config is never mutated.
+3. Clicking the video container stops preview mode and removes the overrides.
+4. The widget re-renders with the base config values immediately after preview stops.
+
+During preview, the video container receives the `rs-video-container--preview` CSS class for custom styling.
+
+## Runtime API
+
+Control preview through the instance:
+
+```ts
+// Start preview (applies overrides)
+instance.preview.start();
+
+// Stop preview (removes overrides)
+instance.preview.stop();
+
+// Check current state
+console.log(instance.preview.isPreviewing);
+
+// Read behavior flags set via config
+console.log(instance.preview.isKeepTimeOnExpand);
+console.log(instance.preview.isKeepMuteOnExpand);
+```
+
+
+# Visibility
+
+The `visibility` config controls whether the widget starts hidden and how it transitions between shown and hidden states. By default, the widget mounts hidden and fades in once the video is ready — this avoids showing an empty container while the video loads.
+
+## Config
+
+| Property         | Type      | Default | Description                                           |
+| ---------------- | --------- | ------- | ----------------------------------------------------- |
+| `isHidden`       | `boolean` | `true`  | Start the widget in a hidden state                    |
+| `isAnimated`     | `boolean` | `true`  | Enable CSS animations for show/hide transitions       |
+| `isShownOnReady` | `boolean` | `true`  | Automatically show the widget when the video is ready |
+
+## Show on ready
+
+The default behavior — the widget mounts hidden and appears once the video is ready to play:
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+    visibility:
+      isShownOnReady: true
+      isAnimated: true
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  visibility: {
+    isShownOnReady: true,
+  },
+});
+```
+
+## Manual control
+
+Use `isHidden` to manage visibility without waiting for the video. The widget stays hidden until `instance.visibility.show()` is called:
+
+::scena-container
+  :::scena-component
+  ---
+  "---": null
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+    visibility:
+      isHidden: true
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  visibility: {
+    isHidden: true, 
+  },
+});
+
+// Show when needed
+instance.visibility.show();
+```
+
+## Disable animations
+
+Set `isAnimated: false` to skip the CSS transition and toggle visibility instantly:
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+    visibility:
+      isShownOnReady: true
+      isAnimated: false
+  ---
+  :::
+::
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  visibility: {
+    isAnimated: false,
+  },
+});
+```
+
+Unmounting also skips the hide transition and removes the widget immediately.
+
+## Runtime API
+
+Control visibility through the instance:
+
+```ts
+// Show the widget
+instance.visibility.show();
+
+// Hide the widget
+instance.visibility.hide();
+
+// Check current state
+instance.visibility.isHidden; 
+instance.visibility.isShownOnReady; 
+```
+
+
+# Responsive
+
+The `responsive` config maps viewport breakpoints (max-width in px) to partial config overrides. When the viewport width matches a breakpoint, the corresponding overrides are applied on top of the base config — without remounting. Breakpoints use `matchMedia` under the hood and update reactively as the window resizes.
+
+## Example
+
+Resize the browser window or use DevTools responsive mode to see the widget adapt between breakpoints.
+
+::callout{color="info" icon="i-lucide-info"}
+Breakpoints react to the **viewport width**, not the container. Resize the browser window manually or open DevTools → toggle device toolbar (Ctrl+Shift+M / Cmd+Shift+M).
+::
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+    responsive:
+      lg:
+        size: sm
+      md:
+        size: xs
+  ---
+  :::
+::
+
+## Config
+
+The `responsive` key is a plain object where each key is a max-width breakpoint in pixels and the value is a partial override — the same shape as `ScenaOverrides`:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+  responsive: {
+    1024: {
+      size: ComponentSize.SM,
+    },
+    768: {
+      size: ComponentSize.XS,
+    },
+  },
+});
+```
+
+At viewport widths of 769–1024px the widget renders at `sm`. At 768px and below it switches to `xs`. Above 1024px the base config applies.
+
+## How it works
+
+1. Breakpoints are sorted ascending and matched against `window.innerWidth`.
+2. The first breakpoint where `width <= breakpoint` wins.
+3. The matched override is applied as a layer below `preview` — so preview always takes priority.
+4. When no breakpoint matches, all responsive overrides are cleared and the base config is restored.
+
+## Breakpoint priority
+
+Override layers are applied in fixed order:
+
+```text
+base config → responsive → preview
+```
+
+Preview always wins — if preview is active, its overrides take precedence over the matched breakpoint.
+
+## Runtime API
+
+The responsive API is available at `instance.responsive`:
+
+| Property           | Type            | Description                                                       |
+| ------------------ | --------------- | ----------------------------------------------------------------- |
+| `activeBreakpoint` | `number | null` | The currently matched breakpoint in px, or `null` if none matched |
+
+```ts
+console.log(instance.responsive.activeBreakpoint);
+```
+
+
+# useScena
+
+The factory function that creates a widget manager. Call it once to get a reusable object with mount and unmount methods — each mount creates an independent instance.
+
+```ts
+import { useScena } from '@retoo/scena';
+
+const scena = useScena();
+```
+
+## Returns
+
+Returns a `UseScenaReturns` object with the following properties:
+
+| Property  | Type                                                                    | Description                 |
+| --------- | ----------------------------------------------------------------------- | --------------------------- |
+| `NAME`    | `string`                                                                | Library name                |
+| `VERSION` | `string`                                                                | Library version             |
+| `mount`   | `(config: ScenaConfig, target?: ScenaTarget) => Promise<ScenaInstance>` | Mount a widget into the DOM |
+| `unmount` | `(instance: ScenaInstance) => Promise<void>`                            | Destroy a mounted widget    |
+
+## mount
+
+Mounts the widget into a target element and returns a promise that resolves with a `ScenaInstance` once the Svelte component is rendered and the event bus is ready. The only required config field is `video.src` — everything else uses sensible defaults.
+
+```ts
+const instance = await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+});
+```
+
+The second argument specifies the mount target — any `HTMLElement` or `ShadowRoot`. When omitted, the widget mounts into `document.body` as a floating overlay:
+
+```ts
+const container = document.getElementById('widget-root');
+
+const instance = await scena.mount(
+  { video: { src: '/video.mp4' } },
+  container,
+);
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/api-reference/scena-instance
+---
+See **Scena Instance** for the full shape of the returned object.
+::
+
+## unmount
+
+Destroys a previously mounted widget and removes it from the DOM:
+
+```ts
+await scena.unmount(instance);
+```
+
+After unmounting, all event handlers are cleared automatically.
+
+## Multiple instances
+
+Each `mount()` call creates an independent widget. You can run several instances on the same page:
+
+```ts
+const scena = useScena();
+
+const widget1 = await scena.mount({ video: { src: '/a.mp4' } });
+const widget2 = await scena.mount({ video: { src: '/b.mp4' } });
+
+// Unmount individually
+await scena.unmount(widget1);
+```
+
+
+# useConfig
+
+The config store is available on every `ScenaInstance` at `instance.config`. It provides reactive access to the current configuration and methods to update it without remounting.
+
+```ts
+const instance = await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+});
+
+const config = instance.config;
+```
+
+## Properties
+
+| Property  | Type          | Description                      |
+| --------- | ------------- | -------------------------------- |
+| `current` | `ScenaConfig` | Current resolved config snapshot |
+
+## Methods
+
+| Method        | Signature                                 | Description                             |
+| ------------- | ----------------------------------------- | --------------------------------------- |
+| `getConfig`   | `() => ScenaConfig`                       | Returns the current config object       |
+| `setConfig`   | `(value: ScenaConfig) => void`            | Replaces the entire config              |
+| `mergeConfig` | `(partial: Partial<ScenaConfig>) => void` | Deep merges partial config into current |
+
+## Reading config
+
+```ts
+const config = instance.config.getConfig();
+
+console.log(config.size);
+console.log(config.video.src);
+```
+
+The `current` property returns the same snapshot reactively:
+
+```ts
+console.log(instance.config.current.shape);
+```
+
+## Replacing config
+
+Replaces the entire config. All properties must be provided:
+
+```ts
+instance.config.setConfig({
+  video: { src: '/other.mp4' },
+  size: ComponentSize.LG,
+  shape: ComponentShape.PORTRAIT,
+});
+```
+
+## Merging config
+
+Deep merges a partial update into the existing config. Unmentioned properties stay unchanged:
+
+```ts
+instance.config.mergeConfig({
+  size: ComponentSize.LG,
+  ctaButton: { text: 'New label' },
+});
+```
+
+This is the preferred way to update individual properties at runtime.
+
+
+# Scena Instance
+
+The handle returned by a successful mount call. It groups the video controller, event bus, config store, and feature APIs into a single object that lives for the lifetime of the widget.
+
+```ts
+const instance = await scena.mount({
+  video: { src: '/video.mp4' },
+});
+```
+
+## Properties
+
+| Property     | Type                    | Description                                     |
+| ------------ | ----------------------- | ----------------------------------------------- |
+| `api`        | `ScenaApi`              | Video controller, component refs, and event bus |
+| `component`  | `ScenaRef`              | Reference to the mounted Svelte component       |
+| `config`     | `UseScenaConfigReturns` | Reactive config store                           |
+| `preview`    | `PreviewApi`            | Preview mode controls                           |
+| `visibility` | `VisibilityApi`         | Show/hide controls                              |
+
+## api
+
+The main API surface for interacting with a mounted widget.
+
+| Property         | Type                        | Description                                        |
+| ---------------- | --------------------------- | -------------------------------------------------- |
+| `api.controller` | `UseVideoControllerReturns` | Video playback control (play, pause, seek, volume) |
+| `api.components` | `ScenaComponents`           | References to all child component instances        |
+| `api.events`     | `ScenaEventEmitter`         | Pub/sub event bus                                  |
+
+```ts
+// Control playback
+instance.api.controller.play();
+
+// Subscribe to events
+instance.api.events.on(ScenaEvent.ON_VIDEO_PLAY, ({ state }) => {
+  console.log('Playing at', state.currentTime);
+});
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/api-reference/video-controller
+---
+See **Video Controller** for the full playback API.
+::
+
+## config
+
+Reactive config store with get, set, and merge methods.
+
+```ts
+instance.config.mergeConfig({
+  size: ComponentSize.LG,
+});
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/api-reference/use-config
+---
+See **useConfig()** for all available methods.
+::
+
+## preview
+
+Controls preview mode at runtime.
+
+```ts
+instance.preview.start();
+instance.preview.stop();
+instance.preview.isPreviewing; 
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/api-reference/preview-api
+---
+See **Preview API** for details.
+::
+
+## visibility
+
+Controls widget visibility at runtime.
+
+```ts
+instance.visibility.show();
+instance.visibility.hide();
+instance.visibility.isHidden; 
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/api-reference/visibility-api
+---
+See **Visibility API** for details.
+::
+
+## components
+
+Provides references to all child component instances. Nullable refs correspond to components that can be disabled via config (`false`).
+
+| Property         | Type                           |
+| ---------------- | ------------------------------ |
+| `container`      | `ScenaContainerRef`            |
+| `video`          | `ScenaVideoRef`                |
+| `videoContainer` | `ScenaVideoContainerRef`       |
+| `videoLoader`    | `ScenaVideoLoaderRef | null`   |
+| `videoProgress`  | `ScenaVideoProgressRef | null` |
+| `videoControls`  | `ScenaVideoControlsRef | null` |
+| `videoVolume`    | `ScenaVideoVolumeRef | null`   |
+| `closeButton`    | `ScenaCloseButtonRef | null`   |
+| `ctaButton`      | `ScenaCtaButtonRef | null`     |
+
+Each ref exposes a `getElements()` method that returns the underlying DOM nodes:
+
+```ts
+const { root, video } = instance.api.components.video.getElements();
+
+console.log(video.currentTime);
+```
+
+
+# Video Controller
+
+The video controller lives at `instance.api.controller` and combines imperative playback methods (play, pause, seek, volume) with reactive state properties that update automatically during playback.
+
+```ts
+const controller = instance.api.controller;
+```
+
+## Methods
+
+| Method       | Signature                 | Description                              |
+| ------------ | ------------------------- | ---------------------------------------- |
+| `play`       | `() => Promise<void>`     | Start or resume playback                 |
+| `pause`      | `() => void`              | Pause playback                           |
+| `stop`       | `() => void`              | Stop playback and reset to the beginning |
+| `seek`       | `(value: number) => void` | Seek to a specific time in seconds       |
+| `setVolume`  | `(value: number) => void` | Set volume level (0--1)                  |
+| `mute`       | `() => void`              | Mute the video                           |
+| `unmute`     | `() => void`              | Unmute the video                         |
+| `toggleMute` | `() => void`              | Toggle between muted and unmuted         |
+
+## Usage
+
+```ts
+// Start playback
+await controller.play();
+
+// Seek to 30 seconds
+controller.seek(30);
+
+// Set volume to 50%
+controller.setVolume(0.5);
+
+// Stop and reset
+controller.stop();
+```
+
+## Reactive state
+
+The controller also exposes reactive state properties from `ScenaVideoData`. These update automatically during playback.
+
+| Property      | Type                | Description                              |
+| ------------- | ------------------- | ---------------------------------------- |
+| `state`       | `ScenaVideoState`   | Current playback state                   |
+| `currentTime` | `number`            | Current playback position in seconds     |
+| `duration`    | `number`            | Total video duration in seconds          |
+| `progress`    | `number`            | Playback progress as a fraction (0--1)   |
+| `volume`      | `number`            | Current volume level (0--1)              |
+| `buffer`      | `number`            | Buffered amount as a fraction (0--1)     |
+| `buffered`    | `TimeRanges | null` | Raw `TimeRanges` from the video element  |
+| `isBuffering` | `boolean`           | Whether the video is currently buffering |
+| `isSeeking`   | `boolean`           | Whether a seek operation is in progress  |
+| `isMuted`     | `boolean`           | Whether the video is muted               |
+
+```ts
+console.log(controller.currentTime); 
+console.log(controller.duration);    
+console.log(controller.progress);
+console.log(controller.state);
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/api-reference/video-state
+---
+See **Video State** for the full list of playback states.
+::
+
+
+# Video State
+
+An enum representing the current playback state of the video element. The value is available as a reactive property at `controller.state` and is also included in every video event payload.
+
+```ts
+import { ScenaVideoState } from '@retoo/scena';
+```
+
+## States
+
+| Value     | String    | Description                              |
+| --------- | --------- | ---------------------------------------- |
+| `IDLE`    | `idle`    | Initial state before any playback action |
+| `LOADING` | `loading` | Video data is being loaded               |
+| `PLAYING` | `playing` | Video is actively playing                |
+| `PAUSED`  | `paused`  | Playback is paused                       |
+| `ENDED`   | `ended`   | Playback reached the end                 |
+| `ERROR`   | `error`   | A playback or loading error occurred     |
+
+## Usage
+
+```ts
+const controller = instance.api.controller;
+
+if (controller.state === ScenaVideoState.PLAYING) {
+  controller.pause();
+}
+
+if (controller.state === ScenaVideoState.ENDED) {
+  controller.seek(0);
+  await controller.play();
+}
+```
+
+## With events
+
+The `ON_VIDEO_STATE_CHANGE` event fires whenever the state transitions. The handler receives the new state:
+
+```ts
+import { ScenaEvent, ScenaVideoState } from '@retoo/scena';
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_STATE_CHANGE, ({ state }) => {
+  switch (state) {
+    case ScenaVideoState.PLAYING:
+      console.log('Started playing');
+      break;
+    case ScenaVideoState.PAUSED:
+      console.log('Paused');
+      break;
+    case ScenaVideoState.ENDED:
+      console.log('Finished');
+      break;
+    case ScenaVideoState.ERROR:
+      console.log('Error occurred');
+      break;
+  }
+});
+```
+
+
+# Visibility API
+
+The visibility API is available at `instance.visibility`. It provides reactive state and methods for showing and hiding the widget at runtime — useful for deferred rendering, conditional display, or toggling the widget in response to user actions on the host page.
+
+```ts
+const visibility = instance.visibility;
+```
+
+## Properties
+
+| Property         | Type      | Description                                           |
+| ---------------- | --------- | ----------------------------------------------------- |
+| `isHidden`       | `boolean` | Whether the widget is currently hidden                |
+| `isShownOnReady` | `boolean` | Whether the widget auto-shows when the video is ready |
+
+## Methods
+
+| Method | Signature    | Description     |
+| ------ | ------------ | --------------- |
+| `show` | `() => void` | Show the widget |
+| `hide` | `() => void` | Hide the widget |
+
+## Usage
+
+```ts
+// Hide the widget
+instance.visibility.hide();
+
+// Show it later
+instance.visibility.show();
+
+// Check state
+if (instance.visibility.isHidden) {
+  instance.visibility.show();
+}
+```
+
+## Events
+
+Visibility changes emit events on the event bus:
+
+```ts
+import { ScenaEvent } from '@retoo/scena';
+
+instance.api.events.on(ScenaEvent.ON_VISIBILITY_SHOW, () => {
+  console.log('Widget is now visible');
+});
+
+instance.api.events.on(ScenaEvent.ON_VISIBILITY_HIDE, () => {
+  console.log('Widget is now hidden');
+});
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/features/visibility
+---
+See **Visibility** feature guide for config options like `isAnimated` and `isShownOnReady`.
+::
+
+
+# Preview API
+
+The preview API is available at `instance.preview`. It controls the preview mode — a temporary visual state with config overrides that reverts when the user interacts with the widget.
+
+```ts
+const preview = instance.preview;
+```
+
+## Properties
+
+| Property             | Type      | Description                                                     |
+| -------------------- | --------- | --------------------------------------------------------------- |
+| `isPreviewing`       | `boolean` | Whether preview mode is currently active                        |
+| `isKeepTimeOnExpand` | `boolean` | Whether video position is preserved when expanding from preview |
+| `isKeepMuteOnExpand` | `boolean` | Whether mute state is preserved when expanding from preview     |
+
+## Methods
+
+| Method  | Signature    | Description                                      |
+| ------- | ------------ | ------------------------------------------------ |
+| `start` | `() => void` | Activate preview mode, applying config overrides |
+| `stop`  | `() => void` | Deactivate preview mode, removing overrides      |
+
+## Usage
+
+```ts
+// Start preview manually
+instance.preview.start();
+
+// Stop preview
+instance.preview.stop();
+
+// Check state
+if (instance.preview.isPreviewing) {
+  console.log('Preview is active');
+}
+
+// Read behavior flags set via config
+console.log(instance.preview.isKeepTimeOnExpand);
+console.log(instance.preview.isKeepMuteOnExpand);
+```
+
+## Events
+
+Preview state changes emit events on the event bus:
+
+```ts
+import { ScenaEvent } from '@retoo/scena';
+
+instance.api.events.on(ScenaEvent.ON_PREVIEW_START, () => {
+  console.log('Preview activated');
+});
+
+instance.api.events.on(ScenaEvent.ON_PREVIEW_STOP, () => {
+  console.log('Preview deactivated');
+});
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/features/preview
+---
+See **Preview** feature guide for config structure and how overrides are applied.
+::
+
+
+# Widget Events
+
+Widget events fire when the scena instance is mounted into the DOM and when it is destroyed. They carry no payload and require no arguments in the handler. These events are useful for running setup or teardown logic tied to the widget's DOM presence.
+
+## Events
+
+| Event              | String value       | When                                            |
+| ------------------ | ------------------ | ----------------------------------------------- |
+| `ON_SCENA_MOUNT`   | `scena:on-mount`   | Widget component is mounted and ready           |
+| `ON_SCENA_DESTROY` | `scena:on-destroy` | Widget is about to be destroyed, before cleanup |
+
+## Usage
+
+```ts
+import { ScenaEvent } from '@retoo/scena';
+
+instance.api.events.on(ScenaEvent.ON_SCENA_MOUNT, () => {
+  console.log('Widget is ready');
+});
+
+instance.api.events.on(ScenaEvent.ON_SCENA_DESTROY, () => {
+  console.log('Widget is being destroyed');
+});
+```
+
+## Unsubscribing
+
+Pass the same handler reference to `off()`:
+
+```ts
+const onMount = () => console.log('Mounted');
+
+instance.api.events.on(ScenaEvent.ON_SCENA_MOUNT, onMount);
+
+// Later
+instance.api.events.off(ScenaEvent.ON_SCENA_MOUNT, onMount);
+```
+
+## Notes
+
+- `ON_SCENA_MOUNT` fires after the Svelte component is mounted — the DOM is fully rendered at this point, so it is safe to query elements or initialize libraries that depend on the DOM.
+- `ON_SCENA_DESTROY` fires before cleanup. After this event, the event emitter is cleared and all handlers are removed automatically, so there is no need to unsubscribe manually.
+
+
+# Video Events
+
+Video events fire in response to playback state changes. Each event handler receives an object with the current `ScenaVideoState` and the original browser `Event`:
+
+```ts
+interface ScenaVideoEventOptions {
+  state: ScenaVideoState;
+  event: Event;
+}
+```
+
+The error event may carry an `error` field instead of `event`:
+
+```ts
+interface ScenaVideoEventOptionsWithError {
+  state: ScenaVideoState;
+  error: unknown;
+}
+```
+
+## Events
+
+| Event                    | String value             | When                                       |
+| ------------------------ | ------------------------ | ------------------------------------------ |
+| `ON_VIDEO_READY`         | `video:on-ready`         | Video metadata is loaded and ready to play |
+| `ON_VIDEO_CAN_PLAY`      | `video:on-can-play`      | Enough data buffered to start playback     |
+| `ON_VIDEO_PLAY`          | `video:on-play`          | Playback starts or resumes                 |
+| `ON_VIDEO_PAUSE`         | `video:on-pause`         | Playback is paused                         |
+| `ON_VIDEO_ENDED`         | `video:on-ended`         | Playback reaches the end                   |
+| `ON_VIDEO_SEEKING`       | `video:on-seeking`       | Video is seeking to a new position         |
+| `ON_VIDEO_SEEKED`        | `video:on-seeked`        | Seek operation completes                   |
+| `ON_VIDEO_SEEK_START`    | `video:on-seek-start`    | User begins dragging the progress bar      |
+| `ON_VIDEO_SEEK_END`      | `video:on-seek-end`      | User releases the progress bar             |
+| `ON_VIDEO_TIME_UPDATE`   | `video:on-time-update`   | Current playback time changes              |
+| `ON_VIDEO_VOLUME_CHANGE` | `video:on-volume-change` | Volume level or mute state changes         |
+| `ON_VIDEO_STATE_CHANGE`  | `video:on-state-change`  | Any video state property changes           |
+| `ON_VIDEO_LOAD_START`    | `video:on-load-start`    | Browser begins loading the video           |
+| `ON_VIDEO_LOADED`        | `video:on-loaded`        | Video data is fully loaded                 |
+| `ON_VIDEO_WAITING`       | `video:on-waiting`       | Playback stalls due to buffering           |
+| `ON_VIDEO_PROGRESSED`    | `video:on-progressed`    | Browser downloads more video data          |
+| `ON_VIDEO_ERROR`         | `video:on-error`         | A playback or loading error occurs         |
+
+## Usage
+
+```ts
+import { ScenaEvent } from '@retoo/scena';
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_PLAY, ({ state, event }) => {
+  console.log('Playing, current time:', state.currentTime);
+});
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_TIME_UPDATE, ({ state }) => {
+  console.log('Time:', state.currentTime, '/', state.duration);
+});
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_ENDED, ({ state }) => {
+  console.log('Finished');
+});
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_ERROR, (data) => {
+  if ('error' in data) {
+    console.error('Error:', data.error);
+  }
+});
+```
+
+## Seek events
+
+There are two levels of seek events:
+
+- `ON_VIDEO_SEEKING` / `ON_VIDEO_SEEKED` — native browser seek events, fire on any seek operation.
+- `ON_VIDEO_SEEK_START` / `ON_VIDEO_SEEK_END` — fire when the user interacts with the progress bar.
+
+```ts
+instance.api.events.on(ScenaEvent.ON_VIDEO_SEEK_START, ({ state }) => {
+  console.log('User started seeking from', state.currentTime);
+});
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_SEEK_END, ({ state }) => {
+  console.log('User seeked to', state.currentTime);
+});
+```
+
+
+# Feature Events
+
+Feature events fire when the widget's visibility or preview mode changes. They carry no payload.
+
+## Visibility Events
+
+| Event                | String value      | When                   |
+| -------------------- | ----------------- | ---------------------- |
+| `ON_VISIBILITY_SHOW` | `visibility:show` | Widget becomes visible |
+| `ON_VISIBILITY_HIDE` | `visibility:hide` | Widget becomes hidden  |
+
+```ts
+import { ScenaEvent } from '@retoo/scena';
+
+instance.api.events.on(ScenaEvent.ON_VISIBILITY_SHOW, () => {
+  console.log('Widget is visible');
+});
+
+instance.api.events.on(ScenaEvent.ON_VISIBILITY_HIDE, () => {
+  console.log('Widget is hidden');
+});
+```
+
+## Preview Events
+
+| Event              | String value    | When                        |
+| ------------------ | --------------- | --------------------------- |
+| `ON_PREVIEW_START` | `preview:start` | Preview mode is activated   |
+| `ON_PREVIEW_STOP`  | `preview:stop`  | Preview mode is deactivated |
+
+```ts
+instance.api.events.on(ScenaEvent.ON_PREVIEW_START, () => {
+  console.log('Preview started');
+});
+
+instance.api.events.on(ScenaEvent.ON_PREVIEW_STOP, () => {
+  console.log('Preview stopped');
+});
+```
+
+
+# Click Events
+
+Click events fire when the user clicks on a widget element. Each handler receives the native DOM `MouseEvent`, which can be used to inspect the target element, cursor position, or modifier keys.
+
+## Events
+
+| Event                      | String value            | When                            |
+| -------------------------- | ----------------------- | ------------------------------- |
+| `ON_VIDEO_CONTAINER_CLICK` | `video-container:click` | User clicks the video container |
+| `ON_CTA_CLICK`             | `cta:click`             | User clicks the CTA button      |
+| `ON_CLOSE_CLICK`           | `close:click`           | User clicks the close button    |
+
+## Usage
+
+```ts
+import { ScenaEvent } from '@retoo/scena';
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_CONTAINER_CLICK, (event) => {
+  console.log('Video container clicked');
+});
+
+instance.api.events.on(ScenaEvent.ON_CTA_CLICK, (event) => {
+  window.open('https://example.com', '_blank');
+});
+
+instance.api.events.on(ScenaEvent.ON_CLOSE_CLICK, (event) => {
+  console.log('Close button clicked');
+});
+```
+
+
+# Setup
+
+The `<scena-video-widget>` custom element must be registered before use by calling `defineScenaElement()`. Calling it more than once has no effect.
+
+```ts [setup.ts]
+import { defineScenaElement } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+defineScenaElement();
+```
+
+After registration, `<scena-video-widget>` is available in the DOM like any native HTML element.
+
+## UMD
+
+When using a script tag instead of a bundler, the registration function is on `window`:
+
+```html [index.html]
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/@retoo/scena/dist/scena.css" />
+</head>
+<body>
+  <script src="https://unpkg.com/@retoo/scena/dist/scena.umd.js"></script>
+  <script>
+    window.defineScenaElement();
+  </script>
+</body>
+```
+
+
+# Usage
+
+Add the element to HTML and call `.mount()` with a `ScenaConfig`:
+
+```html [page.html]
+<scena-video-widget></scena-video-widget>
+```
+
+```ts [app.ts]
+const el = document.querySelector('scena-video-widget');
+
+const instance = await el.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+});
+```
+
+The method returns a `Promise<ScenaInstance>` — the same instance object you get when mounting through `scena.mount()`, with full access to the widget API, config, visibility, and preview controls.
+
+## Updating config
+
+If the widget is already mounted, a repeated call to `.mount()` will not create a new instance. Instead, it updates the existing config through `setConfig()`, keeping the current widget state intact:
+
+```ts
+// First call — mounts the widget
+await el.mount({ video: { src: '/video.mp4' }, size: ComponentSize.SM });
+
+// Second call — updates the constants without remounting
+await el.mount({ video: { src: '/other.mp4' }, size: ComponentSize.LG });
+```
+
+For partial updates, use the instance directly:
+
+```ts
+const instance = await el.mount({ video: { src: '/video.mp4' } });
+
+instance.config.mergeConfig({ size: ComponentSize.LG });
+```
+
+## Instance access
+
+The element exposes `instance` and `scena` properties:
+
+```ts
+el.instance;
+el.scena;
+```
+
+Both are `null` before `.mount()` is called.
+
+## Unmounting
+
+```ts
+await el.unmount();
+```
+
+Removes the widget from the element and resets `instance` and `scena` to `null`. Also fires automatically when the element is removed from the DOM.
+
+## Programmatic creation
+
+```ts
+const el = document.createElement('scena-video-widget');
+
+document.body.appendChild(el);
+
+const instance = await el.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+});
+```
+
+
+# DOM Events
+
+The custom element dispatches two events on the DOM element itself. Both bubble and cross shadow DOM boundaries (`composed: true`).
+
+## scena\:mount
+
+Fires after `.mount()` completes. The `ScenaInstance` is available in `event.detail`:
+
+```ts
+el.addEventListener('scena:mount', (event) => {
+  const instance = event.detail;
+
+  instance.visibility.show();
+});
+```
+
+## scena\:unmount
+
+Fires after `.unmount()` completes or when the element is removed from the DOM. No detail payload:
+
+```ts
+el.addEventListener('scena:unmount', () => {
+  console.log('Widget unmounted');
+});
+```
+
+## Event summary
+
+| Event           | Fires when                                         | `event.detail`  |
+| --------------- | -------------------------------------------------- | --------------- |
+| `scena:mount`   | Widget is mounted inside the element               | `ScenaInstance` |
+| `scena:unmount` | Widget is unmounted or element is removed from DOM | —               |
+
+
+# Integration
+
+Custom elements work in any framework. Register once at the app entry point, then use `<scena-video-widget>` in templates.
+
+## Vue
+
+```ts [main.ts]
+import { defineScenaElement } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+defineScenaElement();
+```
+
+```vue [ScenaWidget.vue]
+<script setup lang="ts">
+import { ComponentSize, ComponentShape } from '@retoo/scena';
+import { ref, onMounted } from 'vue';
+
+const widgetRef = ref<HTMLElement | null>(null);
+
+onMounted(async () => {
+  await widgetRef.value?.mount({
+    video: { src: '/video.mp4' },
+    size: ComponentSize.MD,
+    shape: ComponentShape.CIRCLE,
+  });
+});
+</script>
+
+<template>
+  <scena-video-widget ref="widgetRef" />
+</template>
+```
+
+::callout{color="info" icon="i-lucide-info"}
+Vue recognizes custom elements with hyphens in the tag name automatically. If you get a component resolution warning, add `scena-video-widget` to `compilerOptions.isCustomElement` in your Vue config.
+::
+
+## React
+
+```tsx [main.tsx]
+import { defineScenaElement } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+defineScenaElement();
+```
+
+```tsx [ScenaWidget.tsx]
+import { ComponentSize, ComponentShape } from '@retoo/scena';
+import { useRef, useEffect } from 'react';
+
+export function ScenaWidget() {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    ref.current?.mount({
+      video: { src: '/video.mp4' },
+      size: ComponentSize.MD,
+      shape: ComponentShape.CIRCLE,
+    });
+
+    return () => {
+      ref.current?.unmount();
+    };
+  }, []);
+
+  return <scena-video-widget ref={ref} />;
+}
+```
+
+::callout{color="info" icon="i-lucide-info"}
+TypeScript may not know about the custom element tag. Add a JSX declaration to suppress type errors:
+
+```ts [scena.d.ts]
+declare namespace JSX {
+  interface IntrinsicElements {
+    'scena-video-widget': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+  }
+}
+```
+::
+
+## Angular
+
+```ts [app.module.ts]
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AppModule {}
+```
+
+```ts [app.component.ts]
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { defineScenaElement, ComponentSize, ComponentShape } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+defineScenaElement();
+
+@Component({
+  selector: 'app-root',
+  template: `<scena-video-widget #widget></scena-video-widget>`,
+})
+export class AppComponent implements AfterViewInit {
+  @ViewChild('widget') widgetRef!: ElementRef;
+
+  async ngAfterViewInit() {
+    await this.widgetRef.nativeElement.mount({
+      video: { src: '/video.mp4' },
+      size: ComponentSize.MD,
+      shape: ComponentShape.CIRCLE,
+    });
+  }
+}
+```
+
+## Vanilla JS
+
+```html [index.html]
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/@retoo/scena/dist/scena.css" />
+</head>
+<body>
+  <scena-video-widget></scena-video-widget>
+
+  <script src="https://unpkg.com/@retoo/scena/dist/scena.umd.js"></script>
+  <script>
+    window.defineScenaElement();
+
+    const el = document.querySelector('scena-video-widget');
+    
+    el.mount({
+      video: { src: '/video.mp4' },
+      size: 'md',
+      shape: 'circle',
+    });
+  </script>
+</body>
+```
+
+
+# Basic Setup
+
+Scena is a video widget that mounts into any container with a single `mount()` call. It supports a wide range of configuration options — from size and shape to playback behavior, overlay controls, and visibility transitions.
+
+The configuration panel below lets you adjust every available parameter in real time. Each change is applied to the running instance without remounting, so you can explore how the widget responds to different settings immediately.
+
+## Demo
+
+::scena-component-basic-setup
+---
+config:
+  video:
+    src: /examples/example-cat.mp4
+    poster: /examples/example-cat.jpg
+    autoplay: false
+    loop: true
+    muted: true
+  size: md
+  shape: circle
+  ctaButton:
+    text: Custom action
+  container:
+    position: absolute
+    placement: middle-center
+  visibility:
+    isShownOnReady: true
+  preview:
+    size: sm
+    ctaButton: false
+    closeButton: false
+---
+::
+
+## Code
+
+```ts [main.ts]
+import {
+  useScena,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+  ComponentPlacement,
+} from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: {
+    src: '/video.mp4',
+    autoplay: false,
+    loop: true,
+    muted: true,
+  },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+  ctaButton: {
+    text: 'Custom action',
+  },
+  container: {
+    position: ComponentPosition.ABSOLUTE,
+    placement: ComponentPlacement.MIDDLE_CENTER,
+  },
+  visibility: {
+    isShownOnReady: true,
+  },
+  preview: {
+    size: ComponentSize.SM,
+    ctaButton: false,
+    closeButton: false,
+  },
+});
+```
+
+The `mount()` call is async — it resolves once the widget is mounted in the DOM. The returned `instance` exposes the full API: playback control, runtime config updates, event listeners, visibility management, and preview state.
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/getting-started/quick-start
+---
+See **Quick Start** for the next steps: controlling playback, listening to events, and updating config at runtime.
+::
+
+
+# Custom Styling
+
+Each UI component accepts a `customStyles` object with named keys for targeted inline overrides. Combine with `shape` and `size` config to match any design system without touching global CSS.
+
+## Demo
+
+Portrait shape with a branded CTA button and custom container shadow:
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      poster: /examples/example-cat.jpg
+      autoplay: false
+      loop: true
+      muted: true
+    size: md
+    shape: portrait
+    container:
+      position: absolute
+      placement: middle-center
+      customStyles:
+        root:
+          boxShadow: 0 8px 32px rgba(0,0,0,0.35)
+    ctaButton:
+      text: Shop now
+      customStyles:
+        button:
+          color: rgb(255, 255, 255)
+          background: "#013EFB"
+    videoProgress:
+      customStyles:
+        progress:
+          background: "#8BED02"
+    closeButton: false
+  ---
+  :::
+::
+
+## Code
+
+```ts [main.ts]
+import {
+  useScena,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+  ComponentPlacement,
+} from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: {
+    src: '/video.mp4',
+    poster: '/poster.jpg',
+    autoplay: false,
+    loop: true,
+    muted: true,
+  },
+  size: ComponentSize.MD,
+  shape: ComponentShape.PORTRAIT,
+  container: {
+    position: ComponentPosition.ABSOLUTE,
+    placement: ComponentPlacement.MIDDLE_CENTER,
+    customStyles: {
+      root: {
+        boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+      },
+    },
+  },
+  ctaButton: {
+    text: 'Shop now',
+    customStyles: {
+      button: {
+        background: '#013EFB',
+      },
+    },
+  },
+  videoProgress: {
+    customStyles: {
+      progress: {
+        background: '#8BED02',
+      },
+    },
+  },
+  closeButton: false,
+});
+```
+
+## Alternative: CSS custom properties
+
+The same result using CSS variables on the `.rs` root element — useful for global theming or when you can't pass config directly:
+
+```css [styles.css]
+.rs {
+  --rs-video-container-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --rs-cta-button-background: rgb(79, 70, 229);
+  --rs-cta-button-background-hover: rgb(99, 90, 255);
+  --rs-video-progress-progress-color: rgb(79, 70, 229);
+}
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/configuration/styles
+---
+Full list of all CSS custom properties — see **Styles**.
+::
+
+
+# Responsive Widget
+
+The `responsive` key maps max-width breakpoints (in px) to partial config overrides. When the viewport matches a breakpoint the overrides are applied on top of the base config — without remounting.
+
+Resize the browser window or open DevTools device toolbar to see the widget adapt.
+
+::callout{color="info" icon="i-lucide-info"}
+Breakpoints react to **viewport width**, not the container. Use DevTools → toggle device toolbar (Ctrl+Shift+M / Cmd+Shift+M) to simulate different widths.
+::
+
+## Demo
+
+::scena-container
+  :::scena-component
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      autoplay: false
+      loop: true
+      muted: true
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+    responsive:
+      lg:
+        shape: square
+      md:
+        size: sm
+        shape: square
+      sm:
+        size: xs
+        shape: square
+  ---
+  :::
+::
+
+## Code
+
+```ts [main.ts]
+import {
+  useScena,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+  ComponentPlacement,
+} from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+await scena.mount({
+  video: {
+    src: '/video.mp4',
+    autoplay: false,
+    loop: true,
+    muted: true,
+  },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+  container: {
+    position: ComponentPosition.ABSOLUTE,
+    placement: ComponentPlacement.MIDDLE_CENTER,
+  },
+  ctaButton: false,
+  closeButton: false,
+  responsive: {
+    1024: {
+      shape: ComponentShape.SQUARE,
+    },
+    768: {
+      size: ComponentSize.SM,
+      shape: ComponentShape.SQUARE,
+    },
+    480: {
+      size: ComponentSize.XS,
+      shape: ComponentShape.SQUARE,
+    },
+  },
+});
+```
+
+Breakpoints use `matchMedia` under the hood and update reactively as the window resizes — no scroll or resize handlers needed.
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/features/responsive
+---
+Full breakpoint reference and override shape — see **Responsive**.
+::
+
+
+# Custom Controls
+
+All built-in controls — `videoControls`, `videoProgress`, `videoVolume`, `ctaButton`, and `closeButton` — can be individually disabled via config, leaving the widget as a bare video surface without any interactive elements.
+
+UI state is managed through two APIs on the returned instance: `instance.api.controller` for imperative playback control (`play`, `pause`, `stop`, `seek`, `toggleMute`) and `instance.api.events` for subscribing to state changes that should be reflected in your own components.
+
+::callout{color="warning"}
+Disabling built-in controls does not affect the widget's internal state machine — events still fire and the controller API remains fully functional.
+::
+
+## Demo
+
+::scena-container
+  :::scena-component-custom-controls
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      poster: /examples/example-cat.jpg
+      autoplay: false
+      loop: true
+      muted: true
+    size: md
+    shape: circle
+    container:
+      position: relative
+  ---
+  :::
+::
+
+## Code
+
+Disable the built-in controls and wire up your own buttons to the controller:
+
+```html [index.html]
+<div id="widget-target"></div>
+<div id="controls">
+  <button id="rewind">Rewind</button>
+  <button id="play">Play</button>
+  <button id="stop">Stop</button>
+  <button id="forward">Forward</button>
+  <button id="mute">Mute</button>
+</div>
+```
+
+```ts [main.ts]
+import {
+  useScena,
+  ScenaEvent,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+} from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: {
+    src: '/video.mp4',
+    autoplay: false,
+    loop: true,
+    muted: true,
+  },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+  container: {
+    position: ComponentPosition.RELATIVE,
+  },
+  videoControls: false,
+  videoProgress: false,
+  videoVolume: false,
+  ctaButton: false,
+  closeButton: false,
+}, document.getElementById('widget-target'));
+
+const { controller, events } = instance.api;
+
+let isPlaying = false;
+
+let isMuted = controller.isMuted;
+
+events.on(ScenaEvent.ON_VIDEO_PLAY, () => {
+  isPlaying = true;
+});
+
+events.on(ScenaEvent.ON_VIDEO_PAUSE, () => {
+  isPlaying = false;
+});
+
+events.on(ScenaEvent.ON_VIDEO_VOLUME_CHANGE, () => {
+  isMuted = controller.isMuted;
+});
+
+document.getElementById('rewind').addEventListener('click', () => {
+  controller.seek(Math.max(0, controller.currentTime - 10));
+});
+
+document.getElementById('play').addEventListener('click', () => {
+  isPlaying ? controller.pause() : controller.play();
+});
+
+document.getElementById('stop').addEventListener('click', () => {
+  controller.stop();
+});
+
+document.getElementById('forward').addEventListener('click', () => {
+  controller.seek(Math.min(controller.duration, controller.currentTime + 10));
+});
+
+document.getElementById('mute').addEventListener('click', () => {
+  controller.toggleMute();
+});
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/api-reference/scena-instance
+---
+Full list of controller methods and reactive state — see **Instance API**.
+::
+
+
+# Viewport Mount
+
+By default the widget is created, the video element is injected, and network requests begin immediately on page load. On pages where the widget is below the fold, this wastes resources the user may never consume.
+
+This example defers mounting until the container enters the viewport. A mount observer fires once on first intersection, calls `scena.mount()`, then disconnects. A second visibility observer then takes over — showing the widget when it is fully in view and hiding it when less than 50% remains visible.
+
+::callout{color="warning"}
+Both observers hold references to DOM nodes and will prevent garbage collection if not disconnected. The widget instance also maintains internal state, event listeners, and a mounted Svelte component.
+::
+
+## Demo
+
+::scena-container
+  :::scena-component-viewport-mount
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      poster: /examples/example-cat.jpg
+      loop: true
+      muted: true
+    size: md
+    shape: circle
+    ctaButton: false
+    closeButton: false
+    container:
+      position: absolute
+      placement: middle-center
+    visibility:
+      isHidden: true
+      isAnimated: true
+      isShownOnReady: false
+  ---
+  :::
+::
+
+## Code
+
+The setup requires two elements with distinct roles:
+
+- **`wrapper`** — a full-size container that sits in the normal document flow. Both observers watch this element to track its position in the viewport.
+- **`target`** — an empty mount point passed to `scena.mount()`. The widget renders inside it, but since its container uses `position: absolute`, the visual widget is positioned independently from the flow.
+
+Separating them is important: observing the widget's own root would produce incorrect ratios during show/hide animations, as the widget's bounding rect changes while animating.
+
+```html [index.html]
+<div id="widget-wrapper" style="width: 100%; height: 100%">
+  <div id="widget-target"></div>
+</div>
+```
+
+```ts [main.ts]
+import {
+  useScena,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+  ComponentPlacement,
+} from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+const wrapper = document.getElementById('widget-wrapper');
+const target = document.getElementById('widget-target');
+
+let instance = null;
+let componentObserver = null;
+
+const mountObserver = new IntersectionObserver(async ([mountEntry]) => {
+  if (!mountEntry.isIntersecting || instance) return;
+
+  mountObserver.disconnect();
+
+  instance = await scena.mount({
+    video: {
+      src: '/video.mp4',
+      loop: true,
+      muted: true,
+    },
+    size: ComponentSize.MD,
+    shape: ComponentShape.CIRCLE,
+    container: {
+      position: ComponentPosition.ABSOLUTE,
+      placement: ComponentPlacement.MIDDLE_CENTER,
+    },
+    ctaButton: false,
+    closeButton: false,
+    visibility: {
+      isHidden: true,
+      isAnimated: true,
+      isShownOnReady: false,
+    },
+  }, target);
+
+  // Show when fully visible, hide when less than 50% in view
+  componentObserver = new IntersectionObserver(([componentEntry]) => {
+      if (!componentEntry) return;
+
+      if (componentEntry.intersectionRatio >= 1) instance.visibility.show();
+      else if (componentEntry.intersectionRatio < 0.5) instance.visibility.hide();
+    },
+    { threshold: [0, 0.5, 1] }
+  );
+
+  componentObserver.observe(wrapper);
+}, { threshold: 0.1 });
+
+mountObserver.observe(wrapper);
+```
+
+## Cleanup
+
+Disconnect observers and unmount the instance any time the container leaves the DOM:
+
+```ts [main.ts]
+function destroy() {
+  mountObserver.disconnect();
+  componentObserver?.disconnect();
+  
+  if (instance) {
+    scena.unmount(instance);
+  }
+}
+
+// Example: single-page app route change
+router.beforeEach(() => destroy());
+
+// Example: modal close
+modal.on('close', () => destroy());
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/features/visibility
+---
+To hide the widget after mount instead of deferring it — see **Visibility**.
+::
+
+
+# Timed Overlay
+
+`ON_VIDEO_TIME_UPDATE` fires continuously during playback with the current position in seconds. This example uses it to show an overlay between two defined timestamps — useful for CTAs, chapter markers, or annotations tied to specific moments.
+
+## Demo
+
+The overlay appears between 5 and 25 seconds of playback.
+
+::scena-container{style="height: 560px"}
+  :::scena-component-timed-overlay
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      poster: /examples/example-cat.jpg
+      autoplay: false
+      loop: true
+      muted: true
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+    ctaButton: false
+    closeButton: false
+  overlayTimeHide: 25
+  overlayTimeShow: 5
+  ---
+  :::
+::
+
+## Code
+
+```html [index.html]
+<div class="wrapper">
+  <div id="target"></div>
+
+  <div id="overlay" class="overlay hidden">
+    <div class="overlay-card">
+      <p>Special offer — limited time only!</p>
+      <button id="action">Got it</button>
+    </div>
+  </div>
+</div>
+```
+
+```ts [main.ts]
+import {
+  useScena,
+  ScenaEvent,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+  ComponentPlacement,
+} from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const OVERLAY_TIME_SHOW = 5;
+const OVERLAY_TIME_HIDE = 25;
+
+const overlay = document.getElementById('overlay')!;
+const action = document.getElementById('action')!;
+
+const scena = useScena();
+
+const instance = await scena.mount(
+  {
+    video: {
+      src: '/video.mp4',
+      autoplay: false,
+      loop: true,
+      muted: true,
+    },
+    size: ComponentSize.MD,
+    shape: ComponentShape.CIRCLE,
+    container: {
+      position: ComponentPosition.ABSOLUTE,
+      placement: ComponentPlacement.MIDDLE_CENTER,
+    },
+    ctaButton: false,
+    closeButton: false,
+  },
+  document.getElementById('target'),
+);
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_TIME_UPDATE, () => {
+  const { currentTime } = instance.api.controller;
+  const visible = currentTime >= OVERLAY_TIME_SHOW && currentTime < OVERLAY_TIME_HIDE;
+
+  overlay.classList.toggle('hidden', !visible);
+});
+
+action.addEventListener('click', () => {
+  overlay.classList.add('hidden');
+});
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/events/widget-events
+---
+Full list of time-based and interaction events — see **Events**.
+::
+
+
+# Loop Segment
+
+By default the widget loops the full video. This example constrains playback to a specific segment — when `currentTime` reaches the defined end point, `seek()` resets it back to the start. This is useful for product demos, tutorial highlights, or any scenario where only a portion of the video is relevant.
+
+## Demo
+
+::scena-container
+  :::scena-component-loop-segment
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      poster: /examples/example-cat.jpg
+      autoplay: false
+      loop: false
+      muted: true
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+  segmentEnd: 8
+  segmentStart: 2
+  ---
+  :::
+::
+
+## Code
+
+```ts [main.ts]
+import {
+  useScena,
+  ScenaEvent,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+  ComponentPlacement,
+} from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const SEGMENT_START = 2;
+const SEGMENT_END = 8;
+
+const scena = useScena();
+
+const instance = await scena.mount(
+  {
+    video: {
+      src: '/video.mp4',
+      startTime: SEGMENT_START,
+      loop: false,
+      muted: true,
+    },
+    size: ComponentSize.MD,
+    shape: ComponentShape.CIRCLE,
+    container: {
+      position: ComponentPosition.ABSOLUTE,
+      placement: ComponentPlacement.MIDDLE_CENTER,
+    },
+    ctaButton: false,
+    closeButton: false,
+  },
+  document.getElementById('target'),
+);
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_TIME_UPDATE, () => {
+  const { currentTime } = instance.api.controller;
+
+  if (currentTime >= SEGMENT_END) {
+    instance.api.controller.seek(SEGMENT_START);
+  }
+});
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/api-reference/scena-instance
+---
+Full controller API including `seek()` — see **Instance API**.
+::
+
+
+# Heatmap Data
+
+Every time the viewer seeks, `ON_VIDEO_SEEKED` fires with the new playback position. This example accumulates those positions into time buckets and renders them as a bar chart — giving a real-time view of which moments attract the most attention.
+
+The heatmap resets on page reload. In production, persist bucket data to a backend and aggregate across sessions for meaningful results.
+
+## Demo
+
+Seek around to build up the heatmap.
+
+::scena-container{style="height:640px"}
+  :::scena-component-heatmap-data
+  ---
+  config:
+    video:
+      src: /examples/example-cat.mp4
+      poster: /examples/example-cat.jpg
+      autoplay: false
+      loop: true
+      muted: true
+    size: md
+    shape: circle
+    container:
+      position: absolute
+      placement: middle-center
+  ---
+  :::
+::
+
+## Code
+
+```ts [main.ts]
+import {
+  useScena,
+  ScenaEvent,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+  ComponentPlacement,
+} from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const BUCKETS = 30;
+const counts = new Array(BUCKETS).fill(0);
+let duration = 0;
+
+const scena = useScena();
+
+const instance = await scena.mount(
+  {
+    video: {
+      src: '/video.mp4',
+      autoplay: false,
+      loop: true,
+      muted: true,
+    },
+    size: ComponentSize.MD,
+    shape: ComponentShape.CIRCLE,
+    container: {
+      position: ComponentPosition.ABSOLUTE,
+      placement: ComponentPlacement.MIDDLE_CENTER,
+    },
+  },
+  document.getElementById('target'),
+);
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_LOADED, () => {
+  duration = instance.api.controller.duration;
+});
+
+instance.api.events.on(ScenaEvent.ON_VIDEO_SEEKED, () => {
+  if (!duration) return;
+
+  const ratio = instance.api.controller.currentTime / duration;
+  const index = Math.min(Math.floor(ratio * BUCKETS), BUCKETS - 1);
+
+  counts[index]++;
+  renderHeatmap(counts);
+});
+```
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/events/widget-events
+---
+Full list of available events — see **Events**.
+::
+
+
+# Formats
+
+Scena is distributed in three module formats. Each format has a development build (readable, with comments) and a minified production build. All variants export the same API surface — the difference is how the module is loaded by the consumer.
+
+## ES Module
+
+The recommended format for projects using a bundler (Vite, Webpack 5+, Rollup, esbuild). ES Modules support static analysis, tree-shaking, and modern `import`/`export` syntax.
+
+| File              | Description                                            |
+| ----------------- | ------------------------------------------------------ |
+| `scena.es.js`     | Development build — unminified, suitable for debugging |
+| `scena.min.es.js` | Production build — minified and optimized              |
+
+The `main` and `module` fields in `package.json` point to this build, so bundlers resolve it automatically.
+
+```ts [main.ts]
+import { useScena } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+const scena = useScena();
+```
+
+## UMD
+
+Universal Module Definition — works via `<script>` tags in the browser, AMD loaders, and CommonJS `require()`. Use this for environments without a bundler: static HTML pages, WordPress, Webflow, Squarespace, or any CMS that allows custom scripts.
+
+| File               | Description       |
+| ------------------ | ----------------- |
+| `scena.umd.js`     | Development build |
+| `scena.min.umd.js` | Production build  |
+
+```html [index.html]
+<link rel="stylesheet" href="https://unpkg.com/@retoo/scena/dist/scena.css" />
+<script src="https://unpkg.com/@retoo/scena/dist/scena.min.umd.js"></script>
+<script>
+  const scena = window.scenaWidget();
+
+  scena.mount({
+    video: { src: '/video.mp4' }
+  });
+</script>
+```
+
+::callout{color="warning" icon="i-lucide-alert-triangle"}
+In UMD mode, the factory function is exposed as `window.scenaWidget()`
+::
+
+## CommonJS
+
+For Node.js environments, SSR frameworks, or legacy build systems that use `require()`.
+
+| File               | Description       |
+| ------------------ | ----------------- |
+| `scena.cjs.js`     | Development build |
+| `scena.min.cjs.js` | Production build  |
+
+```js [server.js]
+const { useScena } = require('@retoo/scena');
+
+const scena = useScena();
+```
+
+## Custom Element
+
+Register Scena as a native Web Component to use it in any framework — or vanilla HTML:
+
+::steps
+### Register the element
+
+```ts [setup.ts]
+import { defineScenaElement } from '@retoo/scena';
+
+import '@retoo/scena/styles';
+
+defineScenaElement();
+```
+
+### Use in HTML
+
+```html [page.html]
+<scena-video-widget></scena-video-widget>
+```
+::
+
+::callout
+---
+icon: i-lucide-arrow-right
+to: https://use-retoo.github.io/scena/custom-element/setup
+---
+For detailed Custom Element docs — framework integration, attributes, and lifecycle — see the **Custom Element** section.
+::
+
+## Stylesheets
+
+CSS must be imported separately regardless of the JS format. Without styles, the widget mounts into the DOM but renders without any visual appearance.
+
+| Import path               | Description                                      |
+| ------------------------- | ------------------------------------------------ |
+| `@retoo/scena/styles`     | Development build — unminified, with source maps |
+| `@retoo/scena/styles/min` | Production build — minified                      |
+
+```ts
+// ES Module / bundler
+import '@retoo/scena/styles';        // dev
+import '@retoo/scena/styles/min';    // prod
+```
+
+```html
+<!-- UMD / script tag -->
+<link rel="stylesheet" href="https://unpkg.com/@retoo/scena/dist/scena.css" />
+```
+
+
+# Browser Support
+
+Scena targets modern browsers that support ES2020+. The compiled output uses `async`/`await`, optional chaining, nullish coalescing, and `IntersectionObserver` — all available in current versions of major browsers without polyfills.
+
+## Supported browsers
+
+| Browser          | Minimum version      |
+| ---------------- | -------------------- |
+| Chrome           | 80+                  |
+| Firefox          | 80+                  |
+| Safari           | 14+                  |
+| Edge             | 80+ (Chromium-based) |
+| Opera            | 67+                  |
+| Samsung Internet | 13+                  |
+
+## Required Web APIs
+
+Scena relies on the following browser APIs at runtime:
+
+| API                     | Used for                                                       |
+| ----------------------- | -------------------------------------------------------------- |
+| `IntersectionObserver`  | Detecting widget visibility in the viewport for autoplay/pause |
+| `ResizeObserver`        | Adapting widget layout when the container resizes              |
+| `customElements`        | Custom Element registration (`defineScenaElement()`)           |
+| `HTMLVideoElement`      | Core video playback                                            |
+| `CSS Custom Properties` | Theming and dynamic style overrides                            |
+
+All listed APIs are supported in the browsers above. If you need to support older browsers, include the corresponding polyfills before loading Scena.
+
+## Internet Explorer
+
+Internet Explorer is not supported. Scena uses ES Module syntax, CSS custom properties, and modern DOM APIs that have no IE equivalents.
+
+## Mobile browsers
+
+Scena works on mobile Chrome, Safari (iOS), Firefox, and Samsung Internet. Note that iOS Safari enforces additional restrictions on video autoplay — the video must be `muted` for autoplay to work without user interaction. Scena respects these constraints when `autoplay: true` and `muted: true` are set in the config.
+
+## Node.js
+
+For SSR or prerendering scenarios, Scena requires Node.js 16.0 or later. The CommonJS build is available for `require()` usage. Note that actual video playback requires a browser DOM — the Node.js build is intended for server-side mounting logic and config preparation.
+
+
+# Bundle Size
+
+The production bundle (minified JS + CSS) weighs under **30 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
+
+## Distribution files
+
+Each module format ships in two variants: a minified production build and an unminified development build with readable code and comments.
+
+| File               | Format    | Raw       | Gzip     |
+| ------------------ | --------- | --------- | -------- |
+| `scena.min.es.js`  | ES Module | 81.90 KB  | 26.47 KB |
+| `scena.min.umd.js` | UMD       | 82.16 KB  | 26.57 KB |
+| `scena.min.cjs.js` | CommonJS  | 82.17 KB  | 26.52 KB |
+| `scena.es.js`      | ES Module | 224.05 KB | 44.16 KB |
+| `scena.umd.js`     | UMD       | 239.41 KB | 45.27 KB |
+| `scena.cjs.js`     | CommonJS  | 225.13 KB | 44.31 KB |
+| `scena.min.css`    | CSS       | 21.4 KB   | 3.2 KB   |
+| `scena.css`        | CSS       | 24.1 KB   | 3.3 KB   |
+
+
+# TypeScript
+
+TypeScript declarations are bundled inside the package as `index.d.ts`. The compiler resolves them automatically — no separate `@types/*` package or manual `tsconfig` path mapping needed.
+
+## Setup
+
+Import from `@retoo/scena` and TypeScript resolves everything automatically. Enums, interfaces, and the composable are all available from the same entry point:
+
+```ts
+import { useScena, ScenaEvent, ComponentSize, ComponentShape } from '@retoo/scena';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+});
+
+instance.api.events.on(ScenaEvent.ON_CTA_CLICK, () => {
+    console.log('CTA button click');
+});
+```
+
+## Types
+
+The types below cover the full public API surface — config input, instance handles, playback state, and runtime controls. Import only what you need; the rest is tree-shaken at build time.
+
+#### ScenaConfig
+
+Root config passed to `mount()`. Only `video.src` is required — everything else is optional.
+
+```ts
+type ScenaConfig = Partial<ScenaOverrides> & Pick<ScenaOverrides, 'video'> & Partial<ScenaFeatures>;
+```
+
+#### ScenaOverrides
+
+Per-component field overrides. Pass `false` to disable a component entirely.
+
+```ts
+interface ScenaOverrides {
+  size: ComponentSize;
+  shape: ComponentShape;
+  container: Partial<ScenaContainerProps>;
+  video: Partial<ScenaVideoProps> & Pick<ScenaVideoProps, 'src'>;
+  videoLoader: Partial<ScenaVideoLoaderProps> | false;
+  videoProgress: Partial<ScenaVideoProgressProps> | false;
+  videoControls: Partial<ScenaVideoControlsProps> | false;
+  videoVolume: Partial<ScenaVideoVolumeProps> | false;
+  closeButton: Partial<ScenaCloseButtonProps> | false;
+  ctaButton: Partial<ScenaCtaButtonProps> | false;
+}
+```
+
+#### ScenaFeatures
+
+Optional feature sections: preview mode, visibility transitions, and responsive breakpoints.
+
+```ts
+interface ScenaFeatures {
+  preview: Partial<ScenaPreviewConfig>;
+  visibility: Partial<ScenaVisibilityConfig>;
+  responsive: ScenaResponsiveConfig;
+}
+```
+
+#### ScenaInstance
+
+Handle returned by `mount()`. Entry point for all runtime APIs.
+
+```ts
+interface ScenaInstance {
+  api: ScenaApi;
+  component: ScenaRef;
+  config: UseScenaConfigReturns;
+  preview: ScenaPreviewApi;
+  responsive: ScenaResponsiveApi;
+  visibility: ScenaVisibilityApi;
+}
+```
+
+#### ScenaApi
+
+Top-level API surface exposed via `instance.api`.
+
+```ts
+interface ScenaApi {
+  controller: UseVideoControllerReturns;
+  components: ScenaComponents;
+  events: ScenaEventEmitter;
+}
+```
+
+#### UseScenaReturns
+
+Return type of `useScena()` — the widget factory.
+
+```ts
+interface UseScenaReturns {
+  NAME: string;
+  VERSION: string;
+  mount: (config: ScenaConfig, target?: ScenaTarget) => Promise<ScenaInstance>;
+  unmount: (instance: ScenaInstance) => Promise<void>;
+}
+```
+
+#### UseScenaConfigReturns
+
+Reactive config store available via `instance.config`. Use `mergeConfig` to patch at runtime, `setConfig` to replace entirely.
+
+```ts
+interface UseScenaConfigReturns {
+  current: ScenaConfig;
+  getConfig: () => ScenaConfig;
+  setConfig: (value: ScenaConfig) => void;
+  mergeConfig: (partial: Partial<ScenaConfig>) => void;
+}
+```
+
+#### ScenaVisibilityApi
+
+Controls widget visibility at runtime. Available via `instance.visibility`.
+
+```ts
+interface ScenaVisibilityApi {
+  isHidden: boolean;
+  isShownOnReady: boolean;
+  show: () => void;
+  hide: () => void;
+}
+```
+
+#### ScenaPreviewBehavior
+
+Behavioral options for preview mode — passed inside the `preview` config key.
+
+```ts
+interface ScenaPreviewBehavior {
+  keepTimeOnExpand: boolean;
+  keepMuteOnExpand: boolean;
+}
+```
+
+#### ScenaPreviewConfig
+
+Full shape of the `preview` config key. Accepts all component overrides plus the two behavioral options.
+
+```ts
+type ScenaPreviewConfig = ScenaOverrides & ScenaPreviewBehavior;
+```
+
+#### ScenaPreviewApi
+
+Controls preview mode at runtime. Available via `instance.preview`.
+
+```ts
+interface ScenaPreviewApi {
+  isPreviewing: boolean;
+  isKeepTimeOnExpand: boolean;
+  isKeepMuteOnExpand: boolean;
+  start: () => void;
+  stop: () => void;
+}
+```
+
+#### ScenaVideoData
+
+Reactive playback state. Read via `instance.api.controller`.
+
+```ts
+interface ScenaVideoData {
+  state: ScenaVideoState;
+  currentTime: number;
+  duration: number;
+  progress: number;
+  volume: number;
+  buffer: number;
+  isMuted: boolean;
+  isBuffering: boolean;
+  isSeeking: boolean;
+}
+```
+
+#### ScenaVideoMethods
+
+Imperative playback controls. Available via `instance.api.controller`.
+
+```ts
+interface ScenaVideoMethods {
+  play: () => Promise<void>;
+  pause: () => void;
+  stop: () => void;
+  seek: (value: number) => void;
+  setVolume: (value: number) => void;
+  mute: () => void;
+  unmute: () => void;
+  toggleMute: () => void;
+}
+```
+
+#### UseVideoControllerReturns
+
+Full controller type — combines reactive state and imperative methods.
+
+```ts
+type UseVideoControllerReturns = ScenaVideoData & ScenaVideoMethods;
+```
+
+## Enums
+
+All enums are re-exported from the package root. Each value has a string equivalent — pass either form and Scena will accept both.
+
+#### ComponentSize
+
+T-shirt size scale used across all sizeable components.
+
+```ts
+enum ComponentSize {
+  XS = 'xs',
+  SM = 'sm',
+  MD = 'md',
+  LG = 'lg',
+  XL = 'xl',
+  XXL = 'xxl',
+}
+```
+
+#### ComponentShape
+
+Affects aspect ratio and border-radius of the video container.
+
+```ts
+enum ComponentShape {
+  CIRCLE = 'circle',
+  SQUARE = 'square',
+  PORTRAIT = 'portrait',
+  LANDSCAPE = 'landscape',
+}
+```
+
+#### ComponentPosition
+
+CSS `position` value for the outer container.
+
+```ts
+enum ComponentPosition {
+  STATIC = 'static',
+  RELATIVE = 'relative',
+  ABSOLUTE = 'absolute',
+  FIXED = 'fixed',
+}
+```
+
+#### ComponentPlacement
+
+Anchor position within the container — a 3×3 grid of named slots.
+
+```ts
+enum ComponentPlacement {
+  TOP_START = 'top-start',
+  TOP_CENTER = 'top-center',
+  TOP_END = 'top-end',
+  MIDDLE_START = 'middle-start',
+  MIDDLE_CENTER = 'middle-center',
+  MIDDLE_END = 'middle-end',
+  BOTTOM_START = 'bottom-start',
+  BOTTOM_CENTER = 'bottom-center',
+  BOTTOM_END = 'bottom-end',
+}
+```
+
+#### ScenaVideoState
+
+Current playback state of the video element.
+
+```ts
+enum ScenaVideoState {
+  IDLE = 'idle',
+  LOADING = 'loading',
+  PLAYING = 'playing',
+  PAUSED = 'paused',
+  ENDED = 'ended',
+  ERROR = 'error',
+}
+```
+
+#### ScenaVideoPreload
+
+Preload strategy passed to the `<video>` element.
+
+```ts
+enum ScenaVideoPreload {
+  NONE = 'none',
+  AUTO = 'auto',
+  METADATA = 'metadata',
+}
+```
+
+#### ScenaCtaButtonPlacement
+
+Whether the CTA button renders inside or outside the video container.
+
+```ts
+enum ScenaCtaButtonPlacement {
+  INSIDE = 'inside',
+  OUTSIDE = 'outside',
+}
+```
+
+## Usage examples
+
+Common patterns for integrating Scena's types into your own code — config authoring, event handling, controller access, and runtime API control.
+
+#### Typing the config
+
+Annotate the config object explicitly to get IDE completion and catch invalid values before mounting.
+
+```ts
+import {
+  useScena,
+  ComponentSize,
+  ComponentShape,
+  type ScenaConfig,
+} from '@retoo/scena';
+
+const config: ScenaConfig = {
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+  shape: ComponentShape.CIRCLE,
+};
+
+const scena = useScena();
+const instance = await scena.mount(config);
+```
+
+#### Typing an event handler
+
+Use `ScenaEventHandler` to annotate callbacks passed to the event emitter.
+
+```ts
+import { ScenaEvent, type ScenaEventHandler } from '@retoo/scena';
+
+const onCtaClick: ScenaEventHandler = () => {
+  window.location.href = '/contact';
+};
+
+instance.api.events.on(ScenaEvent.ON_CTA_CLICK, onCtaClick);
+```
+
+#### Working with the video controller
+
+`UseVideoControllerReturns` combines reactive state and imperative methods — useful when passing the controller to helper functions.
+
+```ts
+import type { UseVideoControllerReturns } from '@retoo/scena';
+
+function logPlaybackState(controller: UseVideoControllerReturns) {
+  console.log(controller.state);
+  console.log(controller.currentTime);
+  console.log(controller.duration);
+  console.log(controller.progress);
+  console.log(controller.isMuted);
+}
+
+logPlaybackState(instance.api.controller);
+```
+
+#### Controlling visibility and preview
+
+Annotate references to the visibility and preview APIs for safe access in service layers or framework wrappers.
+
+```ts
+import type { ScenaVisibilityApi, ScenaPreviewApi } from '@retoo/scena';
+
+const visibility: ScenaVisibilityApi = instance.visibility;
+visibility.hide();
+
+const preview: ScenaPreviewApi = instance.preview;
+preview.start();
+```
+
+#### Using enums in config
+
+Enum values are the recommended way to set shape, size, position, and other discrete options. The string equivalents also work, but enums give you autocomplete and catch typos at compile time.
+
+```ts
+import {
+  useScena,
+  ComponentSize,
+  ComponentShape,
+  ComponentPosition,
+  ComponentPlacement,
+} from '@retoo/scena';
+
+const scena = useScena();
+
+const instance = await scena.mount({
+  video: { src: '/video.mp4' },
+  size: ComponentSize.MD,
+  shape: ComponentShape.PORTRAIT,
+  container: {
+    position: ComponentPosition.FIXED,
+    placement: ComponentPlacement.BOTTOM_END,
+  },
+});
+```

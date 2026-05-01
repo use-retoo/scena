@@ -1,0 +1,81 @@
+# Scena Documentation
+
+> Embeddable video widget for any website.
+
+## Documentation Sets
+
+- [Scena — Full Documentation](https://use-retoo.github.io/scena/llms-full.txt): Complete documentation for the Scena embeddable video widget library.
+
+## Getting Started
+
+- [Introduction](https://use-retoo.github.io/scena/raw/getting-started/introduction.md): Lightweight embeddable widget for adding video reels to any website.
+- [Installation](https://use-retoo.github.io/scena/raw/getting-started/installation.md): Install @retoo/scena via npm, pnpm, yarn, or connect via CDN.
+- [Quick Start](https://use-retoo.github.io/scena/raw/getting-started/quick-start.md): Mount your first video widget in under 5 minutes.
+
+## Configuration
+
+- [Overview](https://use-retoo.github.io/scena/raw/configuration/overview.md): Structure of ScenaConfig and the principle of disabling components with false.
+- [Size](https://use-retoo.github.io/scena/raw/configuration/size.md): Configure widget dimensions with ComponentSize — xs, sm, md, lg, xl, xxl.
+- [Shape](https://use-retoo.github.io/scena/raw/configuration/shape.md): Set widget shape — circle, portrait, landscape, or square.
+- [Positioning](https://use-retoo.github.io/scena/raw/configuration/positioning.md): Control CSS position of the widget container — fixed, absolute, relative, static.
+- [Placement](https://use-retoo.github.io/scena/raw/configuration/placement.md): Anchor the widget within the viewport or container using a 3x3 grid model.
+- [Video](https://use-retoo.github.io/scena/raw/configuration/video.md): Configure video source, poster, preload, autoplay, loop, muted, volume, and playback options.
+- [Styles](https://use-retoo.github.io/scena/raw/configuration/styles.md): Customize the widget appearance with CSS custom properties (variables).
+
+## Components
+
+- [Container](https://use-retoo.github.io/scena/raw/components/container.md): Configure the widget container with position and placement options.
+- [Close Button](https://use-retoo.github.io/scena/raw/components/close-button.md): Configure or disable the close button that hides the widget.
+- [CTA Button](https://use-retoo.github.io/scena/raw/components/cta-button.md): Configure or disable the call-to-action button with custom text and behavior.
+- [Video Controls](https://use-retoo.github.io/scena/raw/components/video-controls.md): Configure or disable the playback control panel (play, pause, etc.).
+- [Video Loader](https://use-retoo.github.io/scena/raw/components/video-loader.md): Configure or disable the loading indicator shown during video buffering.
+- [Video Progress](https://use-retoo.github.io/scena/raw/components/video-progress.md): Configure or disable the video progress bar.
+- [Video Volume](https://use-retoo.github.io/scena/raw/components/video-volume.md): Configure or disable the volume control component.
+
+## Features
+
+- [Preview](https://use-retoo.github.io/scena/raw/features/preview.md): Configure preview mode with temporary visual overrides before the user interacts with the widget.
+- [Visibility](https://use-retoo.github.io/scena/raw/features/visibility.md): Control widget visibility with isHidden, isShownOnReady, and animated transitions.
+- [Responsive](https://use-retoo.github.io/scena/raw/features/responsive.md): Automatically adapt widget size and shape to viewport width using breakpoint-based constants overrides.
+
+## API Reference
+
+- [useScena](https://use-retoo.github.io/scena/raw/api-reference/use-scena.md): Widget factory function that returns mount, unmount, NAME, and VERSION.
+- [useConfig](https://use-retoo.github.io/scena/raw/api-reference/use-config.md): Get, set, and deep merge widget configuration at runtime with getConfig, setConfig, and mergeConfig.
+- [Scena Instance](https://use-retoo.github.io/scena/raw/api-reference/scena-instance.md): Object returned by mount() providing access to api, constants, visibility, and preview.
+- [Video Controller](https://use-retoo.github.io/scena/raw/api-reference/video-controller.md): Control playback with play, pause, stop, seek, mute, unmute, setVolume, and reactive state properties.
+- [Video State](https://use-retoo.github.io/scena/raw/api-reference/video-state.md): Playback state machine — idle, loading, playing, paused, ended, error.
+- [Visibility API](https://use-retoo.github.io/scena/raw/api-reference/visibility-api.md): Programmatically show and hide the widget with show(), hide(), isHidden, and isShownOnReady.
+- [Preview API](https://use-retoo.github.io/scena/raw/api-reference/preview-api.md): Control preview mode with start(), stop(), and isPreviewing state.
+
+## Events
+
+- [Widget Events](https://use-retoo.github.io/scena/raw/events/widget-events.md): Handle widget mounting and destruction with ON_SCENA_MOUNT and ON_SCENA_DESTROY.
+- [Video Events](https://use-retoo.github.io/scena/raw/events/video-events.md): React to playback state changes — play, pause, ended, seeking, time update, volume change, buffering, and errors.
+- [Feature Events](https://use-retoo.github.io/scena/raw/events/feature-events.md): React to visibility and preview state changes with show, hide, start, and stop events.
+- [Click Events](https://use-retoo.github.io/scena/raw/events/click-events.md): Handle user clicks on the video container, CTA button, and close button.
+
+## Custom Element
+
+- [Setup](https://use-retoo.github.io/scena/raw/custom-element/setup.md): Register the custom element with defineScenaElement() and connect styles.
+- [Usage](https://use-retoo.github.io/scena/raw/custom-element/usage.md): Use scena-video-widget in HTML — mount via DOM element, pass constants, and manage instances.
+- [DOM Events](https://use-retoo.github.io/scena/raw/custom-element/events.md): Listen to scena:mount and scena:unmount events on the custom element via addEventListener.
+- [Integration](https://use-retoo.github.io/scena/raw/custom-element/integration.md): Use the scena-video-widget custom element in React, Vue, Angular, and vanilla HTML.
+
+## Examples
+
+- [Basic Setup](https://use-retoo.github.io/scena/raw/examples/basic-setup.md): Minimal widget mounted with a single required field — video.src.
+- [Custom Styling](https://use-retoo.github.io/scena/raw/examples/custom-styling.md): Override CSS custom properties and component constants to match your brand.
+- [Responsive Widget](https://use-retoo.github.io/scena/raw/examples/responsive-widget.md): Adapt widget size and shape across breakpoints using the responsive constants.
+- [Custom Controls](https://use-retoo.github.io/scena/raw/examples/custom-controls.md): Build your own UI on top of the instance API — progress bar, buttons, and overlays.
+- [Viewport Mount](https://use-retoo.github.io/scena/raw/examples/viewport-mount.md): Mount the widget only when its container enters the viewport using IntersectionObserver.
+- [Timed Overlay](https://use-retoo.github.io/scena/raw/examples/timed-overlay.md): Show a contextual overlay at a specific point in the video using playback time events.
+- [Loop Segment](https://use-retoo.github.io/scena/raw/examples/loop-segment.md): Loop playback between two timestamps by seeking back to the start point when the end is reached.
+- [Heatmap Data](https://use-retoo.github.io/scena/raw/examples/heatmap-data.md): Collect seek positions and visualize which parts of the video users rewatch most.
+
+## Distribution
+
+- [Formats](https://use-retoo.github.io/scena/raw/distribution/formats.md): Available build formats — ES Module, UMD, CommonJS, and their minified variants.
+- [Browser Support](https://use-retoo.github.io/scena/raw/distribution/browser-support.md): Supported browsers, required polyfills, and compatibility notes.
+- [Bundle Size](https://use-retoo.github.io/scena/raw/distribution/bundle-size.md): Size of each distribution format and tree-shaking capabilities.
+- [TypeScript](https://use-retoo.github.io/scena/raw/distribution/typescript.md): Type declarations, exported interfaces, and TypeScript integration.
