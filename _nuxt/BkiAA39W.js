@@ -1,0 +1,1 @@
+import{aT as i}from"./CrddEM5f.js";function c(){const{app:n}=i(),t=n.baseURL.replace(/\/$/,"");function s(r){if(r)return!r.startsWith("/")||r.startsWith(t+"/")?r:t+r}function o(r){const{video:e}=r;return e?{...r,video:{...e,src:s(e.src)??e.src,poster:s(e.poster)}}:r}return{withBase:s,processConfig:o}}export{c as u};
