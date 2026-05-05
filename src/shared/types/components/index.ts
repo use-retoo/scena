@@ -1,5 +1,8 @@
 import { ComponentAriaHaspopup, ComponentAriaPressed } from '../../enums';
 
+/** Shape of any component instance that exposes its DOM elements via `getElements()`. */
+export type ComponentRef<T> = { getElements(): T };
+
 /** Inline styles — a raw CSS string or a partial `CSSStyleDeclaration` object. */
 export type ComponentStyles = string | Partial<CSSStyleDeclaration>;
 

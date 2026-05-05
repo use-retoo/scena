@@ -23,6 +23,16 @@ export default function useProgressLine({
 
 	const transition = $derived(isDisabledTransition ? 'none' : undefined);
 
+	function getRootElementSafe(): HTMLElement {
+		const root = getRootElement();
+
+		if (!root) {
+			throw new Error('Progress root element is not available');
+		}
+
+		return root;
+	}
+
 	function getEventProgress(event: PointerEvent, element: Element): number {
 		const rect = element.getBoundingClientRect();
 
@@ -54,7 +64,7 @@ export default function useProgressLine({
 	}
 
 	function onPointerDown(event: PointerEvent): void {
-		getRootElement().focus();
+		getRootElementSafe().focus();
 
 		isDragging = true;
 

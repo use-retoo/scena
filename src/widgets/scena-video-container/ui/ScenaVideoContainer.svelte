@@ -4,7 +4,11 @@
 	import { ComponentSize, ComponentShape } from '@/shared/enums';
 	import { formatComponentStyles } from '@/shared/utils';
 
-	import type { ScenaVideoContainerProps, ScenaVideoContainerSnippets } from '../model';
+	import type {
+		ScenaVideoContainerElements,
+		ScenaVideoContainerProps,
+		ScenaVideoContainerSnippets
+	} from '../model';
 
 	let {
 		id,
@@ -18,7 +22,7 @@
 
 	const { eventEmitter } = getScenaContext();
 
-	let rootElement: HTMLDivElement;
+	let rootElement: HTMLDivElement | null = $state(null);
 
 	const rootClasses = $derived([
 		'rs-video-container',
@@ -40,8 +44,10 @@
 		}
 	}
 
-	export function getElements() {
-		return { root: rootElement };
+	export function getElements(): ScenaVideoContainerElements {
+		return {
+			root: rootElement
+		};
 	}
 </script>
 

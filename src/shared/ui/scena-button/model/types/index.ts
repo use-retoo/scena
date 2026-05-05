@@ -43,5 +43,5 @@ export interface ScenaButtonSnippets {
 
 /** DOM element references for the base button. */
 export interface ScenaButtonElements {
-	root: HTMLButtonElement;
+	root: HTMLButtonElement | null;
 }

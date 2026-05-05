@@ -4,9 +4,9 @@
 	import { ComponentSize, ComponentShape } from '@/shared/enums';
 	import { ScenaButton, ScenaButtonShape, ScenaButtonVariant } from '@/shared/ui/scena-button';
 	import { ScenaIcon } from '@/shared/ui/scena-icons';
-	import { formatComponentStyles } from '@/shared/utils';
+	import { formatComponentStyles, resolveElements } from '@/shared/utils';
 
-	import type { ScenaVideoVolumeProps } from '../model';
+	import type { ScenaVideoVolumeElements, ScenaVideoVolumeProps } from '../model';
 
 	let {
 		id,
@@ -42,13 +42,13 @@
 
 	const rootStyles = $derived(formatComponentStyles(customStyles?.root));
 
-	export function getElements() {
+	export function getElements(): ScenaVideoVolumeElements {
 		return {
 			root: rootElement,
-			unmuteButton: unmuteButtonElement?.getElements(),
-			unmuteIcon: unmuteIconElement?.getElements(),
-			muteButton: muteButtonElement?.getElements(),
-			muteIcon: muteIconElement?.getElements()
+			unmuteButton: resolveElements(unmuteButtonElement),
+			unmuteIcon: resolveElements(unmuteIconElement),
+			muteButton: resolveElements(muteButtonElement),
+			muteIcon: resolveElements(muteIconElement)
 		};
 	}
 </script>

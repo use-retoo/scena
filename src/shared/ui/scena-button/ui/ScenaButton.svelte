@@ -3,7 +3,12 @@
 	import { formatComponentStyles } from '@/shared/utils';
 
 	import { ScenaButtonShape, ScenaButtonType, ScenaButtonVariant } from '../model';
-	import type { ScenaButtonProps, ScenaButtonEvents, ScenaButtonSnippets } from '../model';
+	import type {
+		ScenaButtonElements,
+		ScenaButtonProps,
+		ScenaButtonEvents,
+		ScenaButtonSnippets
+	} from '../model';
 
 	let {
 		id,
@@ -27,12 +32,14 @@
 		customClasses?.root
 	]);
 
-	let rootElement: HTMLButtonElement;
+	let rootElement: HTMLButtonElement | null = $state(null);
 
 	const rootStyles = $derived(formatComponentStyles(customStyles?.root));
 
-	export function getElements() {
-		return { root: rootElement };
+	export function getElements(): ScenaButtonElements {
+		return {
+			root: rootElement
+		};
 	}
 </script>
 

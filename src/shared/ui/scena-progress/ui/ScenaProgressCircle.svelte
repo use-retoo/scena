@@ -3,7 +3,11 @@
 	import { formatComponentStyles } from '@/shared/utils';
 
 	import { useProgressCircle, scenaProgressCircleThicknessMap } from '../model';
-	import type { ScenaProgressCircleEvents, ScenaProgressCircleProps } from '../model';
+	import type {
+		ScenaProgressCircleElements,
+		ScenaProgressCircleEvents,
+		ScenaProgressCircleProps
+	} from '../model';
 
 	let {
 		id,
@@ -20,7 +24,7 @@
 		onSeekEnd
 	}: Partial<ScenaProgressCircleProps & ScenaProgressCircleEvents> = $props();
 
-	let rootElement: SVGSVGElement;
+	let rootElement: SVGSVGElement | null = $state(null);
 
 	let trackElement: SVGCircleElement | null = $state(null);
 
@@ -58,7 +62,7 @@
 		})
 	});
 
-	export function getElements() {
+	export function getElements(): ScenaProgressCircleElements {
 		return {
 			root: rootElement,
 			track: trackElement,

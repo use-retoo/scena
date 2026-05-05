@@ -35,10 +35,13 @@ export interface ScenaCtaButtonProps {
 	onClick: (event: Event) => void;
 }
 
+/** DOM elements exposed by the CTA button component. */
+export interface ScenaCtaButtonElements {
+	root: HTMLDivElement | null;
+	button: ScenaButtonElements | null;
+}
+
 /** Component ref for the CTA button. */
 export interface ScenaCtaButtonRef {
-	getElements: () => {
-		root: HTMLDivElement;
-		button: ScenaButtonElements | undefined;
-	};
+	getElements: () => ScenaCtaButtonElements;
 }

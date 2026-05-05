@@ -5,9 +5,9 @@
 	import { ComponentSize, ComponentShape } from '@/shared/enums';
 	import { ScenaButton, ScenaButtonShape, ScenaButtonVariant } from '@/shared/ui/scena-button';
 	import { ScenaIcon } from '@/shared/ui/scena-icons';
-	import { formatComponentStyles } from '@/shared/utils';
+	import { formatComponentStyles, resolveElements } from '@/shared/utils';
 
-	import type { ScenaCloseButtonProps } from '../model';
+	import type { ScenaCloseButtonElements, ScenaCloseButtonProps } from '../model';
 
 	let {
 		id,
@@ -21,11 +21,11 @@
 
 	const { eventEmitter, unmount } = getScenaContext();
 
-	let rootElement: HTMLDivElement;
+	let rootElement: HTMLDivElement | null = $state(null);
 
-	let buttonElement: ScenaButton;
+	let buttonElement: ScenaButton | null = $state(null);
 
-	let crossElement: ScenaIcon;
+	let crossElement: ScenaIcon | null = $state(null);
 
 	const rootClasses = $derived([
 		'rs-close-button',
@@ -47,11 +47,11 @@
 		unmount();
 	}
 
-	export function getElements() {
+	export function getElements(): ScenaCloseButtonElements {
 		return {
 			root: rootElement,
-			button: buttonElement?.getElements(),
-			cross: crossElement?.getElements()
+			button: resolveElements(buttonElement),
+			cross: resolveElements(crossElement)
 		};
 	}
 </script>

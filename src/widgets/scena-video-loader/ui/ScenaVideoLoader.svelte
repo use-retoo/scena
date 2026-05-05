@@ -2,9 +2,9 @@
 	import { getScenaVideoContext, ScenaVideoState } from '@/entities/video';
 	import { ComponentSize } from '@/shared/enums';
 	import { ScenaLoader } from '@/shared/ui/scena-loader';
-	import { formatComponentStyles } from '@/shared/utils';
+	import { formatComponentStyles, resolveElements } from '@/shared/utils';
 
-	import type { ScenaVideoLoaderProps } from '../model';
+	import type { ScenaVideoLoaderElements, ScenaVideoLoaderProps } from '../model';
 
 	let {
 		id,
@@ -15,7 +15,7 @@
 
 	const scenaVideoContext = getScenaVideoContext();
 
-	let rootElement: HTMLDivElement;
+	let rootElement: HTMLDivElement | null = $state(null);
 
 	let loaderElement: ScenaLoader | null = $state(null);
 
@@ -23,10 +23,10 @@
 
 	const rootStyles = $derived(formatComponentStyles(customStyles?.root));
 
-	export function getElements() {
+	export function getElements(): ScenaVideoLoaderElements {
 		return {
 			root: rootElement,
-			loader: loaderElement?.getElements()
+			loader: resolveElements(loaderElement)
 		};
 	}
 </script>

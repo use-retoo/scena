@@ -50,7 +50,12 @@ export interface ScenaVideoProgressProps {
 	customStyles: Partial<ScenaVideoProgressComponentStyles>;
 }
 
+/** DOM elements exposed by the video progress component. */
+export interface ScenaVideoProgressElements {
+	root: ScenaProgressLineElements | ScenaProgressCircleElements | null;
+}
+
 /** Component ref for the video progress bar. */
 export interface ScenaVideoProgressRef {
-	getElements: () => ScenaProgressLineElements | ScenaProgressCircleElements | null;
+	getElements: () => ScenaVideoProgressElements;
 }

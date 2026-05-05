@@ -47,7 +47,7 @@ export interface ScenaVideoSnippets {
 /** Options for creating the video controller. */
 export interface UseVideoControllerOptions {
 	/** Getter that returns the underlying `<video>` DOM element. */
-	getVideoElement: () => HTMLVideoElement;
+	getVideoElement: () => HTMLVideoElement | null;
 	/** Event emitter to broadcast video lifecycle events. */
 	eventEmitter: ScenaEventEmitter;
 }
@@ -55,10 +55,15 @@ export interface UseVideoControllerOptions {
 /** Return value of `useVideoController` — combines reactive data, methods, and callbacks. */
 export type UseVideoControllerReturns = ScenaVideoData & ScenaVideoMethods & ScenaVideoCallbacks;
 
+/** DOM elements exposed by the video widget. */
+export interface ScenaVideoElements {
+	root: HTMLDivElement | null;
+	video: HTMLVideoElement | null;
+}
+
 /** Component ref for the video widget. */
 export interface ScenaVideoRef {
 	/** Video playback controller. */
 	controller: UseVideoControllerReturns;
-	/** Returns references to the root wrapper and video DOM elements. */
-	getElements: () => { root: HTMLDivElement; video: HTMLVideoElement };
+	getElements: () => ScenaVideoElements;
 }

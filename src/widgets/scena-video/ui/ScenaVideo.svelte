@@ -6,7 +6,7 @@
 	import { formatComponentStyles } from '@/shared/utils';
 
 	import { useVideoController } from '../model';
-	import type { ScenaVideoProps, ScenaVideoSnippets } from '../model';
+	import type { ScenaVideoElements, ScenaVideoProps, ScenaVideoSnippets } from '../model';
 
 	let {
 		id,
@@ -30,9 +30,9 @@
 
 	const { eventEmitter } = getScenaContext();
 
-	let rootElement: HTMLDivElement;
+	let rootElement: HTMLDivElement | null = $state(null);
 
-	let mediaElement: HTMLVideoElement;
+	let mediaElement: HTMLVideoElement | null = $state(null);
 
 	export const controller = useVideoController({
 		getVideoElement: () => mediaElement,
@@ -57,8 +57,11 @@
 		}
 	});
 
-	export function getElements() {
-		return { root: rootElement, video: mediaElement };
+	export function getElements(): ScenaVideoElements {
+		return {
+			root: rootElement,
+			video: mediaElement
+		};
 	}
 </script>
 

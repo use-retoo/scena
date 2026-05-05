@@ -32,13 +32,16 @@ export interface ScenaVideoControlsProps {
 	customStyles: Partial<ScenaVideoControlsComponentStyles>;
 }
 
+/** DOM elements exposed by the video controls component. */
+export interface ScenaVideoControlsElements {
+	root: HTMLDivElement | null;
+	pauseButton: ScenaButtonElements | null;
+	pauseIcon: ScenaIconElements | null;
+	playButton: ScenaButtonElements | null;
+	playIcon: ScenaIconElements | null;
+}
+
 /** Component ref for the video play/pause controls. */
 export interface ScenaVideoControlsRef {
-	getElements: () => {
-		root: HTMLDivElement | null;
-		pauseButton: ScenaButtonElements | undefined;
-		pauseIcon: ScenaIconElements | undefined;
-		playButton: ScenaButtonElements | undefined;
-		playIcon: ScenaIconElements | undefined;
-	};
+	getElements: () => ScenaVideoControlsElements;
 }

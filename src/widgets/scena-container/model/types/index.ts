@@ -27,7 +27,12 @@ export interface ScenaContainerSnippets {
 	children: ComponentSnippet;
 }
 
+/** DOM elements exposed by the outer container component. */
+export interface ScenaContainerElements {
+	root: HTMLDivElement | null;
+}
+
 /** Component ref for the outer container. */
 export interface ScenaContainerRef {
-	getElements: () => { root: HTMLDivElement };
+	getElements: () => ScenaContainerElements;
 }

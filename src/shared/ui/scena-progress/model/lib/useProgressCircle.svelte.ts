@@ -42,6 +42,16 @@ export default function useProgressCircle({
 
 	const radialBufferOffset = $derived(radialCircumference * (1 - getBuffer()));
 
+	function getRootElementSafe(): SVGSVGElement {
+		const root = getRootElement();
+
+		if (!root) {
+			throw new Error('Progress root element is not available');
+		}
+
+		return root;
+	}
+
 	function getPercentFromClientPoint(clientX: number, clientY: number, element: Element): number {
 		const rect = element.getBoundingClientRect();
 
@@ -75,7 +85,7 @@ export default function useProgressCircle({
 	}
 
 	function onTrackPointerDown(event: PointerEvent): void {
-		getRootElement().focus();
+		getRootElementSafe().focus();
 
 		isFocused = true;
 		isDragging = true;
@@ -140,7 +150,7 @@ export default function useProgressCircle({
 	});
 
 	onMount(() => {
-		resizeObserver.observe(getRootElement());
+		resizeObserver.observe(getRootElementSafe());
 	});
 
 	onDestroy(() => {
