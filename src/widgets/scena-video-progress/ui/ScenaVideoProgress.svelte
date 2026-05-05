@@ -3,7 +3,7 @@
 	import { ComponentSize, ComponentShape } from '@/shared/enums';
 	import { ScenaProgressLine, ScenaProgressCircle } from '@/shared/ui/scena-progress';
 
-	import type { ScenaVideoProgressProps } from '../model';
+	import type { ScenaVideoProgressElements, ScenaVideoProgressProps } from '../model';
 
 	let {
 		id,
@@ -48,8 +48,10 @@
 		previousState = null;
 	}
 
-	export function getElements() {
-		return rootElement?.getElements() ?? null;
+	export function getElements(): ScenaVideoProgressElements {
+		return {
+			root: rootElement?.getElements() ?? null
+		};
 	}
 </script>
 

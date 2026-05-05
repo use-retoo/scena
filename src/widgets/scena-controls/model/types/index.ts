@@ -28,11 +28,14 @@ export interface ScenaCloseButtonProps {
 	onClick: (event: Event) => void;
 }
 
+/** DOM elements exposed by the close button component. */
+export interface ScenaCloseButtonElements {
+	root: HTMLDivElement | null;
+	cross: ScenaIconElements | null;
+	button: ScenaButtonElements | null;
+}
+
 /** Component ref for the close button. */
 export interface ScenaCloseButtonRef {
-	getElements: () => {
-		root: HTMLDivElement;
-		button: ScenaButtonElements | undefined;
-		cross: ScenaIconElements | undefined;
-	};
+	getElements: () => ScenaCloseButtonElements;
 }

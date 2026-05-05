@@ -2,7 +2,7 @@
 	import { ComponentSize } from '@/shared/enums';
 	import { formatComponentStyles } from '@/shared/utils';
 
-	import type { ScenaIconProps, ScenaIconSnippets } from '../model';
+	import type { ScenaIconElements, ScenaIconProps, ScenaIconSnippets } from '../model';
 
 	let {
 		id,
@@ -13,14 +13,16 @@
 		children
 	}: Partial<ScenaIconProps & ScenaIconSnippets> = $props();
 
-	let rootElement: SVGSVGElement;
+	let rootElement: SVGSVGElement | null = $state(null);
 
 	const rootClasses = $derived(['rs-icon', `rs-icon--${size}`, customClasses?.root]);
 
 	const rootStyles = $derived(formatComponentStyles(customStyles?.root));
 
-	export function getElements() {
-		return { root: rootElement };
+	export function getElements(): ScenaIconElements {
+		return {
+			root: rootElement
+		};
 	}
 </script>
 

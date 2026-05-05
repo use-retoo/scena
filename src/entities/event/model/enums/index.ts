@@ -1,7 +1,5 @@
 /** Event names emitted by the scena widget event bus. */
 export enum ScenaEvent {
-	/** Fired when the scena component is mounted in the DOM. */
-	ON_SCENA_MOUNT = 'scena:on-mount',
 	/** Fired when the scena instance is destroyed. */
 	ON_SCENA_DESTROY = 'scena:on-destroy',
 

@@ -2,7 +2,11 @@
 	import { ComponentPlacement, ComponentPosition } from '@/shared/enums';
 	import { formatComponentStyles } from '@/shared/utils';
 
-	import type { ScenaContainerProps, ScenaContainerSnippets } from '../model';
+	import type {
+		ScenaContainerElements,
+		ScenaContainerProps,
+		ScenaContainerSnippets
+	} from '../model';
 
 	let {
 		id,
@@ -13,7 +17,7 @@
 		children
 	}: Partial<ScenaContainerProps & ScenaContainerSnippets> = $props();
 
-	let rootElement: HTMLDivElement;
+	let rootElement: HTMLDivElement | null = $state(null);
 
 	const customPlacements = [ComponentPosition.ABSOLUTE, ComponentPosition.FIXED];
 
@@ -28,8 +32,10 @@
 
 	const rootStyles = $derived(formatComponentStyles(customStyles?.root));
 
-	export function getElements() {
-		return { root: rootElement };
+	export function getElements(): ScenaContainerElements {
+		return {
+			root: rootElement
+		};
 	}
 </script>
 

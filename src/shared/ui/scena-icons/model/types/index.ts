@@ -22,5 +22,5 @@ export interface ScenaIconSnippets {
 }
 
 export interface ScenaIconElements {
-	root: SVGSVGElement;
+	root: SVGSVGElement | null;
 }

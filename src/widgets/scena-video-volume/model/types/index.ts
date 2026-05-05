@@ -33,13 +33,16 @@ export interface ScenaVideoVolumeProps {
 	customStyles: Partial<ScenaVideoVolumeComponentStyles>;
 }
 
+/** DOM elements exposed by the volume control component. */
+export interface ScenaVideoVolumeElements {
+	root: HTMLDivElement | null;
+	unmuteButton: ScenaButtonElements | null;
+	unmuteIcon: ScenaIconElements | null;
+	muteButton: ScenaButtonElements | null;
+	muteIcon: ScenaIconElements | null;
+}
+
 /** Component ref for the volume control widget. */
 export interface ScenaVideoVolumeRef {
-	getElements: () => {
-		root: HTMLDivElement | null;
-		unmuteButton: ScenaButtonElements | undefined;
-		unmuteIcon: ScenaIconElements | undefined;
-		muteButton: ScenaButtonElements | undefined;
-		muteIcon: ScenaIconElements | undefined;
-	};
+	getElements: () => ScenaVideoVolumeElements;
 }

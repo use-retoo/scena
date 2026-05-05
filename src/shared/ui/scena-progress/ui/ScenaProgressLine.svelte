@@ -3,7 +3,11 @@
 	import { formatComponentStyles } from '@/shared/utils';
 
 	import { useProgressLine, scenaProgressLineThicknessMap } from '../model';
-	import type { ScenaProgressLineEvents, ScenaProgressLineProps } from '../model';
+	import type {
+		ScenaProgressLineElements,
+		ScenaProgressLineEvents,
+		ScenaProgressLineProps
+	} from '../model';
 
 	let {
 		id,
@@ -20,7 +24,7 @@
 		onSeekEnd
 	}: Partial<ScenaProgressLineProps & ScenaProgressLineEvents> = $props();
 
-	let rootElement: HTMLDivElement;
+	let rootElement: HTMLDivElement | null = $state(null);
 
 	let trackElement: HTMLDivElement;
 
@@ -44,7 +48,7 @@
 
 	const progressStyles = $derived(formatComponentStyles(customStyles?.progress));
 
-	export function getElements() {
+	export function getElements(): ScenaProgressLineElements {
 		return {
 			root: rootElement,
 			track: trackElement,
@@ -54,7 +58,7 @@
 	}
 
 	const progressLine = useProgressLine({
-		getRootElement: () => rootElement,
+		getRootElement: () => rootElement!,
 		getProgress: () => progress,
 		getSize: () => size,
 		onSeek: (progress, event) => onSeek?.(progress, event),

@@ -115,7 +115,6 @@
 
 	onMount(() => {
 		mount();
-		eventEmitter.emit(ScenaEvent.ON_SCENA_MOUNT);
 	});
 
 	onDestroy(() => {

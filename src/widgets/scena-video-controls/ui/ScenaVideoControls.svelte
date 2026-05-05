@@ -4,9 +4,9 @@
 	import { ComponentSize } from '@/shared/enums';
 	import { ScenaButton, ScenaButtonShape, ScenaButtonVariant } from '@/shared/ui/scena-button';
 	import { ScenaIcon } from '@/shared/ui/scena-icons';
-	import { formatComponentStyles } from '@/shared/utils';
+	import { formatComponentStyles, resolveElements } from '@/shared/utils';
 
-	import type { ScenaVideoControlsProps } from '../model';
+	import type { ScenaVideoControlsElements, ScenaVideoControlsProps } from '../model';
 
 	let {
 		id,
@@ -43,13 +43,13 @@
 
 	const isShownPlay = $derived([ScenaVideoState.IDLE, ScenaVideoState.PAUSED].includes(videoState));
 
-	export function getElements() {
+	export function getElements(): ScenaVideoControlsElements {
 		return {
 			root: rootElement,
-			pauseButton: pauseButtonElement?.getElements(),
-			pauseIcon: pauseIconElement?.getElements(),
-			playButton: playButtonElement?.getElements(),
-			playIcon: playIconElement?.getElements()
+			pauseButton: resolveElements(pauseButtonElement),
+			pauseIcon: resolveElements(pauseIconElement),
+			playButton: resolveElements(playButtonElement),
+			playIcon: resolveElements(playIconElement)
 		};
 	}
 </script>

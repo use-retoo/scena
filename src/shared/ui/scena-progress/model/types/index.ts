@@ -105,8 +105,8 @@ export interface UseProgressLineReturn {
 /** Props accepted by the line progress hook. */
 export interface UseProgressLineProps {
 	getRootElement: () => HTMLElement;
-	getSize: () => ComponentSize;
 	getCustomThickness: () => ScenaProgressComponentThickness;
+	getSize: () => ComponentSize;
 	getProgress: () => number;
 }
 
@@ -119,9 +119,9 @@ export interface UseProgressLineEvents {
 
 /** Props accepted by the circle progress hook. */
 export interface UseProgressCircleProps {
-	getRootElement: () => SVGSVGElement;
-	getSize: () => ComponentSize;
+	getRootElement: () => SVGSVGElement | null;
 	getCustomThickness: () => ScenaProgressComponentThickness;
+	getSize: () => ComponentSize;
 	getProgress: () => number;
 	getBuffer: () => number;
 }
@@ -146,7 +146,7 @@ export interface UseProgressCircleReturnEvents {
 
 /** DOM element references for the linear progress bar. */
 export interface ScenaProgressLineElements {
-	root: HTMLDivElement;
+	root: HTMLDivElement | null;
 	track: HTMLDivElement;
 	buffer: HTMLDivElement | null;
 	progress: HTMLDivElement;
@@ -154,7 +154,7 @@ export interface ScenaProgressLineElements {
 
 /** DOM element references for the circular progress indicator. */
 export interface ScenaProgressCircleElements {
-	root: SVGSVGElement;
+	root: SVGSVGElement | null;
 	track: SVGCircleElement | null;
 	buffer: SVGCircleElement | null;
 	progress: SVGCircleElement | null;

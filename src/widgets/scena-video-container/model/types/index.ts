@@ -34,7 +34,12 @@ export interface ScenaVideoContainerSnippets {
 	children: ComponentSnippet;
 }
 
+/** DOM elements exposed by the video container component. */
+export interface ScenaVideoContainerElements {
+	root: HTMLDivElement | null;
+}
+
 /** Component ref for the video container. */
 export interface ScenaVideoContainerRef {
-	getElements: () => { root: HTMLDivElement };
+	getElements: () => ScenaVideoContainerElements;
 }

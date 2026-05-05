@@ -3,9 +3,13 @@
 	import { getScenaContext } from '@/entities/scena';
 	import { ComponentSize } from '@/shared/enums';
 	import { ScenaButton, ScenaButtonShape } from '@/shared/ui/scena-button';
-	import { formatComponentStyles } from '@/shared/utils';
+	import { formatComponentStyles, resolveElements } from '@/shared/utils';
 
-	import { ScenaCtaButtonPlacement, type ScenaCtaButtonProps } from '../model';
+	import {
+		ScenaCtaButtonPlacement,
+		type ScenaCtaButtonElements,
+		type ScenaCtaButtonProps
+	} from '../model';
 
 	let {
 		id,
@@ -28,9 +32,9 @@
 		adaptive && adaptive.sizes.includes(size) ? adaptive.placement : placement
 	);
 
-	let rootElement: HTMLDivElement;
+	let rootElement: HTMLDivElement | null = $state(null);
 
-	let buttonElement: ScenaButton;
+	let buttonElement: ScenaButton | null = $state(null);
 
 	const rootClasses = $derived([
 		'rs-cta-button',
@@ -48,10 +52,10 @@
 		}
 	}
 
-	export function getElements() {
+	export function getElements(): ScenaCtaButtonElements {
 		return {
 			root: rootElement,
-			button: buttonElement?.getElements()
+			button: resolveElements(buttonElement)
 		};
 	}
 </script>

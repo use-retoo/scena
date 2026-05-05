@@ -22,10 +22,13 @@ export interface ScenaVideoLoaderProps {
 	customStyles: Partial<ScenaVideoLoaderComponentStyles>;
 }
 
+/** DOM elements exposed by the video loader component. */
+export interface ScenaVideoLoaderElements {
+	root: HTMLDivElement | null;
+	loader: ScenaLoaderElements | null;
+}
+
 /** Component ref for the video loader. */
 export interface ScenaVideoLoaderRef {
-	getElements: () => {
-		root: HTMLDivElement;
-		loader: ScenaLoaderElements | undefined;
-	};
+	getElements: () => ScenaVideoLoaderElements;
 }

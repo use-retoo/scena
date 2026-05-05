@@ -21,5 +21,5 @@ export interface ScenaLoaderProps {
 
 /** DOM element references for the loader spinner. */
 export interface ScenaLoaderElements {
-	root: SVGSVGElement;
+	root: SVGSVGElement | null;
 }

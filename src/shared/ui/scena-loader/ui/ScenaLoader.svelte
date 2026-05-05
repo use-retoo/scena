@@ -2,7 +2,7 @@
 	import { ComponentSize } from '@/shared/enums';
 	import { formatComponentStyles } from '@/shared/utils';
 
-	import type { ScenaLoaderProps } from '../model';
+	import type { ScenaLoaderElements, ScenaLoaderProps } from '../model';
 
 	let {
 		id,
@@ -11,14 +11,16 @@
 		customStyles
 	}: Partial<ScenaLoaderProps> = $props();
 
-	let rootElement: SVGSVGElement;
+	let rootElement: SVGSVGElement | null = $state(null);
 
 	const rootClasses = $derived(['rs-loader', `rs-loader--${size}`, customClasses?.root]);
 
 	const rootStyles = $derived(formatComponentStyles(customStyles?.root));
 
-	export function getElements() {
-		return { root: rootElement };
+	export function getElements(): ScenaLoaderElements {
+		return {
+			root: rootElement
+		};
 	}
 </script>
 
