@@ -46,6 +46,7 @@ interface ScenaOverrides {
   shape: ComponentShape;
   container: Partial<ScenaContainerProps>;
   video: Partial<ScenaVideoProps> & Pick<ScenaVideoProps, 'src'>;
+  videoContainer: Partial<ScenaVideoContainerProps>;
   videoLoader: Partial<ScenaVideoLoaderProps> | false;
   videoProgress: Partial<ScenaVideoProgressProps> | false;
   videoControls: Partial<ScenaVideoControlsProps> | false;
@@ -91,6 +92,24 @@ interface ScenaApi {
   controller: UseVideoControllerReturns;
   components: ScenaComponents;
   events: ScenaEventEmitter;
+}
+```
+
+#### ScenaComponents
+
+Registry of all component refs within a mounted widget. Required components are always present; optional ones are `null` when disabled via config.
+
+```ts
+interface ScenaComponents {
+  container: ScenaContainerRef;
+  video: ScenaVideoRef;
+  videoContainer: ScenaVideoContainerRef;
+  videoLoader: ScenaVideoLoaderRef | null;
+  videoProgress: ScenaVideoProgressRef | null;
+  videoControls: ScenaVideoControlsRef | null;
+  videoVolume: ScenaVideoVolumeRef | null;
+  closeButton: ScenaCloseButtonRef | null;
+  ctaButton: ScenaCtaButtonRef | null;
 }
 ```
 
@@ -176,8 +195,10 @@ interface ScenaVideoData {
   currentTime: number;
   duration: number;
   progress: number;
+  progressAnimationFrameId: number | null;
   volume: number;
   buffer: number;
+  buffered: TimeRanges | null;
   isMuted: boolean;
   isBuffering: boolean;
   isSeeking: boolean;
@@ -203,10 +224,10 @@ interface ScenaVideoMethods {
 
 #### UseVideoControllerReturns
 
-Full controller type — combines reactive state and imperative methods.
+Full controller type — combines reactive state, imperative methods, and native video event callbacks.
 
 ```ts
-type UseVideoControllerReturns = ScenaVideoData & ScenaVideoMethods;
+type UseVideoControllerReturns = ScenaVideoData & ScenaVideoMethods & ScenaVideoCallbacks;
 ```
 
 ## Enums
