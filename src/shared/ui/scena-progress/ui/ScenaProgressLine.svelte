@@ -3,6 +3,7 @@
 	import { formatComponentStyles } from '@/shared/utils';
 
 	import { useProgressLine, scenaProgressLineThicknessMap } from '../model';
+
 	import type {
 		ScenaProgressLineElements,
 		ScenaProgressLineEvents,

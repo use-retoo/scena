@@ -6,6 +6,7 @@
 	import { formatComponentStyles } from '@/shared/utils';
 
 	import { useVideoController } from '../model';
+
 	import type { ScenaVideoElements, ScenaVideoProps, ScenaVideoSnippets } from '../model';
 
 	let {

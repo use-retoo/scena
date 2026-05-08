@@ -3,6 +3,7 @@
 	import { formatComponentStyles } from '@/shared/utils';
 
 	import { useProgressCircle, scenaProgressCircleThicknessMap } from '../model';
+
 	import type {
 		ScenaProgressCircleElements,
 		ScenaProgressCircleEvents,
