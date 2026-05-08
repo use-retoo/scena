@@ -44,7 +44,13 @@ export default defineConfig(
 				'error',
 				{
 					'newlines-between': 'always',
-					groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+					groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'type'],
+					pathGroups: [
+						{
+							pattern: '@/**',
+							group: 'internal'
+						}
+					],
 					alphabetize: {
 						order: 'asc',
 						caseInsensitive: true

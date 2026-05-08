@@ -3,7 +3,6 @@ import { mount as _mount, unmount as _unmount } from 'svelte';
 import { ScenaEvent, useEventEmitter } from '@/entities/event';
 
 import { Scena } from '../../ui';
-import type { UseScenaReturns, ScenaConfig, ScenaInstance, ScenaTarget } from '../types';
 
 import {
 	useScenaConfig,
@@ -12,6 +11,8 @@ import {
 	useScenaResponsive,
 	useScenaVisibility
 } from './';
+
+import type { UseScenaReturns, ScenaConfig, ScenaInstance, ScenaTarget } from '../types';
 
 /**
  * Creates a scena widget factory.

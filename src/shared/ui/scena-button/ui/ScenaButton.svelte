@@ -3,6 +3,7 @@
 	import { formatComponentStyles } from '@/shared/utils';
 
 	import { ScenaButtonShape, ScenaButtonType, ScenaButtonVariant } from '../model';
+
 	import type {
 		ScenaButtonElements,
 		ScenaButtonProps,
