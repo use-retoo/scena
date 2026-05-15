@@ -81,7 +81,7 @@
 		"@release-it/conventional-changelog": "^11.0.0",
 		"@rollup/plugin-node-resolve": "^16.0.3",
 		"@rollup/plugin-terser": "^1.0.0",
-		"@sveltejs/vite-plugin-svelte": "^6.2.1",
+		"@sveltejs/vite-plugin-svelte": "^7.1.2",
 		"@tsconfig/svelte": "^5.0.6",
 		"@types/node": "^25",
 		"autoprefixer": "^10.4.23",
@@ -104,7 +104,7 @@
 		"svelte-check": "^4.3.4",
 		"typescript": "~6.0.3",
 		"typescript-eslint": "^8.48.1",
-		"vite": "^7.3.2",
+		"vite": "^8.0.11",
 		"vitest": "^4.1.0"
 	}
 }
