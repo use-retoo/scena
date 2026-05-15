@@ -9,8 +9,6 @@ updates:
     ignore:
       - dependency-name: 'eslint'
         versions: ['10.x']
-      - dependency-name: 'vite'
-        versions: ['8.x']
     groups:
       dev-dependencies:
         dependency-type: development
