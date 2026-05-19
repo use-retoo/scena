@@ -4,6 +4,38 @@
 
 Visual appearance is fully customizable through CSS custom properties defined on the `.rs` root element. Override any variable in your own stylesheet to change colors, sizes, spacing, and animations — no need to touch the widget source or add extra build steps.
 
+## Typography
+
+<table>
+<thead>
+  <tr>
+    <th>
+      Variable
+    </th>
+    
+    <th>
+      Default
+    </th>
+  </tr>
+</thead>
+
+<tbody>
+  <tr>
+    <td>
+      <code>
+        --rs-font-family
+      </code>
+    </td>
+    
+    <td>
+      <code>
+        inherit
+      </code>
+    </td>
+  </tr>
+</tbody>
+</table>
+
 ## Container
 
 <table>
@@ -1512,6 +1544,9 @@ All CSS custom properties with their default values:
 
 ```css
 .rs {
+  /* Typography */
+  --rs-font-family: inherit;
+
   /* Container */
   --rs-container-offset-x: 24px;
   --rs-container-offset-y: 24px;

@@ -2,7 +2,7 @@
 
 > Size of each distribution format and tree-shaking capabilities.
 
-The production bundle (minified JS + CSS) weighs under **30 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
+The production bundle (minified JS + CSS) weighs **~30 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
 
 ## Distribution files
 
@@ -42,11 +42,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      81.90 KB
+      119.42 KB
     </td>
     
     <td>
-      26.47 KB
+      33.17 KB
     </td>
   </tr>
   
@@ -62,11 +62,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      82.16 KB
+      123.83 KB
     </td>
     
     <td>
-      26.57 KB
+      33.44 KB
     </td>
   </tr>
   
@@ -82,11 +82,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      82.17 KB
+      119.75 KB
     </td>
     
     <td>
-      26.52 KB
+      33.21 KB
     </td>
   </tr>
   
@@ -102,11 +102,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      224.05 KB
+      264.15 KB
     </td>
     
     <td>
-      44.16 KB
+      60.39 KB
     </td>
   </tr>
   
@@ -122,11 +122,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      239.41 KB
+      273.67 KB
     </td>
     
     <td>
-      45.27 KB
+      61.04 KB
     </td>
   </tr>
   
@@ -142,11 +142,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      225.13 KB
+      265.28 KB
     </td>
     
     <td>
-      44.31 KB
+      60.54 KB
     </td>
   </tr>
   

@@ -157,6 +157,24 @@ CTA button displays a text label either inside the widget overlay or outside bel
       Custom inline styles
     </td>
   </tr>
+  
+  <tr>
+    <td>
+      <code>
+        customHtml
+      </code>
+    </td>
+    
+    <td>
+      <code>
+        Partial<ScenaCtaButtonComponentHtml>
+      </code>
+    </td>
+    
+    <td>
+      Custom inner HTML
+    </td>
+  </tr>
 </tbody>
 </table>
 
@@ -280,6 +298,19 @@ await scena.mount({
 });
 ```
 
+Pass `customHtml.button` to replace the button's inner HTML:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  ctaButton: {
+    customHtml: {
+      button: '<span class="icon">→</span> Get in touch',
+    },
+  },
+});
+```
+
 ## Interface
 
 ```ts
@@ -292,5 +323,6 @@ interface ScenaCtaButtonProps {
   onClick: (event: Event) => void;
   customClasses: Partial<ScenaCtaButtonComponentClasses>;
   customStyles: Partial<ScenaCtaButtonComponentStyles>;
+  customHtml: Partial<ScenaCtaButtonComponentHtml>;
 }
 ```

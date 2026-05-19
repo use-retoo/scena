@@ -1347,6 +1347,12 @@ await scena.mount({
 
 Visual appearance is fully customizable through CSS custom properties defined on the `.rs` root element. Override any variable in your own stylesheet to change colors, sizes, spacing, and animations — no need to touch the widget source or add extra build steps.
 
+## Typography
+
+| Variable           | Default   |
+| ------------------ | --------- |
+| `--rs-font-family` | `inherit` |
+
 ## Container
 
 | Variable                  | Default |
@@ -1503,6 +1509,9 @@ All CSS custom properties with their default values:
 
 ```css
 .rs {
+  /* Typography */
+  --rs-font-family: inherit;
+
   /* Container */
   --rs-container-offset-x: 24px;
   --rs-container-offset-y: 24px;
@@ -1714,6 +1723,7 @@ Close button renders a cross icon in the corner of the widget. Clicking it unmou
 | `onClick`       | `(event: Event) => void`                    | Custom click handler |
 | `customClasses` | `Partial<ScenaCloseButtonComponentClasses>` | Custom CSS classes   |
 | `customStyles`  | `Partial<ScenaCloseButtonComponentStyles>`  | Custom inline styles |
+| `customHtml`    | `Partial<ScenaCloseButtonComponentHtml>`    | Custom inner HTML    |
 
 ## Example
 
@@ -1820,15 +1830,30 @@ await scena.mount({
 });
 ```
 
+Pass `customHtml.button` to replace the button's inner HTML:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  closeButton: {
+    customHtml: {
+      button: '<svg ...>...</svg>',
+    },
+  },
+});
+```
+
 ## Interface
 
 ```ts
 interface ScenaCloseButtonProps {
   size: ComponentSize;
+  shape: ComponentShape;
   aria: Partial<ComponentAriaProps>;
   onClick: (event: Event) => void;
   customClasses: Partial<ScenaCloseButtonComponentClasses>;
   customStyles: Partial<ScenaCloseButtonComponentStyles>;
+  customHtml: Partial<ScenaCloseButtonComponentHtml>;
 }
 ```
 
@@ -1848,6 +1873,7 @@ CTA button displays a text label either inside the widget overlay or outside bel
 | `onClick`       | `(event: Event) => void`                  | Click handler                              |
 | `customClasses` | `Partial<ScenaCtaButtonComponentClasses>` | Custom CSS classes                         |
 | `customStyles`  | `Partial<ScenaCtaButtonComponentStyles>`  | Custom inline styles                       |
+| `customHtml`    | `Partial<ScenaCtaButtonComponentHtml>`    | Custom inner HTML                          |
 
 ## Example
 
@@ -1979,6 +2005,19 @@ await scena.mount({
 });
 ```
 
+Pass `customHtml.button` to replace the button's inner HTML:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  ctaButton: {
+    customHtml: {
+      button: '<span class="icon">→</span> Get in touch',
+    },
+  },
+});
+```
+
 ## Interface
 
 ```ts
@@ -1991,6 +2030,7 @@ interface ScenaCtaButtonProps {
   onClick: (event: Event) => void;
   customClasses: Partial<ScenaCtaButtonComponentClasses>;
   customStyles: Partial<ScenaCtaButtonComponentStyles>;
+  customHtml: Partial<ScenaCtaButtonComponentHtml>;
 }
 ```
 
@@ -2001,11 +2041,12 @@ Video controls render a play/pause overlay on top of the video container. The ov
 
 ## Config
 
-| Property        | Type                                          | Description          |
-| --------------- | --------------------------------------------- | -------------------- |
-| `aria`          | `Partial<ScenaVideoControlsComponentAria>`    | ARIA attributes      |
-| `customClasses` | `Partial<ScenaVideoControlsComponentClasses>` | Custom CSS classes   |
-| `customStyles`  | `Partial<ScenaVideoControlsComponentStyles>`  | Custom inline styles |
+| Property        | Type                                          | Description                      |
+| --------------- | --------------------------------------------- | -------------------------------- |
+| `aria`          | `Partial<ScenaVideoControlsComponentAria>`    | ARIA attributes                  |
+| `customClasses` | `Partial<ScenaVideoControlsComponentClasses>` | Custom CSS classes               |
+| `customStyles`  | `Partial<ScenaVideoControlsComponentStyles>`  | Custom inline styles             |
+| `customHtml`    | `Partial<ScenaVideoControlsComponentHtml>`    | Custom inner HTML for play/pause |
 
 ## Example
 
@@ -2083,6 +2124,20 @@ await scena.mount({
 });
 ```
 
+Pass `customHtml.play` or `customHtml.pause` to replace the button's inner HTML:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoControls: {
+    customHtml: {
+      play: '<svg ...>...</svg>',
+      pause: '<svg ...>...</svg>',
+    },
+  },
+});
+```
+
 ## Interface
 
 ```ts
@@ -2091,6 +2146,7 @@ interface ScenaVideoControlsProps {
   aria: Partial<ScenaVideoControlsComponentAria>;
   customClasses: Partial<ScenaVideoControlsComponentClasses>;
   customStyles: Partial<ScenaVideoControlsComponentStyles>;
+  customHtml: Partial<ScenaVideoControlsComponentHtml>;
 }
 ```
 
@@ -2105,6 +2161,7 @@ Video loader displays a spinner while the video is buffering or loading. It appe
 | --------------- | ------------------------------------------- | -------------------- |
 | `customClasses` | `Partial<ScenaVideoLoaderComponentClasses>` | Custom CSS classes   |
 | `customStyles`  | `Partial<ScenaVideoLoaderComponentStyles>`  | Custom inline styles |
+| `customHtml`    | `Partial<ScenaVideoLoaderComponentHtml>`    | Custom inner HTML    |
 
 ## Example
 
@@ -2145,6 +2202,19 @@ await scena.mount({
 });
 ```
 
+Pass `customHtml.loader` to replace the spinner's inner HTML:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoLoader: {
+    customHtml: {
+      loader: '<div class="my-spinner"></div>',
+    },
+  },
+});
+```
+
 ## Interface
 
 ```ts
@@ -2152,6 +2222,7 @@ interface ScenaVideoLoaderProps {
   size: ComponentSize;
   customClasses: Partial<ScenaVideoLoaderComponentClasses>;
   customStyles: Partial<ScenaVideoLoaderComponentStyles>;
+  customHtml: Partial<ScenaVideoLoaderComponentHtml>;
 }
 ```
 
@@ -2268,11 +2339,12 @@ Volume control renders a mute/unmute toggle on the widget. It reflects the curre
 
 ## Config
 
-| Property        | Type                                        | Description          |
-| --------------- | ------------------------------------------- | -------------------- |
-| `aria`          | `Partial<ScenaVideoVolumeComponentAria>`    | ARIA attributes      |
-| `customClasses` | `Partial<ScenaVideoVolumeComponentClasses>` | Custom CSS classes   |
-| `customStyles`  | `Partial<ScenaVideoVolumeComponentStyles>`  | Custom inline styles |
+| Property        | Type                                        | Description                       |
+| --------------- | ------------------------------------------- | --------------------------------- |
+| `aria`          | `Partial<ScenaVideoVolumeComponentAria>`    | ARIA attributes                   |
+| `customClasses` | `Partial<ScenaVideoVolumeComponentClasses>` | Custom CSS classes                |
+| `customStyles`  | `Partial<ScenaVideoVolumeComponentStyles>`  | Custom inline styles              |
+| `customHtml`    | `Partial<ScenaVideoVolumeComponentHtml>`    | Custom inner HTML for mute/unmute |
 
 ## Example
 
@@ -2346,14 +2418,30 @@ await scena.mount({
 });
 ```
 
+Pass `customHtml.mute` or `customHtml.unmute` to replace the button's inner HTML:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoVolume: {
+    customHtml: {
+      mute: '<svg ...>...</svg>',
+      unmute: '<svg ...>...</svg>',
+    },
+  },
+});
+```
+
 ## Interface
 
 ```ts
 interface ScenaVideoVolumeProps {
   size: ComponentSize;
+  shape: ComponentShape;
   aria: Partial<ScenaVideoVolumeComponentAria>;
   customClasses: Partial<ScenaVideoVolumeComponentClasses>;
   customStyles: Partial<ScenaVideoVolumeComponentStyles>;
+  customHtml: Partial<ScenaVideoVolumeComponentHtml>;
 }
 ```
 
@@ -4701,7 +4789,7 @@ For SSR or prerendering scenarios, Scena requires Node.js 16.0 or later. The Com
 
 # Bundle Size
 
-The production bundle (minified JS + CSS) weighs under **30 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
+The production bundle (minified JS + CSS) weighs **\~30 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
 
 ## Distribution files
 
@@ -4709,12 +4797,12 @@ Each module format ships in two variants: a minified production build and an unm
 
 | File               | Format    | Raw       | Gzip     |
 | ------------------ | --------- | --------- | -------- |
-| `scena.min.es.js`  | ES Module | 81.90 KB  | 26.47 KB |
-| `scena.min.umd.js` | UMD       | 82.16 KB  | 26.57 KB |
-| `scena.min.cjs.js` | CommonJS  | 82.17 KB  | 26.52 KB |
-| `scena.es.js`      | ES Module | 224.05 KB | 44.16 KB |
-| `scena.umd.js`     | UMD       | 239.41 KB | 45.27 KB |
-| `scena.cjs.js`     | CommonJS  | 225.13 KB | 44.31 KB |
+| `scena.min.es.js`  | ES Module | 119.42 KB | 33.17 KB |
+| `scena.min.umd.js` | UMD       | 123.83 KB | 33.44 KB |
+| `scena.min.cjs.js` | CommonJS  | 119.75 KB | 33.21 KB |
+| `scena.es.js`      | ES Module | 264.15 KB | 60.39 KB |
+| `scena.umd.js`     | UMD       | 273.67 KB | 61.04 KB |
+| `scena.cjs.js`     | CommonJS  | 265.28 KB | 60.54 KB |
 | `scena.min.css`    | CSS       | 21.4 KB   | 3.2 KB   |
 | `scena.css`        | CSS       | 24.1 KB   | 3.3 KB   |
 

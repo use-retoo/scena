@@ -77,6 +77,24 @@ Video controls render a play/pause overlay on top of the video container. The ov
       Custom inline styles
     </td>
   </tr>
+  
+  <tr>
+    <td>
+      <code>
+        customHtml
+      </code>
+    </td>
+    
+    <td>
+      <code>
+        Partial<ScenaVideoControlsComponentHtml>
+      </code>
+    </td>
+    
+    <td>
+      Custom inner HTML for play/pause
+    </td>
+  </tr>
 </tbody>
 </table>
 
@@ -135,6 +153,20 @@ await scena.mount({
 });
 ```
 
+Pass `customHtml.play` or `customHtml.pause` to replace the button's inner HTML:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoControls: {
+    customHtml: {
+      play: '<svg ...>...</svg>',
+      pause: '<svg ...>...</svg>',
+    },
+  },
+});
+```
+
 ## Interface
 
 ```ts
@@ -143,5 +175,6 @@ interface ScenaVideoControlsProps {
   aria: Partial<ScenaVideoControlsComponentAria>;
   customClasses: Partial<ScenaVideoControlsComponentClasses>;
   customStyles: Partial<ScenaVideoControlsComponentStyles>;
+  customHtml: Partial<ScenaVideoControlsComponentHtml>;
 }
 ```

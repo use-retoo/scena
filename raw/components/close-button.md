@@ -95,6 +95,24 @@ Close button renders a cross icon in the corner of the widget. Clicking it unmou
       Custom inline styles
     </td>
   </tr>
+  
+  <tr>
+    <td>
+      <code>
+        customHtml
+      </code>
+    </td>
+    
+    <td>
+      <code>
+        Partial<ScenaCloseButtonComponentHtml>
+      </code>
+    </td>
+    
+    <td>
+      Custom inner HTML
+    </td>
+  </tr>
 </tbody>
 </table>
 
@@ -185,14 +203,29 @@ await scena.mount({
 });
 ```
 
+Pass `customHtml.button` to replace the button's inner HTML:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  closeButton: {
+    customHtml: {
+      button: '<svg ...>...</svg>',
+    },
+  },
+});
+```
+
 ## Interface
 
 ```ts
 interface ScenaCloseButtonProps {
   size: ComponentSize;
+  shape: ComponentShape;
   aria: Partial<ComponentAriaProps>;
   onClick: (event: Event) => void;
   customClasses: Partial<ScenaCloseButtonComponentClasses>;
   customStyles: Partial<ScenaCloseButtonComponentStyles>;
+  customHtml: Partial<ScenaCloseButtonComponentHtml>;
 }
 ```

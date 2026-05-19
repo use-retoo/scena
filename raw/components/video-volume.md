@@ -77,6 +77,24 @@ Volume control renders a mute/unmute toggle on the widget. It reflects the curre
       Custom inline styles
     </td>
   </tr>
+  
+  <tr>
+    <td>
+      <code>
+        customHtml
+      </code>
+    </td>
+    
+    <td>
+      <code>
+        Partial<ScenaVideoVolumeComponentHtml>
+      </code>
+    </td>
+    
+    <td>
+      Custom inner HTML for mute/unmute
+    </td>
+  </tr>
 </tbody>
 </table>
 
@@ -135,13 +153,29 @@ await scena.mount({
 });
 ```
 
+Pass `customHtml.mute` or `customHtml.unmute` to replace the button's inner HTML:
+
+```ts
+await scena.mount({
+  video: { src: '/video.mp4' },
+  videoVolume: {
+    customHtml: {
+      mute: '<svg ...>...</svg>',
+      unmute: '<svg ...>...</svg>',
+    },
+  },
+});
+```
+
 ## Interface
 
 ```ts
 interface ScenaVideoVolumeProps {
   size: ComponentSize;
+  shape: ComponentShape;
   aria: Partial<ScenaVideoVolumeComponentAria>;
   customClasses: Partial<ScenaVideoVolumeComponentClasses>;
   customStyles: Partial<ScenaVideoVolumeComponentStyles>;
+  customHtml: Partial<ScenaVideoVolumeComponentHtml>;
 }
 ```
