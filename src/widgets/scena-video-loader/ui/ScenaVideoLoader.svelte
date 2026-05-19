@@ -10,7 +10,8 @@
 		id,
 		size = ComponentSize.MD,
 		customClasses,
-		customStyles
+		customStyles,
+		customHtml
 	}: Partial<ScenaVideoLoaderProps> = $props();
 
 	const scenaVideoContext = getScenaVideoContext();
@@ -33,11 +34,16 @@
 
 <div {id} bind:this={rootElement} class={rootClasses} style={rootStyles}>
 	{#if scenaVideoContext.state === ScenaVideoState.LOADING}
-		<ScenaLoader
-			bind:this={loaderElement}
-			{size}
-			customClasses={{ root: customClasses?.loader }}
-			customStyles={{ root: customStyles?.loader }}
-		/>
+		{#if customHtml?.loader}
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			{@html customHtml.loader}
+		{:else}
+			<ScenaLoader
+				bind:this={loaderElement}
+				{size}
+				customClasses={{ root: customClasses?.loader }}
+				customStyles={{ root: customStyles?.loader }}
+			/>
+		{/if}
 	{/if}
 </div>

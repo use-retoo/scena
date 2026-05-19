@@ -17,6 +17,12 @@ export interface ScenaVideoControlsComponentStyles {
 	pause: ComponentStyles;
 }
 
+/** Custom HTML overrides for the video play/pause controls. */
+export interface ScenaVideoControlsComponentHtml {
+	play: string;
+	pause: string;
+}
+
 /** Per-button ARIA overrides for video controls. */
 export interface ScenaVideoControlsComponentAria {
 	play: Partial<ComponentAriaProps>;
@@ -30,6 +36,7 @@ export interface ScenaVideoControlsProps {
 	aria: Partial<ScenaVideoControlsComponentAria>;
 	customClasses: Partial<ScenaVideoControlsComponentClasses>;
 	customStyles: Partial<ScenaVideoControlsComponentStyles>;
+	customHtml: Partial<ScenaVideoControlsComponentHtml>;
 }
 
 /** DOM elements exposed by the video controls component. */

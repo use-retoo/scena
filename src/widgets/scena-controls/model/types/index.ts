@@ -17,6 +17,11 @@ export interface ScenaCloseButtonComponentStyles {
 	cross: ComponentStyles;
 }
 
+/** Custom HTML override for the close button. */
+export interface ScenaCloseButtonComponentHtml {
+	button: string;
+}
+
 /** Configuration props for the close button widget. */
 export interface ScenaCloseButtonProps {
 	id: string;
@@ -25,6 +30,7 @@ export interface ScenaCloseButtonProps {
 	aria: Partial<ComponentAriaProps>;
 	customClasses: Partial<ScenaCloseButtonComponentClasses>;
 	customStyles: Partial<ScenaCloseButtonComponentStyles>;
+	customHtml: Partial<ScenaCloseButtonComponentHtml>;
 	onClick: (event: Event) => void;
 }
 

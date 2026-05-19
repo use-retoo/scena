@@ -23,6 +23,7 @@
 		aria,
 		customClasses,
 		customStyles,
+		customHtml,
 		onClick
 	}: Partial<ScenaCtaButtonProps> = $props();
 
@@ -61,15 +62,20 @@
 </script>
 
 <div {id} bind:this={rootElement} class={rootClasses} style={rootStyles}>
-	<ScenaButton
-		bind:this={buttonElement}
-		{size}
-		{aria}
-		shape={ScenaButtonShape.RECTANGLE}
-		customClasses={{ root: customClasses?.button }}
-		customStyles={{ root: customStyles?.button }}
-		onclick={onCtaButtonClick}
-	>
-		{text}
-	</ScenaButton>
+	{#if customHtml?.button}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		{@html customHtml.button}
+	{:else}
+		<ScenaButton
+			bind:this={buttonElement}
+			{size}
+			{aria}
+			shape={ScenaButtonShape.RECTANGLE}
+			customClasses={{ root: customClasses?.button }}
+			customStyles={{ root: customStyles?.button }}
+			onclick={onCtaButtonClick}
+		>
+			{text}
+		</ScenaButton>
+	{/if}
 </div>

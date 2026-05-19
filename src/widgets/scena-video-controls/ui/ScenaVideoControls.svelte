@@ -16,7 +16,8 @@
 			pause: { ariaLabel: 'Pause' }
 		},
 		customClasses,
-		customStyles
+		customStyles,
+		customHtml
 	}: Partial<ScenaVideoControlsProps> = $props();
 
 	const scenaVideoContext = getScenaVideoContext();
@@ -64,45 +65,55 @@
 			{/if}
 		</span>
 		{#if isShownPause}
-			<ScenaButton
-				bind:this={pauseButtonElement}
-				{size}
-				shape={ScenaButtonShape.CIRCLE}
-				variant={ScenaButtonVariant.TEXT}
-				aria={aria.pause}
-				customClasses={{ root: 'rs-video-controls__pause' }}
-				onclick={scenaVideoContext.pause}
-			>
-				<ScenaIcon
-					bind:this={pauseIconElement}
+			{#if customHtml?.pause}
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				{@html customHtml.pause}
+			{:else}
+				<ScenaButton
+					bind:this={pauseButtonElement}
 					{size}
-					viewBox="0 0 32 32"
-					customClasses={{ root: customClasses?.pause }}
-					customStyles={{ root: customStyles?.pause }}
+					shape={ScenaButtonShape.CIRCLE}
+					variant={ScenaButtonVariant.TEXT}
+					aria={aria.pause}
+					customClasses={{ root: 'rs-video-controls__pause' }}
+					onclick={scenaVideoContext.pause}
 				>
-					<IconPause />
-				</ScenaIcon>
-			</ScenaButton>
+					<ScenaIcon
+						bind:this={pauseIconElement}
+						{size}
+						viewBox="0 0 32 32"
+						customClasses={{ root: customClasses?.pause }}
+						customStyles={{ root: customStyles?.pause }}
+					>
+						<IconPause />
+					</ScenaIcon>
+				</ScenaButton>
+			{/if}
 		{:else if isShownPlay}
-			<ScenaButton
-				bind:this={playButtonElement}
-				{size}
-				shape={ScenaButtonShape.CIRCLE}
-				variant={ScenaButtonVariant.TEXT}
-				aria={aria.play}
-				customClasses={{ root: 'rs-video-controls__play' }}
-				onclick={scenaVideoContext.play}
-			>
-				<ScenaIcon
-					bind:this={playIconElement}
+			{#if customHtml?.play}
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				{@html customHtml.play}
+			{:else}
+				<ScenaButton
+					bind:this={playButtonElement}
 					{size}
-					viewBox="0 0 32 32"
-					customClasses={{ root: customClasses?.play }}
-					customStyles={{ root: customStyles?.play }}
+					shape={ScenaButtonShape.CIRCLE}
+					variant={ScenaButtonVariant.TEXT}
+					aria={aria.play}
+					customClasses={{ root: 'rs-video-controls__play' }}
+					onclick={scenaVideoContext.play}
 				>
-					<IconPlay />
-				</ScenaIcon>
-			</ScenaButton>
+					<ScenaIcon
+						bind:this={playIconElement}
+						{size}
+						viewBox="0 0 32 32"
+						customClasses={{ root: customClasses?.play }}
+						customStyles={{ root: customStyles?.play }}
+					>
+						<IconPlay />
+					</ScenaIcon>
+				</ScenaButton>
+			{/if}
 		{/if}
 	</div>
 {/if}
