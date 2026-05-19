@@ -17,7 +17,8 @@
 			unmute: { ariaLabel: 'Unmute' }
 		},
 		customClasses,
-		customStyles
+		customStyles,
+		customHtml
 	}: Partial<ScenaVideoVolumeProps> = $props();
 
 	const scenaVideoContext = getScenaVideoContext();
@@ -63,23 +64,32 @@
 			{/if}
 		</span>
 		{#if scenaVideoContext.isMuted}
-			<ScenaButton
-				bind:this={unmuteButtonElement}
-				{size}
-				shape={ScenaButtonShape.CIRCLE}
-				variant={ScenaButtonVariant.TEXT}
-				aria={aria.unmute}
-				onclick={scenaVideoContext.unmute}
-			>
-				<ScenaIcon
-					bind:this={unmuteIconElement}
+			{#if customHtml?.unmute}
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				{@html customHtml.unmute}
+			{:else}
+				<ScenaButton
+					bind:this={unmuteButtonElement}
 					{size}
-					customClasses={{ root: customClasses?.unmute }}
-					customStyles={{ root: customStyles?.unmute }}
+					shape={ScenaButtonShape.CIRCLE}
+					variant={ScenaButtonVariant.TEXT}
+					aria={aria.unmute}
+					customClasses={{ root: 'rs-video-volume__unmute' }}
+					onclick={scenaVideoContext.unmute}
 				>
-					<IconUnmute />
-				</ScenaIcon>
-			</ScenaButton>
+					<ScenaIcon
+						bind:this={unmuteIconElement}
+						{size}
+						customClasses={{ root: customClasses?.unmute }}
+						customStyles={{ root: customStyles?.unmute }}
+					>
+						<IconUnmute />
+					</ScenaIcon>
+				</ScenaButton>
+			{/if}
+		{:else if customHtml?.mute}
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			{@html customHtml.mute}
 		{:else}
 			<ScenaButton
 				bind:this={muteButtonElement}
@@ -87,6 +97,7 @@
 				shape={ScenaButtonShape.CIRCLE}
 				variant={ScenaButtonVariant.TEXT}
 				aria={aria.mute}
+				customClasses={{ root: 'rs-video-volume__mute' }}
 				onclick={scenaVideoContext.mute}
 			>
 				<ScenaIcon

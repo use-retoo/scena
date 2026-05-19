@@ -16,6 +16,11 @@ export interface ScenaCtaButtonComponentStyles {
 	button: ComponentStyles;
 }
 
+/** Custom HTML override for the CTA button. */
+export interface ScenaCtaButtonComponentHtml {
+	button: string;
+}
+
 /** Adaptive display settings for the CTA button across screen sizes. */
 export interface ScenaCtaButtonAdaptive {
 	sizes: ComponentSize[];
@@ -32,6 +37,7 @@ export interface ScenaCtaButtonProps {
 	aria: Partial<ComponentAriaProps>;
 	customClasses: Partial<ScenaCtaButtonComponentClasses>;
 	customStyles: Partial<ScenaCtaButtonComponentStyles>;
+	customHtml: Partial<ScenaCtaButtonComponentHtml>;
 	onClick: (event: Event) => void;
 }
 

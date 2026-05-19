@@ -10,7 +10,7 @@
 	&__play,
 	&__pause {
 		&:hover {
-			transform: var(--rs-video-controls-transform);
+			transform: scale(var(--rs-video-controls-scale));
 		}
 	}
 }

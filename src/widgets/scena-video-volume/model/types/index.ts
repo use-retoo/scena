@@ -17,6 +17,12 @@ export interface ScenaVideoVolumeComponentStyles {
 	unmute: ComponentStyles;
 }
 
+/** Custom HTML overrides for the volume mute/unmute controls. */
+export interface ScenaVideoVolumeComponentHtml {
+	mute: string;
+	unmute: string;
+}
+
 /** Per-button ARIA overrides for volume controls. */
 export interface ScenaVideoVolumeComponentAria {
 	mute: Partial<ComponentAriaProps>;
@@ -31,6 +37,7 @@ export interface ScenaVideoVolumeProps {
 	aria: Partial<ScenaVideoVolumeComponentAria>;
 	customClasses: Partial<ScenaVideoVolumeComponentClasses>;
 	customStyles: Partial<ScenaVideoVolumeComponentStyles>;
+	customHtml: Partial<ScenaVideoVolumeComponentHtml>;
 }
 
 /** DOM elements exposed by the volume control component. */

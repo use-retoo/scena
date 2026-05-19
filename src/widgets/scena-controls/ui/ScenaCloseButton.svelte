@@ -16,6 +16,7 @@
 		aria = { ariaLabel: 'Close' },
 		customClasses,
 		customStyles,
+		customHtml,
 		onClick
 	}: Partial<ScenaCloseButtonProps> = $props();
 
@@ -57,23 +58,28 @@
 </script>
 
 <div {id} bind:this={rootElement} class={rootClasses} style={rootStyles}>
-	<ScenaButton
-		bind:this={buttonElement}
-		{aria}
-		autosize
-		shape={ScenaButtonShape.CIRCLE}
-		variant={ScenaButtonVariant.FILLED}
-		customClasses={{ root: customClasses?.button }}
-		customStyles={{ root: customStyles?.button }}
-		onclick={onCloseButtonClick}
-	>
-		<ScenaIcon
-			bind:this={crossElement}
-			{size}
-			customClasses={{ root: customClasses?.cross }}
-			customStyles={{ root: customStyles?.cross }}
+	{#if customHtml?.button}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		{@html customHtml.button}
+	{:else}
+		<ScenaButton
+			bind:this={buttonElement}
+			{aria}
+			autosize
+			shape={ScenaButtonShape.CIRCLE}
+			variant={ScenaButtonVariant.FILLED}
+			customClasses={{ root: customClasses?.button }}
+			customStyles={{ root: customStyles?.button }}
+			onclick={onCloseButtonClick}
 		>
-			<IconCross />
-		</ScenaIcon>
-	</ScenaButton>
+			<ScenaIcon
+				bind:this={crossElement}
+				{size}
+				customClasses={{ root: customClasses?.cross }}
+				customStyles={{ root: customStyles?.cross }}
+			>
+				<IconCross />
+			</ScenaIcon>
+		</ScenaButton>
+	{/if}
 </div>

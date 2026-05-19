@@ -14,12 +14,18 @@ export interface ScenaVideoLoaderComponentStyles {
 	loader: ComponentStyles;
 }
 
+/** Custom HTML override for the video loader. */
+export interface ScenaVideoLoaderComponentHtml {
+	loader: string;
+}
+
 /** Configuration props for the video buffering/loading indicator. */
 export interface ScenaVideoLoaderProps {
 	id: string;
 	size: ComponentSize;
 	customClasses: Partial<ScenaVideoLoaderComponentClasses>;
 	customStyles: Partial<ScenaVideoLoaderComponentStyles>;
+	customHtml: Partial<ScenaVideoLoaderComponentHtml>;
 }
 
 /** DOM elements exposed by the video loader component. */
