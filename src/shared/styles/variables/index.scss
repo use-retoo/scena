@@ -1,6 +1,10 @@
 @use 'sass:map';
 
 $variables: (
+	'rs': (
+		'font-family': 'inherit'
+	),
+
 	'rs-container': (
 		'offset-x': 24px,
 		'offset-y': 24px,
