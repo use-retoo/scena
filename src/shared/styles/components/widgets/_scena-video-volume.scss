@@ -20,7 +20,7 @@
 	&__mute,
 	&__unmute {
 		&:hover {
-			transform: var(--rs-video-volume-transform);
+			transform: scale(var(--rs-video-volume-scale));
 		}
 	}
 }

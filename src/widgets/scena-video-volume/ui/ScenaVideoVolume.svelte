@@ -69,6 +69,7 @@
 				shape={ScenaButtonShape.CIRCLE}
 				variant={ScenaButtonVariant.TEXT}
 				aria={aria.unmute}
+				customClasses={{ root: 'rs-video-volume__unmute' }}
 				onclick={scenaVideoContext.unmute}
 			>
 				<ScenaIcon
@@ -87,6 +88,7 @@
 				shape={ScenaButtonShape.CIRCLE}
 				variant={ScenaButtonVariant.TEXT}
 				aria={aria.mute}
+				customClasses={{ root: 'rs-video-volume__mute' }}
 				onclick={scenaVideoContext.mute}
 			>
 				<ScenaIcon

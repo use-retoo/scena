@@ -70,6 +70,7 @@
 				shape={ScenaButtonShape.CIRCLE}
 				variant={ScenaButtonVariant.TEXT}
 				aria={aria.pause}
+				customClasses={{ root: 'rs-video-controls__pause' }}
 				onclick={scenaVideoContext.pause}
 			>
 				<ScenaIcon
@@ -89,6 +90,7 @@
 				shape={ScenaButtonShape.CIRCLE}
 				variant={ScenaButtonVariant.TEXT}
 				aria={aria.play}
+				customClasses={{ root: 'rs-video-controls__play' }}
 				onclick={scenaVideoContext.play}
 			>
 				<ScenaIcon
