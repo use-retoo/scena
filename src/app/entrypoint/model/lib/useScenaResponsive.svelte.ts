@@ -91,15 +91,15 @@ export default function useScenaResponsive(
 		/** Register matchMedia listeners for each breakpoint */
 		for (const breakpoint of sortedBreakpoints) {
 			/** Create media query for current breakpoint */
-			const march = window.matchMedia(`(max-width: ${breakpoint}px)`);
+			const mrq = window.matchMedia(`(max-width: ${breakpoint}px)`);
 
 			/** Handler that recalculates active breakpoint */
 			const handler = () => update(sortedBreakpoints, responsiveConfig);
 
-			march.addEventListener('change', handler);
+			mrq.addEventListener('change', handler);
 
 			cleanups.push(() => {
-				march.removeEventListener('change', handler);
+				mrq.removeEventListener('change', handler);
 			});
 		}
 
