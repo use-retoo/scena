@@ -75,5 +75,9 @@
 	&--hidden {
 		visibility: hidden;
 		pointer-events: none;
+
+		* {
+			pointer-events: none;
+		}
 	}
 }
