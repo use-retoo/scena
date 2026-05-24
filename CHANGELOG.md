@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/use-retoo/scena/compare/v0.1.0...v0.1.1) (2026-05-24)
+
+
+### Bug Fixes
+
+* **styles:** propagate pointer-events: none to children in --hidden modifier ([89698a5](https://github.com/use-retoo/scena/commit/89698a565696b86d2bdbed0154517aa7efa89e67))
+
 ## [0.1.0](https://github.com/use-retoo/scena/compare/v0.0.2...v0.1.0) (2026-05-19)
 
 ### Features
