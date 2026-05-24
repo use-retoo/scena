@@ -4789,7 +4789,7 @@ For SSR or prerendering scenarios, Scena requires Node.js 16.0 or later. The Com
 
 # Bundle Size
 
-The production bundle (minified JS + CSS) weighs **\~30 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
+The production bundle (minified JS + CSS) weighs **\~33 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
 
 ## Distribution files
 
@@ -4797,14 +4797,14 @@ Each module format ships in two variants: a minified production build and an unm
 
 | File               | Format    | Raw       | Gzip     |
 | ------------------ | --------- | --------- | -------- |
-| `scena.min.es.js`  | ES Module | 119.42 KB | 33.17 KB |
-| `scena.min.umd.js` | UMD       | 123.83 KB | 33.44 KB |
-| `scena.min.cjs.js` | CommonJS  | 119.75 KB | 33.21 KB |
-| `scena.es.js`      | ES Module | 264.15 KB | 60.39 KB |
-| `scena.umd.js`     | UMD       | 273.67 KB | 61.04 KB |
-| `scena.cjs.js`     | CommonJS  | 265.28 KB | 60.54 KB |
-| `scena.min.css`    | CSS       | 21.4 KB   | 3.2 KB   |
-| `scena.css`        | CSS       | 24.1 KB   | 3.3 KB   |
+| `scena.min.es.js`  | ES Module | 119.46 KB | 32.87 KB |
+| `scena.min.umd.js` | UMD       | 123.87 KB | 33.23 KB |
+| `scena.min.cjs.js` | CommonJS  | 119.80 KB | 32.91 KB |
+| `scena.es.js`      | ES Module | 264.17 KB | 60.03 KB |
+| `scena.umd.js`     | UMD       | 273.72 KB | 60.78 KB |
+| `scena.cjs.js`     | CommonJS  | 265.33 KB | 60.18 KB |
+| `scena.min.css`    | CSS       | 18.69 KB  | 2.95 KB  |
+| `scena.css`        | CSS       | 21.10 KB  | 3.10 KB  |
 
 
 # TypeScript

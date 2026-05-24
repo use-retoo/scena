@@ -2,7 +2,7 @@
 
 > Size of each distribution format and tree-shaking capabilities.
 
-The production bundle (minified JS + CSS) weighs **~30 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
+The production bundle (minified JS + CSS) weighs **~33 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
 
 ## Distribution files
 
@@ -42,11 +42,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      119.42 KB
+      119.46 KB
     </td>
     
     <td>
-      33.17 KB
+      32.87 KB
     </td>
   </tr>
   
@@ -62,11 +62,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      123.83 KB
+      123.87 KB
     </td>
     
     <td>
-      33.44 KB
+      33.23 KB
     </td>
   </tr>
   
@@ -82,11 +82,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      119.75 KB
+      119.80 KB
     </td>
     
     <td>
-      33.21 KB
+      32.91 KB
     </td>
   </tr>
   
@@ -102,11 +102,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      264.15 KB
+      264.17 KB
     </td>
     
     <td>
-      60.39 KB
+      60.03 KB
     </td>
   </tr>
   
@@ -122,11 +122,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      273.67 KB
+      273.72 KB
     </td>
     
     <td>
-      61.04 KB
+      60.78 KB
     </td>
   </tr>
   
@@ -142,11 +142,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      265.28 KB
+      265.33 KB
     </td>
     
     <td>
-      60.54 KB
+      60.18 KB
     </td>
   </tr>
   
@@ -162,11 +162,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      21.4 KB
+      18.69 KB
     </td>
     
     <td>
-      3.2 KB
+      2.95 KB
     </td>
   </tr>
   
@@ -182,11 +182,11 @@ Each module format ships in two variants: a minified production build and an unm
     </td>
     
     <td>
-      24.1 KB
+      21.10 KB
     </td>
     
     <td>
-      3.3 KB
+      3.10 KB
     </td>
   </tr>
 </tbody>
