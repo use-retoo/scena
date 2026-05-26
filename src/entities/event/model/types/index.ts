@@ -10,6 +10,8 @@ export type ScenaEventMap<T = unknown> = Map<ScenaEvent, Set<ScenaEventHandler<T
 export interface ScenaEventEmitter {
 	/** Subscribe a handler to an event. */
 	on(eventName: ScenaEvent, handler: ScenaEventHandler): void;
+	/** Subscribe a handler to an event; auto-unsubscribes after first call. */
+	once(eventName: ScenaEvent, handler: ScenaEventHandler): void;
 	/** Unsubscribe a specific handler from an event. */
 	off(eventName: ScenaEvent, handler: ScenaEventHandler): void;
 	/** Emit an event, calling all subscribed handlers with optional data. */

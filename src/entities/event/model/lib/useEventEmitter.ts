@@ -13,6 +13,15 @@ export function useEventEmitter(): ScenaEventEmitter {
 		events.get(eventName)?.add(handler);
 	}
 
+	function once(eventName: ScenaEvent, handler: ScenaEventHandler) {
+		const wrapper: ScenaEventHandler = (data) => {
+			off(eventName, wrapper);
+			handler(data);
+		};
+
+		on(eventName, wrapper);
+	}
+
 	function off(eventName: ScenaEvent, handler: ScenaEventHandler) {
 		const handlers = events.get(eventName);
 
@@ -37,5 +46,5 @@ export function useEventEmitter(): ScenaEventEmitter {
 		events.clear();
 	}
 
-	return { on, off, emit, remove, clear };
+	return { on, once, off, emit, remove, clear };
 }

@@ -33,6 +33,27 @@ describe('useEventEmitter', () => {
 			expect(second).toHaveBeenCalledOnce();
 		});
 
+		it('should call once handler only on first emit', () => {
+			const emitter = useEventEmitter();
+			const handler = vi.fn();
+
+			emitter.once(ScenaEvent.ON_VIDEO_PLAY, handler);
+			emitter.emit(ScenaEvent.ON_VIDEO_PLAY);
+			emitter.emit(ScenaEvent.ON_VIDEO_PLAY);
+
+			expect(handler).toHaveBeenCalledOnce();
+		});
+
+		it('should call once handler with emitted data', () => {
+			const emitter = useEventEmitter();
+			const handler = vi.fn();
+
+			emitter.once(ScenaEvent.ON_VIDEO_PLAY, handler);
+			emitter.emit(ScenaEvent.ON_VIDEO_PLAY, { state: 'playing' });
+
+			expect(handler).toHaveBeenCalledWith({ state: 'playing' });
+		});
+
 		it('should unsubscribe handler with off', () => {
 			const emitter = useEventEmitter();
 			const handler = vi.fn();
@@ -150,6 +171,20 @@ describe('useEventEmitter', () => {
 			emitter.emit(ScenaEvent.ON_VIDEO_PLAY);
 
 			expect(handler).toHaveBeenCalledOnce();
+		});
+
+		it('should not affect other handlers when once unsubscribes', () => {
+			const emitter = useEventEmitter();
+			const onceHandler = vi.fn();
+			const persistentHandler = vi.fn();
+
+			emitter.once(ScenaEvent.ON_VIDEO_PLAY, onceHandler);
+			emitter.on(ScenaEvent.ON_VIDEO_PLAY, persistentHandler);
+			emitter.emit(ScenaEvent.ON_VIDEO_PLAY);
+			emitter.emit(ScenaEvent.ON_VIDEO_PLAY);
+
+			expect(onceHandler).toHaveBeenCalledOnce();
+			expect(persistentHandler).toHaveBeenCalledTimes(2);
 		});
 
 		it('should create independent instances', () => {
