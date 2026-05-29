@@ -1,6 +1,7 @@
 import { mount as _mount, unmount as _unmount } from 'svelte';
 
 import { ScenaEvent, useEventEmitter } from '@/entities/event';
+import { assertBrowser } from '@/shared/utils/environment';
 
 import { Scena } from '../../ui';
 
@@ -41,10 +42,12 @@ export default function useScena(): UseScenaReturns {
 	 * @param scenaTarget - DOM element or ShadowRoot to mount into. Defaults to `document.body`.
 	 * @returns A promise that resolves with the {@link ScenaInstance} handle.
 	 */
-	function mount(
-		scenaConfig: ScenaConfig,
-		scenaTarget: ScenaTarget = document.body
-	): Promise<ScenaInstance> {
+	function mount(scenaConfig: ScenaConfig, scenaTarget?: ScenaTarget): Promise<ScenaInstance> {
+		assertBrowser('mount');
+
+		/** Safe to read `document.body` here — `assertBrowser` above guarantees DOM is available. */
+		const target = scenaTarget ?? document.body;
+
 		const promise = new Promise<ScenaInstance>((resolve) => {
 			const config = useScenaConfig(scenaConfig);
 
@@ -62,7 +65,7 @@ export default function useScena(): UseScenaReturns {
 			responsive.apply();
 
 			const component: Scena = _mount(Scena, {
-				target: scenaTarget,
+				target,
 				props: {
 					get config() {
 						return configOverrides.resolved;
