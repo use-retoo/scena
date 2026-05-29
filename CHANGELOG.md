@@ -1,5 +1,13 @@
 # Changelog
 
+# [0.2.0](https://github.com/use-retoo/scena/compare/v0.1.1...v0.2.0) (2026-05-29)
+
+
+### Features
+
+* add ScenaError, assertBrowser and fix SSR-unsafe mount target ([2ffb359](https://github.com/use-retoo/scena/commit/2ffb3596f28d4e58e1268fb90b19406896357601))
+* **event:** add once() method to ScenaEventEmitter ([e4b920d](https://github.com/use-retoo/scena/commit/e4b920dfb293ef53b46f70d19ba60177c128c728))
+
 ## [0.1.1](https://github.com/use-retoo/scena/compare/v0.1.0...v0.1.1) (2026-05-24)
 
 
