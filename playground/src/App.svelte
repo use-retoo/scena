@@ -31,6 +31,7 @@
 		});
 
 		instance.api.events.on(ScenaEvent.ON_CTA_CLICK, () => {
+			instance.api.controller.mute();
 			instance.preview.start();
 		});
 
