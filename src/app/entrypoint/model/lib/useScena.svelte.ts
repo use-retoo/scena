@@ -4,14 +4,14 @@ import { ScenaEvent, useEventEmitter } from '@/entities/event';
 import { assertBrowser } from '@/shared/utils/environment';
 
 import { Scena } from '../../ui';
-
 import {
-	useScenaConfig,
 	useScenaOverrides,
 	useScenaPreview,
 	useScenaResponsive,
 	useScenaVisibility
-} from './';
+} from '../modules';
+
+import { useScenaConfig } from './';
 
 import type { UseScenaReturns, ScenaConfig, ScenaInstance, ScenaTarget } from '../types';
 

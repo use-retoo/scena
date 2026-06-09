@@ -1,12 +1,9 @@
 import { OverrideLayer } from '@/shared/enums';
 import { isBrowser } from '@/shared/utils';
 
-import type {
-	UseScenaConfigReturns,
-	UseScenaOverridesReturns,
-	ScenaResponsiveConfig,
-	UseScenaResponsiveReturns
-} from '../types';
+import type { UseScenaConfigReturns } from '../../../types';
+import type { UseScenaOverridesReturns } from '../../scena-overrides';
+import type { ScenaResponsiveConfig, UseScenaResponsiveReturns } from '../types';
 
 /**
  * Manages responsive breakpoint overrides for the scena widget.
@@ -117,7 +114,6 @@ export default function useScenaResponsive(
 
 		cleanups = [];
 
-		/** */
 		configOverrides.set(OverrideLayer.RESPONSIVE, null);
 	}
 

@@ -1,5 +1,5 @@
-import type { ScenaOverrides, UseScenaConfigReturns } from '../config';
-import type { UseScenaOverridesReturns } from '../overrides';
+import type { ScenaOverrides, UseScenaConfigReturns } from '../../../types';
+import type { UseScenaOverridesReturns } from '../../scena-overrides';
 
 /** Public API for controlling preview mode at runtime. */
 export interface ScenaPreviewApi {

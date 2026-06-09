@@ -2,11 +2,9 @@ import { ScenaEvent } from '@/entities/event';
 import type { ScenaEventEmitter } from '@/entities/event';
 import { OverrideLayer } from '@/shared/enums';
 
-import type {
-	UseScenaConfigReturns,
-	UseScenaOverridesReturns,
-	UseScenaPreviewReturns
-} from '../types';
+import type { UseScenaConfigReturns } from '../../../types';
+import type { UseScenaOverridesReturns } from '../../scena-overrides';
+import type { UseScenaPreviewReturns } from '../types';
 
 /**
  * Manages the preview mode feature for the scena widget.
