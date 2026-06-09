@@ -90,7 +90,7 @@ See the **Basic Setup** example to explore the full config in practice — an in
 
 ## Bundle size
 
-The production bundle weighs under **30 KB gzipped** (JS + CSS combined). Zero runtime dependencies — nothing is loaded beyond the video source you provide.
+The production bundle weighs under **35 KB gzipped** (JS + CSS combined). Zero runtime dependencies — nothing is loaded beyond the video source you provide.
 
 ::callout
 ---
@@ -4789,7 +4789,7 @@ For SSR or prerendering scenarios, Scena requires Node.js 16.0 or later. The Com
 
 # Bundle Size
 
-The production bundle (minified JS + CSS) weighs **\~33 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
+The production bundle (minified JS + CSS) weighs **\~35 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
 
 ## Distribution files
 

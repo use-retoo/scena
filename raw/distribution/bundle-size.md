@@ -2,7 +2,7 @@
 
 > Size of each distribution format and tree-shaking capabilities.
 
-The production bundle (minified JS + CSS) weighs **~33 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
+The production bundle (minified JS + CSS) weighs **~35 KB gzipped**. Scena has no runtime dependencies and loads nothing beyond the video source you provide.
 
 ## Distribution files
 

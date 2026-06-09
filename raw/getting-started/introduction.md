@@ -89,7 +89,7 @@ Patch or replace the entire config without unmounting.
 
 ## Bundle size
 
-The production bundle weighs under **30 KB gzipped** (JS + CSS combined). Zero runtime dependencies — nothing is loaded beyond the video source you provide.
+The production bundle weighs under **35 KB gzipped** (JS + CSS combined). Zero runtime dependencies — nothing is loaded beyond the video source you provide.
 
 <callout icon="i-lucide-arrow-right" to="/distribution/bundle-size">
 
