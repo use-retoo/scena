@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.4.0](https://github.com/use-retoo/scena/compare/v0.3.0...v0.4.0) (2026-06-09)
+
+
+### Features
+
+* **app:** add modules ([af6cc44](https://github.com/use-retoo/scena/commit/af6cc44e23f8e71392b20e46d77832ad33c9f5bf))
+
 # [0.3.0](https://github.com/use-retoo/scena/compare/v0.2.0...v0.3.0) (2026-06-09)
 
 
