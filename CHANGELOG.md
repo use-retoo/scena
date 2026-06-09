@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.3.0](https://github.com/use-retoo/scena/compare/v0.2.0...v0.3.0) (2026-06-09)
+
+
+### Features
+
+* focus management for preview mode ([1db6498](https://github.com/use-retoo/scena/commit/1db649888c0d904a6939ed693e3e778675329fbd))
+
 # [0.2.0](https://github.com/use-retoo/scena/compare/v0.1.1...v0.2.0) (2026-05-29)
 
 

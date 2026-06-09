@@ -7,10 +7,6 @@
 	pointer-events: auto;
 	z-index: 10;
 
-	&:focus {
-		outline: none;
-	}
-
 	.rs-progress__track {
 		position: relative;
 		width: 100%;

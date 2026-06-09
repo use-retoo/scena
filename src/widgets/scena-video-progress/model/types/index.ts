@@ -43,6 +43,7 @@ export interface ScenaVideoProgressProps {
 	id: string;
 	size: ComponentSize;
 	shape: ComponentShape;
+	step: number;
 	hasBuffer: boolean;
 	aria: Partial<ComponentAriaProps>;
 	customThickness: Partial<ScenaVideoProgressComponentThickness>;

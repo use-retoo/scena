@@ -43,6 +43,7 @@ export default function useScenaPreview(
 		configOverrides.set(OverrideLayer.PREVIEW, () => ({
 			...config.getConfig().preview,
 			videoContainer: {
+				isInteractive: true,
 				customClasses: {
 					root: [
 						config.getConfig().videoContainer?.customClasses?.root,

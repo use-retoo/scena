@@ -13,9 +13,11 @@
 	let {
 		id,
 		size = ComponentSize.MD,
+		step = 0.05,
 		buffer = 0,
 		progress = 0,
 		hasBuffer,
+		valueText,
 		aria = { ariaLabel: 'Progress' },
 		customThickness,
 		customClasses,
@@ -53,6 +55,7 @@
 		getRootElement: () => rootElement,
 		getProgress: () => progress,
 		getBuffer: () => buffer,
+		getStep: () => step,
 		getSize: () => size,
 		onSeek: (progress, event) => onSeek?.(progress, event),
 		onSeekStart: (event: Event) => onSeekStart?.(event),
@@ -103,8 +106,9 @@
 	aria-valuenow={progress * 100}
 	aria-valuemin={0}
 	aria-valuemax={100}
-	aria-valuetext="{Math.round(progress * 100)}%"
+	aria-valuetext={valueText}
 	xmlns="http://www.w3.org/2000/svg"
+	{...progressCircle.events}
 >
 	{#if progressCircle.radialSize}
 		<circle
@@ -164,7 +168,6 @@
 			fill="none"
 			stroke="transparent"
 			stroke-width={progressCircle.hitAreaThickness}
-			{...progressCircle.events}
 		/>
 	{/if}
 </svg>

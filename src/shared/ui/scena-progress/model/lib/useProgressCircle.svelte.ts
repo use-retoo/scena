@@ -11,6 +11,7 @@ export default function useProgressCircle({
 	getSize,
 	getBuffer,
 	getProgress,
+	getStep,
 	getCustomThickness,
 	onSeek,
 	onSeekStart,
@@ -74,6 +75,45 @@ export default function useProgressCircle({
 	function onMouseLeaveRootElement() {
 		if (isDragging) return;
 		isFocused = false;
+	}
+
+	function onFocus() {
+		isFocused = true;
+	}
+
+	function onBlur() {
+		if (isDragging) return;
+		isFocused = false;
+	}
+
+	function onKeyDown(event: KeyboardEvent): void {
+		const current = getProgress();
+
+		let next: number | null = null;
+
+		switch (event.key) {
+			case 'ArrowLeft':
+			case 'ArrowDown':
+				next = Math.max(0, current - getStep());
+				break;
+			case 'ArrowRight':
+			case 'ArrowUp':
+				next = Math.min(1, current + getStep());
+				break;
+			case 'Home':
+				next = 0;
+				break;
+			case 'End':
+				next = 1;
+				break;
+		}
+
+		if (next === null) return;
+
+		event.preventDefault();
+		onSeekStart?.(event);
+		onSeek?.(next, event);
+		onSeekEnd?.(event);
 	}
 
 	function onTrackClick(event: MouseEvent): void {
@@ -195,7 +235,10 @@ export default function useProgressCircle({
 			onpointerup: stopDragging,
 			onpointercancel: stopDragging,
 			onmouseenter: onMouseEnterRootElement,
-			onmouseleave: onMouseLeaveRootElement
+			onmouseleave: onMouseLeaveRootElement,
+			onfocus: onFocus,
+			onblur: onBlur,
+			onkeydown: onKeyDown
 		}
 	};
 }

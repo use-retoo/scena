@@ -13,9 +13,11 @@
 	let {
 		id,
 		size = ComponentSize.MD,
+		step = 0.05,
 		buffer = 0,
 		progress = 0,
 		hasBuffer,
+		valueText,
 		aria = { ariaLabel: 'Progress' },
 		customThickness,
 		customClasses,
@@ -61,6 +63,7 @@
 	const progressLine = useProgressLine({
 		getRootElement: () => rootElement!,
 		getProgress: () => progress,
+		getStep: () => step,
 		getSize: () => size,
 		onSeek: (progress, event) => onSeek?.(progress, event),
 		onSeekStart: (event: Event) => onSeekStart?.(event),
@@ -87,14 +90,14 @@
 	aria-valuenow={progress * 100}
 	aria-valuemin={0}
 	aria-valuemax={100}
-	aria-valuetext="{Math.round(progress * 100)}%"
+	aria-valuetext={valueText}
+	{...progressLine.events}
 >
 	<div
 		bind:this={trackElement}
 		class={trackClasses}
 		style={trackStyles}
 		style:height="{progressLine.thickness}px"
-		{...progressLine.events}
 	>
 		{#if hasBuffer}
 			<div

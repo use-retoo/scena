@@ -14,6 +14,7 @@
 		id,
 		size = ComponentSize.MD,
 		shape = ComponentShape.CIRCLE,
+		isInteractive = false,
 		aria,
 		customClasses,
 		customStyles,
@@ -33,11 +34,17 @@
 
 	const rootStyles = $derived(formatComponentStyles(customStyles?.root));
 
+	const tabindex = $derived(isInteractive ? 0 : -1);
+
 	function onVideoContainerClick(event: MouseEvent) {
 		eventEmitter.emit(ScenaEvent.ON_VIDEO_CONTAINER_CLICK, event);
 	}
 
 	function onVideoContainerKeydown(event: KeyboardEvent) {
+		if (event.target !== rootElement) {
+			return;
+		}
+
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
 			eventEmitter.emit(ScenaEvent.ON_VIDEO_CONTAINER_CLICK, event);
@@ -65,7 +72,7 @@
 	aria-haspopup={aria?.ariaHaspopup}
 	aria-pressed={aria?.ariaPressed}
 	role="button"
-	tabindex="0"
+	{tabindex}
 	onclick={onVideoContainerClick}
 	onkeydown={onVideoContainerKeydown}
 >

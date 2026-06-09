@@ -30,9 +30,11 @@ export interface ScenaProgressCircleComponentStyles {
 export interface ScenaProgressCircleProps {
 	id: string;
 	size: ComponentSize;
-	buffer: number;
+	step: number;
 	progress: number;
+	buffer: number;
 	hasBuffer: boolean;
+	valueText: string;
 	aria: Partial<ComponentAriaProps>;
 	customThickness: Partial<ScenaProgressComponentThickness>;
 	customClasses: Partial<ScenaProgressCircleComponentClasses>;
@@ -66,9 +68,11 @@ export interface ScenaProgressLineComponentStyles {
 export interface ScenaProgressLineProps {
 	id: string;
 	size: ComponentSize;
-	buffer: number;
+	step: number;
 	progress: number;
+	buffer: number;
 	hasBuffer: boolean;
+	valueText: string;
 	customThickness: Partial<ScenaProgressComponentThickness>;
 	customClasses: Partial<ScenaProgressLineComponentClasses>;
 	customStyles: Partial<ScenaProgressLineComponentStyles>;
@@ -90,6 +94,9 @@ export interface UseProgressLineReturnEvents {
 	onpointercancel: (event: PointerEvent) => void;
 	onmouseenter: () => void;
 	onmouseleave: () => void;
+	onfocus: () => void;
+	onblur: () => void;
+	onkeydown: (event: KeyboardEvent) => void;
 }
 
 /** Reactive state returned by the line progress hook. */
@@ -108,6 +115,7 @@ export interface UseProgressLineProps {
 	getCustomThickness: () => ScenaProgressComponentThickness;
 	getSize: () => ComponentSize;
 	getProgress: () => number;
+	getStep: () => number;
 }
 
 /** Seek event callbacks used internally by the line progress hook. */
@@ -124,6 +132,7 @@ export interface UseProgressCircleProps {
 	getSize: () => ComponentSize;
 	getProgress: () => number;
 	getBuffer: () => number;
+	getStep: () => number;
 }
 
 /** Seek event callbacks used internally by the circle progress hook. */
@@ -142,6 +151,9 @@ export interface UseProgressCircleReturnEvents {
 	onpointercancel: (event: PointerEvent) => void;
 	onmouseenter: () => void;
 	onmouseleave: () => void;
+	onfocus: () => void;
+	onblur: () => void;
+	onkeydown: (event: KeyboardEvent) => void;
 }
 
 /** DOM element references for the linear progress bar. */
