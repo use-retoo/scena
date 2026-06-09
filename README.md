@@ -1,10 +1,10 @@
 # @retoo/scena
 
 [![npm version](https://img.shields.io/npm/v/@retoo/scena)](https://www.npmjs.com/package/@retoo/scena)
-[![bundle size](https://img.shields.io/badge/gzipped-~30KB-blue)](https://use-retoo.github.io/scena/distribution/bundle-size)
+[![bundle size](https://img.shields.io/badge/gzipped-~35KB-blue)](https://use-retoo.github.io/scena/distribution/bundle-size)
 [![license](https://img.shields.io/badge/license-PolyForm%20Shield%201.0.0-blue)](./LICENSE.md)
 
-Embeddable video widget for any website. Framework-agnostic, SSR-safe, ~30KB gzipped.
+Embeddable video widget for any website. Framework-agnostic, SSR-safe, ~35KB gzipped.
 
 **[Documentation](https://use-retoo.github.io/scena)**
 
