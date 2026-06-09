@@ -198,6 +198,7 @@ describe('useScenaPreview', () => {
 			preview.api.start();
 
 			expect(overrides.resolved.videoContainer).toEqual({
+				isInteractive: true,
 				customClasses: {
 					root: [undefined, 'rs-video-container--preview']
 				}
@@ -225,6 +226,7 @@ describe('useScenaPreview', () => {
 			preview.api.start();
 
 			expect(overrides.resolved.videoContainer).toEqual({
+				isInteractive: true,
 				customClasses: {
 					root: ['existing', 'rs-video-container--preview']
 				}
