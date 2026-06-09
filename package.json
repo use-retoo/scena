@@ -70,6 +70,7 @@
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"validate": "npm run check && npm run lint",
+		"prepublishOnly": "npm run build",
 		"release": "release-it",
 		"release:dry": "release-it --dry-run"
 	},
