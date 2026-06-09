@@ -2,6 +2,7 @@
 	import { getScenaVideoContext, ScenaVideoState } from '@/entities/video';
 	import { ComponentSize, ComponentShape } from '@/shared/enums';
 	import { ScenaProgressLine, ScenaProgressCircle } from '@/shared/ui/scena-progress';
+	import { formatTime } from '@/shared/utils';
 
 	import type { ScenaVideoProgressElements, ScenaVideoProgressProps } from '../model';
 
@@ -9,6 +10,7 @@
 		id,
 		size = ComponentSize.MD,
 		shape = ComponentShape.CIRCLE,
+		step = 0.05,
 		hasBuffer = true,
 		customThickness,
 		customClasses,
@@ -29,6 +31,12 @@
 	const isLine = $derived(linearShapes.includes(shape));
 
 	const isCircle = $derived(circleShapes.includes(shape));
+
+	const currentValueText = $derived(formatTime(scenaVideoContext.currentTime));
+
+	const durationValueText = $derived(formatTime(scenaVideoContext.duration));
+
+	const valueText = $derived(`${currentValueText} / ${durationValueText}`);
 
 	function onSeek(progress: number): void {
 		const time = progress * scenaVideoContext.duration;
@@ -63,6 +71,8 @@
 		buffer={scenaVideoContext.buffer}
 		progress={scenaVideoContext.progress}
 		customThickness={customThickness?.line}
+		{step}
+		{valueText}
 		{hasBuffer}
 		{onSeek}
 		{onSeekStart}
@@ -79,6 +89,8 @@
 		buffer={scenaVideoContext.buffer}
 		progress={scenaVideoContext.progress}
 		customThickness={customThickness?.circle}
+		{step}
+		{valueText}
 		{hasBuffer}
 		{onSeek}
 		{onSeekStart}

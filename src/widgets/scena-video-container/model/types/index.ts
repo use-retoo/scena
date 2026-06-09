@@ -23,6 +23,11 @@ export interface ScenaVideoContainerProps {
 	size: ComponentSize;
 	/** Shape of the video container (affects aspect ratio and border-radius). */
 	shape: ComponentShape;
+	/**
+	 * Turns the container into a single focusable button and makes its
+	 * content inert. Enabled by the preview feature while previewing.
+	 */
+	isInteractive: boolean;
 	/** ARIA attributes for accessibility. */
 	aria: Partial<ComponentAriaProps>;
 	customClasses: Partial<ScenaVideoContainerCustomClasses>;

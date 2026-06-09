@@ -91,6 +91,41 @@ export default function useScena(): UseScenaReturns {
 								if (!preview.api.isKeepMuteOnExpand) {
 									scena.api.controller.unmute();
 								}
+
+								/**
+								 * Hands focus over to the expanded widget. Deferring one frame
+								 * lets the DOM drop `inert` from the container content first.
+								 * The first focusable control is queried instead of a specific
+								 * component because any of them can be disabled via config.
+								 */
+								requestAnimationFrame(() => {
+									const { videoProgress, videoControls, videoVolume } = scena.api.components;
+
+									const controls = videoControls?.getElements();
+
+									const volume = videoVolume?.getElements();
+
+									const focusTarget =
+										videoProgress?.getElements().root?.root ??
+										controls?.pauseButton?.root ??
+										controls?.playButton?.root ??
+										volume?.muteButton?.root ??
+										volume?.unmuteButton?.root;
+
+									focusTarget?.focus();
+								});
+							}
+						});
+
+						scena.api.events.on(ScenaEvent.ON_PREVIEW_START, () => {
+							const containerRoot = scena.api.components.videoContainer?.getElements()?.root;
+
+							/**
+							 * Collapsing makes the content inert, which would silently drop
+							 * focus to `<body>` — return it to the container button instead.
+							 */
+							if (containerRoot?.contains(document.activeElement)) {
+								requestAnimationFrame(() => containerRoot.focus());
 							}
 						});
 

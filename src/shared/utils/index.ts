@@ -2,3 +2,4 @@ export { formatComponentStyleProperty, formatComponentStyles, resolveElements } 
 export { isBrowser, assertBrowser } from './environment';
 export { ScenaError } from './errors';
 export { deepClone, deepMerge, pick } from './objects';
+export { formatTime } from './time';

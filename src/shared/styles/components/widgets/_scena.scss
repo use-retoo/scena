@@ -8,7 +8,8 @@
 		opacity: 0;
 	}
 
-	&:hover {
+	&:hover,
+	&:focus-within {
 		.rs-video-controls,
 		.rs-video-volume {
 			opacity: 1;
