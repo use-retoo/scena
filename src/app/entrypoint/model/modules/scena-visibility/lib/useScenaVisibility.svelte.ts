@@ -1,7 +1,8 @@
 import { ScenaEvent } from '@/entities/event';
 import type { ScenaEventEmitter } from '@/entities/event';
 
-import type { UseScenaConfigReturns, UseScenaVisibilityReturns } from '../types';
+import type { UseScenaConfigReturns } from '../../../types';
+import type { UseScenaVisibilityReturns } from '../types';
 
 /**
  * Manages the show/hide visibility feature for the scena widget.

@@ -9,10 +9,8 @@ import type { ScenaVideoLoaderRef } from '@/widgets/scena-video-loader';
 import type { ScenaVideoProgressRef } from '@/widgets/scena-video-progress';
 import type { ScenaVideoVolumeRef } from '@/widgets/scena-video-volume';
 
+import type { ScenaPreviewApi, ScenaResponsiveApi, ScenaVisibilityApi } from '../../modules';
 import type { ScenaConfig, UseScenaConfigReturns } from '../config';
-import type { ScenaPreviewApi } from '../preview';
-import type { ScenaResponsiveApi } from '../responsive';
-import type { ScenaVisibilityApi } from '../visibility';
 
 /** Mount target — a regular DOM element or a Shadow DOM root. */
 export type ScenaTarget = HTMLElement | ShadowRoot;

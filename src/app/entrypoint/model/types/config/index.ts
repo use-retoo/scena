@@ -9,9 +9,11 @@ import type { ScenaVideoLoaderProps } from '@/widgets/scena-video-loader';
 import type { ScenaVideoProgressProps } from '@/widgets/scena-video-progress';
 import type { ScenaVideoVolumeProps } from '@/widgets/scena-video-volume';
 
-import type { ScenaPreviewConfig } from '../preview';
-import type { ScenaResponsiveConfig } from '../responsive';
-import type { ScenaVisibilityConfig } from '../visibility';
+import type {
+	ScenaPreviewConfig,
+	ScenaResponsiveConfig,
+	ScenaVisibilityConfig
+} from '../../modules';
 
 /** Per-component property overrides. Pass `false` to disable a component entirely. */
 export interface ScenaOverrides {

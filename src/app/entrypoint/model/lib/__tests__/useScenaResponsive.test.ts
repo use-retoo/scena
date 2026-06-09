@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { useScenaConfig, useScenaOverrides } from '@/app/entrypoint';
 
-import { useScenaResponsive } from '../';
+import { useScenaResponsive } from '../../modules/scena-responsive';
 
 let mediaListeners: Map<string, Set<() => void>>;
 let mediaMatches: Map<string, boolean>;
