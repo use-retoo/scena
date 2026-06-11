@@ -3,7 +3,7 @@ import { SvelteMap } from 'svelte/reactivity';
 import { OverrideLayer } from '@/shared/enums';
 import { deepMerge } from '@/shared/utils';
 
-import type { ScenaConfig, UseScenaConfigReturns } from '../../../types';
+import type { ScenaConfig, UseScenaConfigReturns } from '../../../model/types';
 import type { UseScenaOverridesReturns } from '../types';
 
 /** Fixed merge order — layers are applied left-to-right on top of the base config. */

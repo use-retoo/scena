@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { useScenaConfig } from '@/app/entrypoint';
 import { useEventEmitter } from '@/entities/event';
 
-import { useScenaVisibility } from '../../modules/scena-visibility';
+import { useScenaVisibility } from '../../../modules/scena-visibility';
 
 describe('useScenaVisibility', () => {
 	describe('basic functionality', () => {

@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { useScenaConfig, useScenaOverrides } from '@/app/entrypoint';
 import { useEventEmitter } from '@/entities/event';
 
-import { useScenaPreview } from '../../modules/scena-preview';
+import { useScenaPreview } from '../../../modules/scena-preview';
 
 describe('useScenaPreview', () => {
 	describe('basic functionality', () => {

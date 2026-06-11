@@ -1,4 +1,4 @@
-import type { ScenaOverrides } from '../../../types';
+import type { ScenaOverrides } from '../../../model/types';
 
 /** Public API for the responsive feature. */
 export interface ScenaResponsiveApi {

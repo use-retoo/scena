@@ -1,7 +1,7 @@
 import { OverrideLayer } from '@/shared/enums';
 import { isBrowser } from '@/shared/utils';
 
-import type { UseScenaConfigReturns } from '../../../types';
+import type { UseScenaConfigReturns } from '../../../model/types';
 import type { UseScenaOverridesReturns } from '../../scena-overrides';
 import type { ScenaResponsiveConfig, UseScenaResponsiveReturns } from '../types';
 

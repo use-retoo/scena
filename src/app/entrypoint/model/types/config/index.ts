@@ -13,7 +13,7 @@ import type {
 	ScenaPreviewConfig,
 	ScenaResponsiveConfig,
 	ScenaVisibilityConfig
-} from '../../modules';
+} from '../../../modules';
 
 /** Per-component property overrides. Pass `false` to disable a component entirely. */
 export interface ScenaOverrides {

@@ -3,13 +3,13 @@ import { mount as _mount, unmount as _unmount } from 'svelte';
 import { ScenaEvent, useEventEmitter } from '@/entities/event';
 import { assertBrowser } from '@/shared/utils/environment';
 
-import { Scena } from '../../ui';
+import { Scena } from '../..';
 import {
 	useScenaOverrides,
 	useScenaPreview,
 	useScenaResponsive,
 	useScenaVisibility
-} from '../modules';
+} from '../../modules';
 
 import { useScenaConfig } from './';
 
