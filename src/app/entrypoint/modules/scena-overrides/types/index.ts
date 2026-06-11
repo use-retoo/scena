@@ -1,6 +1,6 @@
 import type { OverrideLayer } from '@/shared/enums';
 
-import type { ScenaConfig } from '../../../types';
+import type { ScenaConfig } from '../../../model/types';
 
 /** Return value of {@link useScenaOverrides}. */
 export interface UseScenaOverridesReturns {

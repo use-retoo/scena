@@ -1,7 +1,7 @@
 import { ScenaEvent } from '@/entities/event';
 import type { ScenaEventEmitter } from '@/entities/event';
 
-import type { UseScenaConfigReturns } from '../../../types';
+import type { UseScenaConfigReturns } from '../../../model/types';
 import type { UseScenaVisibilityReturns } from '../types';
 
 /**

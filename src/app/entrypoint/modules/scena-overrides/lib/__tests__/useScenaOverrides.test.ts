@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { useScenaConfig } from '@/app/entrypoint';
 import { OverrideLayer } from '@/shared/enums';
 
-import { useScenaOverrides } from '../../modules/scena-overrides';
+import { useScenaOverrides } from '../';
 
 describe('useScenaOverrides', () => {
 	describe('basic functionality', () => {
