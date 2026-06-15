@@ -66,8 +66,6 @@ describe('ScenaVideoProgress', () => {
 		});
 
 		it('renders buffer indicator when hasBuffer is true', () => {
-			render(ScenaVideoProgress, { props: { shape: ComponentShape.CIRCLE, hasBuffer: true } });
-
 			const { container } = render(ScenaVideoProgress, {
 				props: { shape: ComponentShape.CIRCLE, hasBuffer: true }
 			});
