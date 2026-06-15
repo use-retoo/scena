@@ -202,13 +202,13 @@ describe('Scena', () => {
 				})
 			});
 
-			expect(container.querySelector('[role="button"]')).toHaveAttribute('tabindex', '0');
+			expect(container.querySelector('.rs-video-container')).toHaveAttribute('tabindex', '0');
 		});
 
 		it('VideoContainer is not interactive by default', () => {
 			const { container } = render(Scena, { props: createProps() });
 
-			expect(container.querySelector('[role="button"]')).toHaveAttribute('tabindex', '-1');
+			expect(container.querySelector('.rs-video-container')).toHaveAttribute('tabindex', '-1');
 		});
 	});
 
