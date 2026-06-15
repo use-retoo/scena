@@ -57,13 +57,6 @@ export default defineConfig({
 		}
 	},
 
-	/**
-	 * Build configuration for library mode
-	 */
-	test: {
-		include: ['src/**/*.test.ts']
-	},
-
 	build: {
 		/** Output directory */
 		outDir: OUTPUT_DIR,

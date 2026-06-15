@@ -28,5 +28,7 @@
 		"playground/**/*.ts",
 		"playground/**/*.js",
 		"playground/**/*.svelte"
-	]
+	],
+
+	"exclude": ["src/**/*.test.ts", "src/test.setup.ts"]
 }
