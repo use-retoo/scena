@@ -6,6 +6,6 @@
 		"types": ["svelte", "vite/client", "@testing-library/jest-dom"]
 	},
 
-	"include": ["src/**/*.test.ts", "test.setup.ts", "vite.test.config.ts"],
+	"include": ["src/**/*.test.ts", "test.setup.ts", "test.setup.globals.ts", "vite.test.config.ts"],
 	"exclude": []
 }
