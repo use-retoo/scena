@@ -75,7 +75,7 @@ export default function useScena(): UseScenaReturns {
 						const scena = component as Scena;
 
 						scena.api.events.on(ScenaEvent.ON_VIDEO_READY, () => {
-							if (visibility.api.isShownOnReady) {
+							if (visibility.api.isShownOnReady && !visibility.api.isHidden) {
 								visibility.api.show();
 							}
 						});

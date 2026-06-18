@@ -109,7 +109,7 @@ describe('useScenaVisibility', () => {
 	});
 
 	describe('apply', () => {
-		it('should resolve defaults when isShownOnReady is false', () => {
+		it('should not affect isHidden when only isShownOnReady is set', () => {
 			const config = useScenaConfig({
 				video: {
 					src: ''
@@ -130,7 +130,7 @@ describe('useScenaVisibility', () => {
 			});
 		});
 
-		it('should set isHidden to true when isShownOnReady is true and isHidden is not set', () => {
+		it('should default isHidden to false when only isShownOnReady is true', () => {
 			const config = useScenaConfig({
 				video: {
 					src: ''
@@ -143,7 +143,26 @@ describe('useScenaVisibility', () => {
 			visibility.apply();
 
 			expect(config.getConfig().visibility).toEqual({
-				isHidden: true,
+				isHidden: false,
+				isAnimated: true,
+				isShownOnReady: true
+			});
+		});
+
+		it('should not affect isShownOnReady when only isHidden is set', () => {
+			const config = useScenaConfig({
+				video: {
+					src: ''
+				},
+				visibility: { isHidden: false }
+			});
+
+			const visibility = useScenaVisibility(config, useEventEmitter());
+
+			visibility.apply();
+
+			expect(config.getConfig().visibility).toEqual({
+				isHidden: false,
 				isAnimated: true,
 				isShownOnReady: true
 			});
@@ -183,7 +202,7 @@ describe('useScenaVisibility', () => {
 			visibility.apply();
 
 			expect(config.getConfig().visibility).toEqual({
-				isHidden: true,
+				isHidden: false,
 				isAnimated: true,
 				isShownOnReady: true
 			});
