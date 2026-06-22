@@ -21,32 +21,11 @@ export default function useScenaVisibility(
 	function apply() {
 		const visibility = config.getConfig().visibility;
 
-		const hasAnimatedProperty = typeof visibility?.isAnimated === 'boolean';
+		const isAnimated = visibility?.isAnimated ?? true;
 
-		const hasShownOnReadyProperty = typeof visibility?.isShownOnReady === 'boolean';
+		const isHidden = visibility?.isHidden ?? false;
 
-		const hasHiddenProperty = typeof visibility?.isHidden === 'boolean';
-
-		const isAnimated = hasAnimatedProperty ? visibility?.isAnimated : true;
-
-		let isHidden = true;
-
-		let isShownOnReady = true;
-
-		if (hasHiddenProperty && hasShownOnReadyProperty) {
-			isHidden = visibility!.isHidden!;
-			isShownOnReady = visibility!.isShownOnReady!;
-		}
-
-		if (hasHiddenProperty && !hasShownOnReadyProperty) {
-			isHidden = visibility!.isHidden!;
-			isShownOnReady = !visibility!.isHidden!;
-		}
-
-		if (!hasHiddenProperty && hasShownOnReadyProperty) {
-			isShownOnReady = visibility!.isShownOnReady!;
-			isHidden = visibility!.isShownOnReady!;
-		}
+		const isShownOnReady = visibility?.isShownOnReady ?? true;
 
 		config.mergeConfig({
 			visibility: {
