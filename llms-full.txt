@@ -4797,14 +4797,14 @@ Each module format ships in two variants: a minified production build and an unm
 
 | File               | Format    | Raw       | Gzip     |
 | ------------------ | --------- | --------- | -------- |
-| `scena.min.es.js`  | ES Module | 119.46 KB | 32.87 KB |
-| `scena.min.umd.js` | UMD       | 123.87 KB | 33.23 KB |
-| `scena.min.cjs.js` | CommonJS  | 119.80 KB | 32.91 KB |
-| `scena.es.js`      | ES Module | 264.17 KB | 60.03 KB |
-| `scena.umd.js`     | UMD       | 273.72 KB | 60.78 KB |
-| `scena.cjs.js`     | CommonJS  | 265.33 KB | 60.18 KB |
-| `scena.min.css`    | CSS       | 18.69 KB  | 2.95 KB  |
-| `scena.css`        | CSS       | 21.10 KB  | 3.10 KB  |
+| `scena.min.es.js`  | ES Module | 119.40 KB | 32.54 KB |
+| `scena.min.umd.js` | UMD       | 123.81 KB | 32.81 KB |
+| `scena.min.cjs.js` | CommonJS  | 119.71 KB | 32.58 KB |
+| `scena.es.js`      | ES Module | 263.10 KB | 60.02 KB |
+| `scena.umd.js`     | UMD       | 272.55 KB | 60.65 KB |
+| `scena.cjs.js`     | CommonJS  | 264.20 KB | 60.16 KB |
+| `scena.min.css`    | CSS       | 18.33 KB  | 2.87 KB  |
+| `scena.css`        | CSS       | 20.69 KB  | 3.01 KB  |
 
 
 # TypeScript
