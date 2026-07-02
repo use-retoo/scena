@@ -83,5 +83,4 @@ export interface ScenaVideoEventOptionsWithError {
 
 /** Discriminated union of video event option types. */
 export type ScenaVideoEventOptions =
-	| ScenaVideoEventOptionsWithEvent
-	| ScenaVideoEventOptionsWithError;
+	ScenaVideoEventOptionsWithEvent | ScenaVideoEventOptionsWithError;
