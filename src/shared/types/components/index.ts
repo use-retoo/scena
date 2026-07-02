@@ -12,13 +12,7 @@ export type ComponentStyles = string | Partial<CSSStyleDeclaration>;
  * are added as classes, or a nested array of the same.
  */
 export type ComponentClasses =
-	| string
-	| number
-	| false
-	| null
-	| undefined
-	| Record<string, boolean>
-	| ComponentClasses[];
+	string | number | false | null | undefined | Record<string, boolean> | ComponentClasses[];
 
 /** Common ARIA attributes shared across interactive components. */
 export interface ComponentAriaProps {
