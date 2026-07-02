@@ -87,7 +87,7 @@
 		"@testing-library/svelte": "^5.3.1",
 		"@testing-library/user-event": "^14.6.1",
 		"@tsconfig/svelte": "^5.0.6",
-		"@types/node": "^25",
+		"@types/node": "^26",
 		"autoprefixer": "^10.4.23",
 		"eslint": "^9.39.1",
 		"eslint-config-prettier": "^10.1.8",
