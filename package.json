@@ -106,7 +106,7 @@
 		"sass": "^1.97.1",
 		"svelte": "^5.53.5",
 		"svelte-check": "^4.3.4",
-		"typescript": "~6.0.3",
+		"typescript": "~7.0.2",
 		"typescript-eslint": "^8.48.1",
 		"vite": "^8.0.11",
 		"vitest": "^4.1.0"
