@@ -9,6 +9,8 @@ updates:
     ignore:
       - dependency-name: 'eslint'
         versions: ['10.x']
+      - dependency-name: 'typescript'
+        versions: ['7.x']
     groups:
       dev-dependencies:
         dependency-type: development
